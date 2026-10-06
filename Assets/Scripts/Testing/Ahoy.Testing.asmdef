@@ -1,0 +1,17 @@
+{
+    "name": "Ahoy.Testing",
+    "rootNamespace": "Ahoy.Testing",
+    "references": [
+        "Ahoy.Core",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
