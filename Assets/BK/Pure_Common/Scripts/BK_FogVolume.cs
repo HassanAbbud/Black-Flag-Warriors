@@ -220,7 +220,7 @@ namespace BKPureNature
                 return priorityComparison;
             }
 
-            return a.GetInstanceID().CompareTo(b.GetInstanceID());
+            return a.GetHashCode().CompareTo(b.GetHashCode());
         }
 
         private static void CaptureBaselineFog()
