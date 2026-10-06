@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3a42a7ab652428ab4639675a1aaeb2, type: 3}
+  m_Name: BalanceConfig
+  m_EditorClassIdentifier: Ahoy.Core::Ahoy.Core.BalanceConfig
+  playerHealth: 1000
+  moveSpeed: 7
+  sprintSpeed: 10
+  turnSpeed: 900
+  speedDampSeconds: 0.08
+  gravity: -25
+  groundedStickSpeed: -2
+  dodgeDistance: 5
+  dodgeDuration: 0.35
+  dodgeInvulnerability: 0.3
+  dodgeRecovery: 0.12
+  dodgeAnimationSpeed: 3.1
+  flinchSeconds: 0.35
+  knockbackSeconds: 0.8
+  knockbackDistance: 2.5
+  blowawayDistance: 5
+  animationCrossFade: 0.1
+  inputBufferSeconds: 0.2
+  cameraDistance: 6
+  cameraPivotHeight: 1.6
+  cameraDefaultPitch: 15
+  cameraPitchLimits: {x: -20, y: 60}
+  cameraMouseSensitivity: 0.12
+  cameraStickSpeed: 180
