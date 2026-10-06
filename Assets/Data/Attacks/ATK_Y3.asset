@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2543d88be951402ea8c119fbada28d7, type: 3}
+  m_Name: ATK_Y3
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.AttackDef
+  animatorState: Y3
+  playbackSpeed: 1.4
+  crossFadeSeconds: 0.08
+  damage: 70
+  reaction: 1
+  hitstopFrames: 3
+  weakPointDrain: 4
+  hitboxCenter: {x: 0, y: 1, z: 1.3}
+  hitboxHalfExtents: {x: 1.4, y: 1, z: 1.1}
+  lungeDistance: 0.7
+  lungeSeconds: 0.15
+  nextLight: {fileID: 11400000, guid: 3f66db45708094e5693b9d80fdde380b, type: 2}
+  nextHeavy: {fileID: 11400000, guid: cc7b1d0431b724f20b0b55f8a3833fb7, type: 2}
