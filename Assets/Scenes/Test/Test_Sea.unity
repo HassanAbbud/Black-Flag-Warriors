@@ -383,6 +383,128 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1665288373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5273372722328547071, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+  m_PrefabInstance: {fileID: 3195325750577052174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1665288376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665288373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 3305ea45544c2aa49999d233a655b2e4, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1665288377}
+        m_TargetAssemblyTypeName: PlayerShipController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: efd001b8-ebae-4160-8835-800b2242c1e0
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2966684f-f008-411d-8635-f4cc02b0fdfd
+    m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1665288377}
+        m_TargetAssemblyTypeName: PlayerShipController, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 29db1b31-72fc-49c8-8118-97fb7dfd64c8
+    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1f1b6815-6cd0-496a-8dca-dde3bfc6d043
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b8628880-7e4f-4a65-b987-f54bee2c91ee
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e8d2f8de-3365-4484-878f-8a4677995c73
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ee01d955-1643-454b-ae5c-2abe98c9a52d
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 878725bd-4d12-4464-aa46-8d41183db227
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e13e7586-ebb8-4eea-a861-aad003a0b814
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 234335e1-192e-4544-8483-8666cd2ee895
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0644550f-242a-416e-912f-47957d096511
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1a2b404-488e-4c08-97b7-221cdc221615
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4f407a59-8e1f-404f-a966-e875d0e2e33e
+    m_ActionName: UI/TrackedDeviceOrientation
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1665288377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+  m_PrefabInstance: {fileID: 3195325750577052174}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665288373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6a03310b38f7d498a3eb9c77ca27ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerShipController
 --- !u!1 &2136766721
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +626,70 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_Name
+      value: Input
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_Name
+      value: Ship Actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Id
+      value: d8dca713-faf2-420a-93b7-04c34523af60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 49cf5c30-2d6f-4e5e-88dd-d0754841d316
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/w
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Mouse>/leftButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Input
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Ship Actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: inputAction.m_SingletonActionBindings.Array.data[0].m_Interactions
+      value: Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603028452506817980, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: shipActions.m_SingletonActionBindings.Array.data[0].m_Interactions
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5083093758775003586, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -551,7 +737,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5273372722328547071, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1665288376}
   m_SourcePrefab: {fileID: 100100000, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

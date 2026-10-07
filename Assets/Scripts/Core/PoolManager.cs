@@ -6,6 +6,8 @@ public class PoolManager : BaseManager<PoolManager>
     private PoolManager() { }
     private Dictionary<string,Stack<GameObject>> ObjectPool = new Dictionary<string, Stack<GameObject>>();
 
+
+    #region public pool functions
     public GameObject GetObject(string prefabName, GameObject prefab, Vector3 position, Quaternion rotation)
     {
         if (!ObjectPool.ContainsKey(prefabName))
@@ -23,6 +25,7 @@ public class PoolManager : BaseManager<PoolManager>
         else
         {
             GameObject newObj = GameObject.Instantiate(prefab, position, rotation);
+            newObj.name = prefabName; // Remove "(Clone)" from the name
             return newObj;
         }
     }
@@ -49,4 +52,6 @@ public class PoolManager : BaseManager<PoolManager>
         }
         ObjectPool.Clear();
     }
+
+    #endregion
 }

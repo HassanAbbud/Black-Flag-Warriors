@@ -10,7 +10,6 @@ public class ShipBullet : MonoBehaviour
 
     void RemoveMe()
     {
-        string key = gameObject.name.Replace("(Clone)", "");
-        PoolManager.Instance.ReturnObject(key, gameObject);
+        PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
     }
 }
