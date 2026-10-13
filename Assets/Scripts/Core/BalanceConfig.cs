@@ -87,5 +87,14 @@ namespace Ahoy.Core
         public float cameraStickSpeed = 180f;
         [Tooltip("Degrees per second the camera swings behind him when he raises his guard.")]
         public float cameraRecenterSpeed = 540f;
+
+        [Header("Lock-on")]
+        public float lockOnRange = 15f;           
+        public float lockOnBreakRange = 20f;      
+        public float lockOnMaxAngle = 50f;        
+        public float lockOnDistanceWeight = 1f;  
+        public float lockOnSmoothing = 10f;       
+        public float lockOnPitch = 15f;         
+        public float lockOnTargetHeight = 1f;     
     }
 }
