@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 746247dd7aa75f44b91cf3de972029f8
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 12385, guid: 0000000000000000e000000000000000, type: 0}
+  disableValidation: 0
+  unsupportedSelectorAction: 0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 380836
+  packageName: Instant Destruction - Easy GPU Fracture
+  packageVersion: 1.0.2
+  assetPath: Assets/Rebush/InstantDestruction/Editor/UI/DestructionSettingsWindow.uss
+  uploadId: 958534
