@@ -6,6 +6,11 @@ public class PoolManager : BaseManager<PoolManager>
     private PoolManager() { }
     private Dictionary<string,Stack<GameObject>> ObjectPool = new Dictionary<string, Stack<GameObject>>();
 
+    // The project enters Play Mode without a domain reload, so this static instance outlives
+    // the play session; empty it each time Play starts or it hands out destroyed objects.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetOnPlay() => Instance.ObjectPool.Clear();
+
 
     #region public pool functions
     public GameObject GetObject(string prefabName, GameObject prefab, Vector3 position, Quaternion rotation)
@@ -14,20 +19,19 @@ public class PoolManager : BaseManager<PoolManager>
         {
             ObjectPool[prefabName] = new Stack<GameObject>();
         }
-        if (ObjectPool[prefabName].Count > 0)
+        while (ObjectPool[prefabName].Count > 0)
         {
             GameObject obj = ObjectPool[prefabName].Pop();
+            if (obj == null) continue; // destroyed with its scene; drop it
             obj.transform.position = position;
             obj.transform.rotation = rotation;
             obj.SetActive(true);
             return obj;
         }
-        else
-        {
-            GameObject newObj = GameObject.Instantiate(prefab, position, rotation);
-            newObj.name = prefabName; // Remove "(Clone)" from the name
-            return newObj;
-        }
+
+        GameObject newObj = GameObject.Instantiate(prefab, position, rotation);
+        newObj.name = prefabName; // Remove "(Clone)" from the name
+        return newObj;
     }
 
     public void ReturnObject(string prefabName, GameObject obj)
