@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:ue="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElementsSchema.xsd"
+>
+    <!-- Main Container -->
+    <ui:VisualElement class="window-container">
+        <ui:TwoPaneSplitView orientation="horizontal" fixed-pane-index="1" fixed-pane-initial-dimension="300">
+            <!-- Left Side: 3D Preview Panel and Information -->
+            <ui:VisualElement class="left-panel">
+                <ui:VisualElement name="preview-viewport" class="preview-viewport-panel">
+                    <ui:Label name="preview-placeholder" text="Select a BaseDestruction object to preview" class="preview-placeholder-text" />
+                </ui:VisualElement>
+
+                <!-- Information Panel -->
+                <ui:VisualElement class="info-panel">
+                    <ui:Label text="Information" class="info-title" />
+                    <ui:Label name="info-text" text="Update: Fragment simulation shader performance improved. Adjust 'Explosion Speed' and 'Impact Strength' to experiment." class="info-content" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- Right Side: Settings Panel -->
+            <ui:VisualElement class="settings-panel">
+                <ui:ScrollView class="content-scroll">
+                    <!-- Physics and Simulation Settings Section -->
+                    <ui:VisualElement class="section-container">
+                        <ui:Label text="Physics &amp; Simulation Settings" class="section-title" />
+                        
+                        <ue:PropertyField binding-path="useGravity" label="Use Gravity" class="property-field" />
+                        <ue:PropertyField binding-path="explosionSpeed" label="Explosion Speed" class="property-field" />
+                        <ue:PropertyField binding-path="impactStrength" label="Impact Strength" class="property-field" />
+                    </ui:VisualElement>
+
+                    <!-- Effect Settings Section -->
+                    <ui:VisualElement class="section-container">
+                        <ui:Label text="Effect Settings" class="section-title" />
+                        
+                        <ue:PropertyField binding-path="dustParticlePrefab" label="Particle Prefab" class="property-field" />
+                        <ue:PropertyField binding-path="destructionAudioClip" label="Audio Clip" class="property-field" />
+                        <ue:PropertyField binding-path="destructionAudioVolume" label="Audio Volume" class="property-field" />
+                    </ui:VisualElement>
+
+                    <!-- After Destruction Settings Section -->
+                    <ui:VisualElement class="section-container">
+                        <ui:Label text="After Destruction Settings" class="section-title" />
+                        
+                        <ue:PropertyField binding-path="afterDestructionMode" label="After Mode" class="property-field" />
+                        <ue:PropertyField binding-path="afterDestructionTime" label="After Time (Sec)" class="property-field" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+
+                <!-- Action Buttons Area -->
+                <ui:VisualElement class="footer-container">
+                    <ui:Button name="simulate-button" text="Execute Simulation" class="btn btn-primary" />
+                    <ui:Button name="reset-button" text="Reset State" class="btn btn-secondary" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:TwoPaneSplitView>
+    </ui:VisualElement>
+</ui:UXML>
