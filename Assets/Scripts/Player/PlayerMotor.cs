@@ -1,5 +1,6 @@
 using System;
 using Ahoy.Core;
+using Ahoy.Feel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,7 @@ namespace Ahoy.Player
         [SerializeField] Animator animator;
         [SerializeField] HitstopReceiver hitstop;
         [SerializeField] PlayerCamera playerCamera;
+        [SerializeField] LockOn lockOn;
 
         // previous, next. Raised only when the state actually changes.
         public event Action<MotorState, MotorState> StateChanged;
@@ -33,6 +35,7 @@ namespace Ahoy.Player
         float stateTime;
         float stateSeconds;     // length of timed states: dodge, stagger
         bool attackCancelable;
+        bool attackInvulnerable;   // R24 Smash
         float verticalSpeed;
 
         // Dodge, lunge and knockback are all "slide this way for this long".
@@ -45,7 +48,8 @@ namespace Ahoy.Player
         public bool IsDead => State == MotorState.Dead;
         public bool IsInvulnerable =>
             State == MotorState.Dead ||
-            (State == MotorState.Dodging && stateTime < balance.dodgeInvulnerability); // R51 dodge i-frames
+            (State == MotorState.Dodging && stateTime < balance.dodgeInvulnerability) || // R51 dodge i-frames
+            (State == MotorState.Attacking && attackInvulnerable);                         // R24 Smash
         public bool CanStartAttack =>
             State == MotorState.Locomotion || State == MotorState.Guarding ||
             (State == MotorState.Attacking && attackCancelable);
@@ -53,12 +57,15 @@ namespace Ahoy.Player
         // ── Input (PlayerInput, Send Messages) ─────────────────────────────────────────
         void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
 
-        // Raising the guard also swings the camera behind him, as in Hyrule Warriors.
+        // Raising the guard also swings the camera behind him, as in Hyrule Warriors — unless
+        // he is locked on, when the camera is already on the target and so is the shield.
         void OnGuard(InputValue value)
         {
             guardHeld = value.isPressed;
-            if (guardHeld && State != MotorState.Dead && playerCamera != null) playerCamera.RecenterBehind();
+            if (guardHeld && State != MotorState.Dead && !IsLockedOn && playerCamera != null) playerCamera.RecenterBehind();
         }
+
+        bool IsLockedOn => lockOn != null && lockOn.HasTarget;
 
         void OnDodge(InputValue value)
         {
@@ -67,12 +74,17 @@ namespace Ahoy.Player
         }
 
         // ── Called by PlayerAttack and PlayerHealth ───────────────────────────────────
-        public void BeginAttack(AttackDef attack)
+        // Stick direction in world space, turned by the camera. Zero when the stick is idle.
+        public Vector3 StickDirection => CameraRelative(moveInput);
+
+        // aim: the direction to face for this swing (from AttackAssist); zero keeps facing.
+        public void BeginAttack(AttackDef attack, Vector3 aim)
         {
-            Vector3 aim = CameraRelative(moveInput);
+            aim.y = 0f;
             if (aim.sqrMagnitude > 0f) transform.rotation = Quaternion.LookRotation(aim);
 
             SetState(MotorState.Attacking);
+            attackInvulnerable = attack.invulnerable;
             sprintLatched = false;
             animator.SetFloat(PlayerAnimatorIds.Speed, 0f);
             BeginTravel(transform.forward, attack.lungeDistance, attack.lungeSeconds);
@@ -210,6 +222,7 @@ namespace Ahoy.Player
             travelSeconds = 0f;
             runTime = 0f;
             attackCancelable = false;
+            attackInvulnerable = false;
             if (previous != next) StateChanged?.Invoke(previous, next);
         }
 
@@ -241,8 +254,18 @@ namespace Ahoy.Player
         }
 
         // Guarding: walk under the shield without turning, so the guard keeps facing the threat.
+        // Locked on, the shield turns to the target (R52).
         Vector3 Strafe(float dt)
         {
+            if (IsLockedOn)
+            {
+                Vector3 toTarget = lockOn.Target.position - transform.position;
+                toTarget.y = 0f;
+                if (toTarget.sqrMagnitude > 0f)
+                    transform.rotation = Quaternion.RotateTowards(
+                        transform.rotation, Quaternion.LookRotation(toTarget), balance.turnSpeed * dt);
+            }
+
             Vector3 direction = CameraRelative(moveInput);
             float speed = balance.guardMoveSpeed * direction.magnitude;
             animator.SetFloat(PlayerAnimatorIds.Speed, speed, balance.speedDampSeconds, dt);

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2543d88be951402ea8c119fbada28d7, type: 3}
+  m_Name: ATK_Smash
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.AttackDef
+  animatorState: Smash
+  playbackSpeed: 1.1
+  crossFadeSeconds: 0.06
+  followUpState: 
+  damage: 300
+  reaction: 4
+  hitstopFrames: 14
+  weakPointDrain: 35
+  invulnerable: 1
+  hitboxCenter: {x: 0, y: 1.5, z: 1.8}
+  hitboxHalfExtents: {x: 2.5, y: 1.8, z: 2.2}
+  rehitSeconds: 0
+  push: 0
+  hitVfx: 1
+  shakeTrauma: 0.9
+  lungeDistance: 1.5
+  lungeSeconds: 0.2
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 0}

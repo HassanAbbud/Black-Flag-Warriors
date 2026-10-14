@@ -1,10 +1,28 @@
 using System;
 using Ahoy.Core;
+using Ahoy.Feel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Ahoy.Player
 {
+    // One connection of a swing, for feedback (VFX, shake, audio, KO count).
+    public readonly struct HitReport
+    {
+        public readonly IDamageable Target;
+        public readonly AttackDef Attack;
+        public readonly Vector3 Point;     // where the blade met the target
+        public readonly bool Hitstopped;   // this connection froze the swing
+
+        public HitReport(IDamageable target, AttackDef attack, Vector3 point, bool hitstopped)
+        {
+            Target = target;
+            Attack = attack;
+            Point = point;
+            Hitstopped = hitstopped;
+        }
+    }
+
     // Walks the combo graph of AttackDef assets (R50). Y1 light → Y2 …; a heavy after n-1
     // lights plays C(n). Timing comes only from the three animation events on each clip.
     public sealed class PlayerAttack : MonoBehaviour
@@ -18,18 +36,22 @@ namespace Ahoy.Player
         [SerializeField] PlayerHealth self;
         [SerializeField] Animator animator;
         [SerializeField] HitstopReceiver hitstop;
+        [SerializeField] AttackAssist assist;
 
         [Header("Combo graph roots (R50)")]
         [Tooltip("Light from neutral — ATK_Y1.")]
         [SerializeField] AttackDef lightOpener;
         [Tooltip("Heavy from neutral — ATK_C1, the gap-closer.")]
         [SerializeField] AttackDef heavyOpener;
+        [Tooltip("R24: plays on its own when a hit empties a weak point gauge — ATK_Smash.")]
+        [SerializeField] AttackDef smash;
 
         [Tooltip("Layers a swing can hit. Monsters only; villagers are never on it.")]
         [SerializeField] LayerMask hitMask;
 
         readonly Collider[] overlap = new Collider[MaxCollidersPerQuery];
         readonly IDamageable[] victims = new IDamageable[MaxVictimsPerSwing];
+        readonly float[] victimHitAt = new float[MaxVictimsPerSwing];
         int victimCount;
 
         InputBuffer lightBuffer;
@@ -41,8 +63,8 @@ namespace Ahoy.Player
 
         public AttackDef Current => current;
 
-        // Raised for every connection, after the damage is dealt. For VFX, audio, KO count.
-        public event Action<IDamageable, AttackDef> Hit;
+        // Raised for every connection, after the damage is dealt.
+        public event Action<HitReport> Hit;
 
         void OnEnable() => motor.StateChanged += OnMotorStateChanged;
         void OnDisable() => motor.StateChanged -= OnMotorStateChanged;
@@ -85,7 +107,7 @@ namespace Ahoy.Player
         }
 
         bool FiredByCurrent(AnimationEvent e) =>
-            current != null && e.animatorStateInfo.shortNameHash == current.StateHash;
+            current != null && current.Owns(e.animatorStateInfo.shortNameHash);
 
         // ── Update ────────────────────────────────────────────────────────────────────
         void Update()
@@ -119,14 +141,17 @@ namespace Ahoy.Player
             if (next != null) Begin(next);
         }
 
-        void Begin(AttackDef attack)
+        void Begin(AttackDef attack) =>
+            Play(attack, assist != null ? assist.PickFacing(motor.StickDirection) : motor.StickDirection);
+
+        void Play(AttackDef attack, Vector3 aim)
         {
             current = attack;
             hitboxOpen = false;
             stateEntered = false;
             ClearVictims();
 
-            motor.BeginAttack(attack);
+            motor.BeginAttack(attack, aim);
             animator.SetFloat(PlayerAnimatorIds.AttackSpeed, attack.playbackSpeed);
             animator.CrossFadeInFixedTime(attack.StateHash, attack.crossFadeSeconds, 0, 0f);
         }
@@ -137,37 +162,77 @@ namespace Ahoy.Player
             int count = Physics.OverlapBoxNonAlloc(center, current.hitboxHalfExtents, overlap,
                                                    transform.rotation, hitMask, QueryTriggerInteraction.Collide);
 
-            for (int i = 0; i < count && victimCount < MaxVictimsPerSwing; i++)
+            float now = Time.time;
+            bool frozeThisSweep = false;
+            Transform smashTarget = null;
+            for (int i = 0; i < count && smashTarget == null; i++)
             {
                 if (!TryGetDamageable(overlap[i], out IDamageable target)) continue;
                 if (target == (IDamageable)self || !target.IsAlive || target.Faction == Faction.Village) continue;
-                if (AlreadyHit(target)) continue;
 
-                // Hitstop on the first target of a swing only, so a sweep through thirty
-                // scuttlers does not stutter.
-                bool first = victimCount == 0;
-                victims[victimCount++] = target;
+                int slot = IndexOf(target);
+                if (slot < 0)
+                {
+                    if (victimCount == MaxVictimsPerSwing) continue;
+                    slot = victimCount++;
+                    victims[slot] = target;
+                }
+                else if (current.rehitSeconds <= 0f || now - victimHitAt[slot] < current.rehitSeconds)
+                {
+                    continue;
+                }
 
-                var info = new DamageInfo(current.damage, transform.position, current.reaction,
-                                          first ? current.hitstopFrames : 0, current.weakPointDrain, null);
+                // Hitstop on the first connection of the swing (and of each multi-hit tick)
+                // only, so a sweep through thirty scuttlers does not stutter.
+                bool freeze = !frozeThisSweep && (slot == 0 || victimHitAt[slot] > 0f);
+                frozeThisSweep |= freeze;
+                victimHitAt[slot] = now;
+
+                Vector3 point = overlap[i].bounds.ClosestPoint(center);
+                Vector3 origin = current.push == PushDirection.AlongFacing
+                    ? point - transform.forward
+                    : transform.position;
+
+                var info = new DamageInfo(current.damage, origin, current.reaction,
+                                          freeze ? current.hitstopFrames : 0, current.weakPointDrain, null);
                 target.TakeDamage(in info);
-                Hit?.Invoke(target, current);
+                Hit?.Invoke(new HitReport(target, current, point, freeze));
 
-                if (first) hitstop.Freeze(current.hitstopFrames);
+                if (freeze) hitstop.Freeze(current.hitstopFrames);
+                smashTarget = SmashTargetOf(target);
             }
+
+            if (smashTarget != null) BeginSmash(smashTarget);
+        }
+
+        // R24: the hit that empties a gauge turns straight into the Smash, as in Hyrule Warriors.
+        Transform SmashTargetOf(IDamageable target)
+        {
+            if (smash == null || current == smash) return null;
+            if (target is not IUnit unit || unit.WeakPoint == null) return null;
+            if (unit.WeakPoint.State != WeakPointState.Smashing) return null;
+            return unit is Component component ? component.transform : null;
+        }
+
+        void BeginSmash(Transform target)
+        {
+            lightBuffer.Clear();
+            heavyBuffer.Clear();
+            Play(smash, target.position - transform.position);
         }
 
         // Safety net for a clip that is missing AE_AttackEnd: end when the state finishes
-        // or when something else has replaced it.
+        // (its follow-up, if it has one) or when something else has replaced it.
         void EndIfClipFinished()
         {
             if (animator.IsInTransition(0)) return;
 
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            if (state.shortNameHash == current.StateHash)
+            if (current.Owns(state.shortNameHash))
             {
                 stateEntered = true;
-                if (state.normalizedTime >= 1f) motor.EndAttack();
+                bool last = !current.HasFollowUp || state.shortNameHash == current.FollowUpHash;
+                if (last && state.normalizedTime >= 1f) motor.EndAttack();
             }
             else if (stateEntered)
             {
@@ -183,16 +248,17 @@ namespace Ahoy.Player
             ClearVictims();
         }
 
-        bool AlreadyHit(IDamageable target)
+        int IndexOf(IDamageable target)
         {
             for (int i = 0; i < victimCount; i++)
-                if (victims[i] == target) return true;
-            return false;
+                if (victims[i] == target) return i;
+            return -1;
         }
 
         void ClearVictims()
         {
             Array.Clear(victims, 0, victimCount);
+            Array.Clear(victimHitAt, 0, victimCount);
             victimCount = 0;
         }
 

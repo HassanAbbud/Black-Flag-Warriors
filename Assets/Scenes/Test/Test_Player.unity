@@ -282,6 +282,67 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5509979248307810780, guid: 4edf450af715642c79436e01d4e4778f, type: 3}
   m_PrefabInstance: {fileID: 298839955}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &326001834
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2061143059409536638, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 298839956}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.00000004371139
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531798934962915522, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534702431225533322, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
+      propertyPath: m_Name
+      value: 'Training Boss (lock on: Q / R3, F4 expose)'
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 894d24dd28e10446d94a80bff01fd057, type: 3}
 --- !u!1 &493152000
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,13 +426,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584cef62f2c34fdb8ced65a6e07e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Testing::Ahoy.Testing.TrainingDummy
-  maxHealth: 600
-  flashSeconds: 0.1
-  flinchSlide: 0.2
-  knockbackSlide: 1.5
-  returnSpeed: 2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
   body: {fileID: 719425303}
+  maxHealth: 600
+  respawnSeconds: 1.5
+  flinchSpeed: 1.5
+  knockbackSpeed: 7
+  launchUpSpeed: 8
+  juggleUpSpeed: 4
+  blowawaySpeed: 14
+  blowawayUpSpeed: 5
+  groundFriction: 18
+  gravity: -25
+  returnHomeSpeed: 2
+  flashSeconds: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  koColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!23 &719425303
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -499,13 +568,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584cef62f2c34fdb8ced65a6e07e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Testing::Ahoy.Testing.TrainingDummy
-  maxHealth: 600
-  flashSeconds: 0.1
-  flinchSlide: 0.2
-  knockbackSlide: 1.5
-  returnSpeed: 2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
   body: {fileID: 1085275461}
+  maxHealth: 600
+  respawnSeconds: 1.5
+  flinchSpeed: 1.5
+  knockbackSpeed: 7
+  launchUpSpeed: 8
+  juggleUpSpeed: 4
+  blowawaySpeed: 14
+  blowawayUpSpeed: 5
+  groundFriction: 18
+  gravity: -25
+  returnHomeSpeed: 2
+  flashSeconds: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  koColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!23 &1085275461
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -633,13 +710,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584cef62f2c34fdb8ced65a6e07e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Testing::Ahoy.Testing.TrainingDummy
-  maxHealth: 600
-  flashSeconds: 0.1
-  flinchSlide: 0.2
-  knockbackSlide: 1.5
-  returnSpeed: 2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
   body: {fileID: 1144802991}
+  maxHealth: 600
+  respawnSeconds: 1.5
+  flinchSpeed: 1.5
+  knockbackSpeed: 7
+  launchUpSpeed: 8
+  juggleUpSpeed: 4
+  blowawaySpeed: 14
+  blowawayUpSpeed: 5
+  groundFriction: 18
+  gravity: -25
+  returnHomeSpeed: 2
+  flashSeconds: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  koColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!23 &1144802991
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -767,13 +852,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584cef62f2c34fdb8ced65a6e07e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Testing::Ahoy.Testing.TrainingDummy
-  maxHealth: 600
-  flashSeconds: 0.1
-  flinchSlide: 0.2
-  knockbackSlide: 1.5
-  returnSpeed: 2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
   body: {fileID: 1559685061}
+  maxHealth: 600
+  respawnSeconds: 1.5
+  flinchSpeed: 1.5
+  knockbackSpeed: 7
+  launchUpSpeed: 8
+  juggleUpSpeed: 4
+  blowawaySpeed: 14
+  blowawayUpSpeed: 5
+  groundFriction: 18
+  gravity: -25
+  returnHomeSpeed: 2
+  flashSeconds: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  koColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!23 &1559685061
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -901,13 +994,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584cef62f2c34fdb8ced65a6e07e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Testing::Ahoy.Testing.TrainingDummy
-  maxHealth: 600
-  flashSeconds: 0.1
-  flinchSlide: 0.2
-  knockbackSlide: 1.5
-  returnSpeed: 2
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
   body: {fileID: 1712347070}
+  maxHealth: 600
+  respawnSeconds: 1.5
+  flinchSpeed: 1.5
+  knockbackSpeed: 7
+  launchUpSpeed: 8
+  juggleUpSpeed: 4
+  blowawaySpeed: 14
+  blowawayUpSpeed: 5
+  groundFriction: 18
+  gravity: -25
+  returnHomeSpeed: 2
+  flashSeconds: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  koColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!23 &1712347070
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1253,3 +1354,4 @@ SceneRoots:
   - {fileID: 298839955}
   - {fileID: 493152001}
   - {fileID: 1842258844}
+  - {fileID: 326001834}
