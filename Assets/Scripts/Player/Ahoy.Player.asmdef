@@ -3,6 +3,7 @@
     "rootNamespace": "Ahoy.Player",
     "references": [
         "Ahoy.Core",
+        "Ahoy.Feel",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],
