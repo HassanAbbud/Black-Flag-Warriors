@@ -21,6 +21,10 @@ MonoBehaviour:
   weakPointDrain: 4
   hitboxCenter: {x: 0, y: 1, z: 1.2}
   hitboxHalfExtents: {x: 1.2, y: 1, z: 1}
+  rehitSeconds: 0
+  push: 0
+  hitVfx: 0
+  shakeTrauma: 0.08
   lungeDistance: 0.6
   lungeSeconds: 0.12
   nextLight: {fileID: 11400000, guid: 96d910522475f49c2be6d303173b5956, type: 2}

@@ -1,38 +1,37 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerShipController : ShipController
 {
+    private Vector2 moveInput;
+    private Vector3 moveInputZ;
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(moveInputZ.z >= 0)
+            transform.Translate(shipForwardSpeed * Time.deltaTime * moveInputZ);
+        else
+            transform.Translate(shipReverseSpeed * Time.deltaTime * moveInputZ);
+        
+        transform.Rotate(Vector3.up, shipRotationSpeed * Time.deltaTime * moveInput.x);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
         {
-            Attack();
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            Move();
-        }
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            Rotate();
+            PoolManager.Instance.GetObject(shipBullet.name, shipBullet, transform.position + transform.forward, transform.rotation);
         }
     }
 
-    #region Ship Functions
-    protected override void Attack()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        //refactor when pool is implemented
-        //Instantiate(shipBullet, transform.position + transform.forward, transform.rotation);
-        PoolManager.Instance.GetObject(shipBullet.name, shipBullet, transform.position + transform.forward, transform.rotation);
+        moveInput = context.ReadValue<Vector2>();
+        moveInputZ = new Vector3(0, 0, moveInput.y);
     }
 
-    protected override void Rotate()
-    {
-        transform.rotation *= Quaternion.AngleAxis(Input.GetAxis("Horizontal") * shipRotationSpeed * Time.deltaTime, Vector3.up);
-    }
-    #endregion
 }
