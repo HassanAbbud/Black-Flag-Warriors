@@ -77,8 +77,10 @@ namespace Ahoy.Ships
                     continue;
 
                 b.age += dt;
+                // Exact projectile step (v·t − ½g·t²), so the ball flies the arc TrySolveArc aimed,
+                // at any frame rate.
+                Vector3 step = b.velocity * dt + Vector3.down * (0.5f * def.gravity * dt * dt);
                 b.velocity.y -= def.gravity * dt;
-                Vector3 step = b.velocity * dt;
                 float distance = step.magnitude;
 
                 if ((distance > 0f && HitSomething(ref b, step / distance, distance))
