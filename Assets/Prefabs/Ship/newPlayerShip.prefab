@@ -24,12 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8546271018012419477}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 3.5, z: 4}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.6600001, z: 1.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8991287088083461316}
+  m_Father: {fileID: 1528107277089413932}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1350609321312386247
 PrefabInstance:
@@ -97,14 +97,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf6aacf886c19804b9204b914434d7b5, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 5609989919363777821}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cf6aacf886c19804b9204b914434d7b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6773979942546672207}
   m_SourcePrefab: {fileID: 100100000, guid: cf6aacf886c19804b9204b914434d7b5, type: 3}
 --- !u!4 &1528107277089413932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf6aacf886c19804b9204b914434d7b5, type: 3}
   m_PrefabInstance: {fileID: 1350609321312386247}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2197543126055960982 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf6aacf886c19804b9204b914434d7b5, type: 3}
+  m_PrefabInstance: {fileID: 1350609321312386247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6773979942546672207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197543126055960982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32a2bcec13ee0c4cb8bbabfeffffdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipCannonController
+  yawLimit: 90
+  maxPitchUp: 30
+  maxPitchDown: 0
+  sensitivityX: 0.1
+  sensitivityY: 0.1
+  invertY: 0
+  lockCursor: 1
 --- !u!1001 &8884984734128014127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,7 +145,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.82493
+      value: 93.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.y
@@ -123,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.81769
+      value: 40.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalRotation.w
@@ -195,11 +225,175 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1528107277089413932}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 5609989919363777821}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 168282524347389976}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 697649540055346460}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6354379814097729731}
   m_SourcePrefab: {fileID: 100100000, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+--- !u!1 &8614444198222184062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+  m_PrefabInstance: {fileID: 8884984734128014127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &168282524347389976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614444198222184062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 3305ea45544c2aa49999d233a655b2e4, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 697649540055346460}
+        m_TargetAssemblyTypeName: Ahoy.Ships.PlayerShipController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: efd001b8-ebae-4160-8835-800b2242c1e0
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2966684f-f008-411d-8635-f4cc02b0fdfd
+    m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 697649540055346460}
+        m_TargetAssemblyTypeName: Ahoy.Ships.PlayerShipController, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 29db1b31-72fc-49c8-8118-97fb7dfd64c8
+    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f084b026-cd15-460d-91dd-17c275353613
+    m_ActionName: 'Player/Zoom[/Mouse/scroll/y]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1f1b6815-6cd0-496a-8dca-dde3bfc6d043
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b8628880-7e4f-4a65-b987-f54bee2c91ee
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e8d2f8de-3365-4484-878f-8a4677995c73
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ee01d955-1643-454b-ae5c-2abe98c9a52d
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 878725bd-4d12-4464-aa46-8d41183db227
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e13e7586-ebb8-4eea-a861-aad003a0b814
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 234335e1-192e-4544-8483-8666cd2ee895
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0644550f-242a-416e-912f-47957d096511
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1a2b404-488e-4c08-97b7-221cdc221615
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4f407a59-8e1f-404f-a966-e875d0e2e33e
+    m_ActionName: UI/TrackedDeviceOrientation
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &697649540055346460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614444198222184062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6a03310b38f7d498a3eb9c77ca27ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipController
+  shipForwardSpeed: 10
+  shipReverseSpeed: 5
+  shipRotationSpeed: 100
+  shipHealth: 1000
+  shipAttack: 100
+  shipDefense: 100
+  shipBullet: {fileID: 1171815924502273452, guid: 4f92807484b403b459c8c5b6395bec57, type: 3}
+  muzzlePoint: {fileID: 5609989919363777821}
+--- !u!136 &6354379814097729731
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614444198222184062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.5
+  m_Height: 13.099998
+  m_Direction: 2
+  m_Center: {x: 0, y: 3, z: -1}
 --- !u!4 &8991287088083461316 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}

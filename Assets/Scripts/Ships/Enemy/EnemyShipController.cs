@@ -1,3 +1,4 @@
+using Ahoy.Core;
 using System;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Ahoy.Ships
     // Wander: sail to a random point near its spawn. Idle: drift there a moment.
     // Engage: circle the player ship at engageDistance so its broadsides bear.
     [DisallowMultipleComponent]
-    public sealed class EnemyShipController : MonoBehaviour
+    public sealed class EnemyShipController : ShipController, IShipDamageable
     {
         // State: one enum, one switch, every transition through SetState.
         public enum ShipState { Wander, Idle, Engage }
@@ -26,6 +27,9 @@ namespace Ahoy.Ships
         public EnemyShipDef Def => def;
         public ShipState State => state;
         public Transform PlayerShip => playerShip;
+
+        private bool isAlive = true;
+        public bool IsAlive => isAlive;
 
         private ShipState state;
         private Vector3 home;
@@ -207,6 +211,21 @@ namespace Ahoy.Ships
             Gizmos.DrawWireSphere(transform.position, def.detectRange);
             if (Application.isPlaying && state == ShipState.Wander)
                 Gizmos.DrawLine(transform.position, wanderPoint);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (isAlive)
+            {
+                shipHealth -= (damage - shipDefense);
+                Debug.Log("Enemy ship took damage: " + damage + ", remaining health: " + shipHealth);
+                if (shipHealth <= 0)
+                {
+                    isAlive = false;
+                    // Handle ship destruction logic here
+                    Debug.Log("Enemy ship destroyed!");
+                }
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 711925206666896849}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Muzzle_R1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3115917062335376413}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Muzzle_L1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,15 +72,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 67.7
+      value: 168.94505
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: 0.000005254831
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.3
+      value: 14.827648
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalRotation.w
@@ -110,9 +110,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3306813550804760141, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_Name
       value: EnemyShipMedium
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_TagString
+      value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 2109809077407142007, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774946651843820201, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713684817533930046, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971160502033868061, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

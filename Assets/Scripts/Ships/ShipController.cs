@@ -7,7 +7,7 @@ namespace Ahoy.Ships
         [SerializeField] protected float shipForwardSpeed = 10f;
         [SerializeField] protected float shipReverseSpeed = 5f;
         [SerializeField] protected float shipRotationSpeed = 100f;
-        [SerializeField] protected int shipHealth = 100;
+        [SerializeField] protected int shipHealth = 1000;
         [SerializeField] protected int shipAttack = 100;
         [SerializeField] protected int shipDefense = 100;
         [SerializeField] protected GameObject shipBullet;

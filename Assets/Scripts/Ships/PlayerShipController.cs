@@ -1,5 +1,6 @@
 using Ahoy.Core;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,10 +8,15 @@ using UnityEngine.Serialization;
 
 namespace Ahoy.Ships
 {
-    public class PlayerShipController : ShipController
+    public class PlayerShipController : ShipController, IShipDamageable
     {
+        [SerializeField] private Transform muzzlePoint;
         private Vector2 moveInput;
         private Vector3 moveInputZ;
+
+        [SerializeField] private int playerAttackInherited = 100;
+        private bool isAlive = true;
+        public bool IsAlive => isAlive;
 
         // Update is called once per frame
         void Update()
@@ -27,7 +33,8 @@ namespace Ahoy.Ships
         {
             if (context.performed)
             {
-                PoolManager.Instance.GetObject(shipBullet.name, shipBullet, transform.position + transform.forward, transform.rotation);
+                GameObject go = PoolManager.Instance.GetObject(shipBullet.name, shipBullet, muzzlePoint.position, muzzlePoint.rotation);
+                go.GetComponent<ShipBullet>().SetDamage(shipAttack + playerAttackInherited);
             }
         }
 
@@ -37,6 +44,26 @@ namespace Ahoy.Ships
             moveInputZ = new Vector3(0, 0, moveInput.y);
         }
 
+
+        public void SetPlayerAttackInherited(int attack)
+        {
+            playerAttackInherited = attack;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (isAlive)
+            {
+                shipHealth -= (damage - shipDefense);
+                Debug.Log("Player ship took damage: " + damage + ", remaining health: " + shipHealth);
+                if (shipHealth <= 0)
+                {
+                    isAlive = false;
+                    // Handle ship destruction logic here
+                    Debug.Log("Player ship destroyed!");
+                }
+            }
+        }
     }
 }
 
