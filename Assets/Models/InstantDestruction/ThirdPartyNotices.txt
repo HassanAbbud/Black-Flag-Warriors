@@ -1,0 +1,13 @@
+This package contains third-party software/assets. 
+The components listed below are used under their respective licenses.
+
+- crypt-b.fbx, lightpost-double.fbx, pumpkin-carved.fbx
+  - Creator: KENNEY
+  - Source: https://kenney.nl/
+  - License: CC0
+
+- impactMetal_medium_001.wav, impactPunch_heavy_003.wav, impactWood_light_001.wav,impactMining_004.wav, footstep_snow_000wav, footstep_carpet_001.wav,impactBell_heavy_001.wav
+  - Creator: KENNEY
+  - Source: https://kenney.nl/
+  - License: CC0
+

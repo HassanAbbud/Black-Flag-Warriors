@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 56858c1cf260b0f489019c4d2a4e2c3a
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 380836
+  packageName: Instant Destruction - Easy GPU Fracture
+  packageVersion: 1.0.2
+  assetPath: Assets/Rebush/InstantDestruction/Runtime/Shader/Include/InstantDestructionFragmentStructure.hlsl
+  uploadId: 958534

@@ -680,6 +680,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2737165280920188935}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5305517504019158835}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4677567397661034889}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2307550358271709103}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4508315130332480099}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 462912980871405234}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8281075571684876799}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7077471368413465613}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8316293858127091791}
   m_SourcePrefab: {fileID: 100100000, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
 --- !u!95 &1287075765755883804 stripped
 Animator:
@@ -757,7 +781,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f648835d68c748d486a1bfce418d480, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.HitstopReceiver
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.HitstopReceiver
   animator: {fileID: 1287075765755883804}
 --- !u!114 &3268586980667851866
 MonoBehaviour:
@@ -773,6 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.PlayerCamera
   balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
   playerInput: {fileID: 3691289164508467937}
+  lockOn: {fileID: 8316293858127091791}
   cameraTransform: {fileID: 0}
   lockCursor: 1
 --- !u!114 &2318690225926341191
@@ -792,6 +817,7 @@ MonoBehaviour:
   animator: {fileID: 1287075765755883804}
   hitstop: {fileID: 5677997043511607594}
   playerCamera: {fileID: 3268586980667851866}
+  lockOn: {fileID: 8316293858127091791}
 --- !u!114 &8306070750648030001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -824,8 +850,10 @@ MonoBehaviour:
   self: {fileID: 8306070750648030001}
   animator: {fileID: 1287075765755883804}
   hitstop: {fileID: 5677997043511607594}
+  assist: {fileID: 2307550358271709103}
   lightOpener: {fileID: 11400000, guid: f93f32a3666cf432399ae147e2e07e55, type: 2}
   heavyOpener: {fileID: 11400000, guid: 3afa0b8dddb5a455c93a8459f0422649, type: 2}
+  smash: {fileID: 11400000, guid: 171c3baf2768b4a09a8b4baeed7b0a09, type: 2}
   hitMask:
     serializedVersion: 2
     m_Bits: 128
@@ -844,4 +872,133 @@ MonoBehaviour:
   motor: {fileID: 2318690225926341191}
   attack: {fileID: 6260058805499335281}
   health: {fileID: 8306070750648030001}
+  lockOn: {fileID: 8316293858127091791}
   show: 1
+--- !u!114 &5305517504019158835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad848d5776244cb294de24edc7fda95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.CameraShake
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+--- !u!114 &4677567397661034889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c67131c1e40b74e8e815e94b5b965414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.HitFlash
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  flashMaterial: {fileID: 2100000, guid: 1e7300ad6ff384869b7523efe02e5204, type: 2}
+--- !u!114 &2307550358271709103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b119bca37031d4c6fb7f53b444ced7fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.AttackAssist
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  lockOn: {fileID: 8316293858127091791}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &4508315130332480099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 2610691838451290004, guid: 679f789d6d42d45f195232c9cec03c23, type: 3}
+--- !u!114 &462912980871405234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 7472437721655194890, guid: b227c9b8fce70402b9bc68c183943fdc, type: 3}
+--- !u!114 &8281075571684876799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 7012198876249976398, guid: 2f7d8ae46e1644c76ad1104dbd44b4de, type: 3}
+--- !u!114 &7077471368413465613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d5036e277894cf2a41e94c3bc3410b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.CombatFeedback
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  attack: {fileID: 6260058805499335281}
+  health: {fileID: 8306070750648030001}
+  shake: {fileID: 5305517504019158835}
+  flash: {fileID: 4677567397661034889}
+  lightHit: {fileID: 4508315130332480099}
+  heavyHit: {fileID: 462912980871405234}
+  block: {fileID: 8281075571684876799}
+  shieldOffset: {x: 0, y: 1.2, z: 0.5}
+--- !u!114 &8316293858127091791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 619f40eb487024e5db07b475a819cfe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.LockOn
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  playerCamera: {fileID: 3268586980667851866}
+  playerInput: {fileID: 3691289164508467937}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0

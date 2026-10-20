@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c08820f49d4150908a69ed4c1aa532, type: 3}
+  m_Name: MON_EnemyShip
+  m_EditorClassIdentifier:
+  wanderRadius: 25
+  wanderSpeed: 4
+  arriveDistance: 4
+  idleSeconds: {x: 1, y: 4}
+  wanderTimeout: 20
+  turnSpeed: 35
+  turnSlowdown: 0.5
+  acceleration: 2
+  detectRange: 75
+  viewAngle: 360
+  loseRange: 100
+  loseSightSeconds: 3
+  scanInterval: 0.2
+  lookoutHeight: 6
+  sightBlockers:
+    serializedVersion: 2
+    m_Bits: 0
+  engageSpeed: 6
+  engageDistance: 50
+  avoidDistance: 15
+  avoidStrength: 2
+  shipLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  fireCooldown: 3
+  cannonStagger: 0.15
+  broadsideArc: 45
+  muzzleSpeed: 35
+  aimSpread: 2
+  cannonDamage: 50
+  hitReaction: 2

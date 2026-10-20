@@ -72,6 +72,54 @@ namespace Ahoy.Core
         [Tooltip("Seconds a button press stays queued waiting for the combo to accept it.")]
         public float inputBufferSeconds = 0.2f;
 
+        [Header("Zahim — attack assist")]
+        [Tooltip("Metres within which an attack turns him toward a monster.")]
+        public float attackAssistRange = 5f;
+        [Tooltip("With the stick held, only monsters within this many degrees of it pull the swing.")]
+        public float attackAssistAngle = 60f;
+
+        [Header("Combat feel — shared (Ahoy.Feel)")]
+        [Tooltip("Seconds anything flashes when hit.")]
+        public float hitFlashSeconds = 0.08f;
+        [Tooltip("Camera offset at full trauma, metres.")]
+        public float shakeMaxOffset = 0.3f;
+        [Tooltip("Camera roll/pitch/yaw at full trauma, degrees.")]
+        public float shakeMaxAngle = 3f;
+        [Tooltip("Noise speed of the shake, cycles per second.")]
+        public float shakeFrequency = 22f;
+        [Tooltip("Trauma lost per second (trauma runs 0..1; shake grows with its square).")]
+        public float shakeDecayPerSecond = 2.5f;
+        [Tooltip("Pooled instances per hit-VFX type, allocated at load.")]
+        public int hitVfxPoolSize = 24;
+
+        [Header("Zahim — combat feel")]
+        [Tooltip("Trauma added when Zahim takes a hit.")]
+        public float playerHitTrauma = 0.45f;
+        [Tooltip("Trauma added when his guard blocks a hit.")]
+        public float blockTrauma = 0.2f;
+
+        [Header("Zahim — lock-on targeting (R52)")]
+        [Tooltip("Right-stick deflection (0..1) that counts as a flick to the next target.")]
+        public float lockOnFlickThreshold = 0.8f;
+        [Tooltip("Mouse movement in one frame, pixels, that counts as a flick to the next target.")]
+        public float lockOnMouseFlickPixels = 30f;
+        [Tooltip("Seconds between two target switches, so one flick moves one target.")]
+        public float lockOnSwitchCooldown = 0.25f;
+
+        [Header("Weak point (R22–R25) — WP & UI owns the gauge; these are the spec values")]
+        [Tooltip("Gauge points for captains and portal guardians.")]
+        public float wpGaugeCaptain = 100f;
+        [Tooltip("Gauge points for giants.")]
+        public float wpGaugeGiant = 300f;
+        [Tooltip("Seconds the gauge stays up once exposed (normal difficulty; easy 12, hard 5).")]
+        public float wpWindowSeconds = 8f;
+        [Tooltip("Seconds a partly drained gauge keeps its progress after the window closes.")]
+        public float wpMemorySeconds = 20f;
+        [Tooltip("Share of a giant's maximum health one Weak Point Smash removes. Captains die outright.")]
+        public float smashGiantHealthFraction = 0.25f;
+        [Tooltip("Share of ordinary damage a giant takes while its gauge is not exposed (R35).")]
+        public float giantDamageOutsideStun = 0.25f;
+
         [Header("Zahim — follow camera")]
         [Tooltip("Metres behind the pivot.")]
         public float cameraDistance = 6f;
@@ -111,5 +159,14 @@ namespace Ahoy.Core
         public float enemyGravity = -25f;
         [Tooltip("Small downward speed kept while grounded so named enemies hug slopes.")]
         public float enemyGroundedStickSpeed = -2f;
+        
+        [Header("Lock-on")]
+        public float lockOnRange = 15f;           
+        public float lockOnBreakRange = 20f;      
+        public float lockOnMaxAngle = 50f;        
+        public float lockOnDistanceWeight = 1f;  
+        public float lockOnSmoothing = 10f;       
+        public float lockOnPitch = 15f;         
+        public float lockOnTargetHeight = 1f;     
     }
 }
