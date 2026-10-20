@@ -93,6 +93,28 @@ namespace Ahoy.Ships
             }
         }
 
+        //private bool HitSomething(ref Ball b, Vector3 direction, float distance)
+        //{
+        //    int count = Physics.SphereCastNonAlloc(b.position, def.radius, direction, hits, distance,
+        //                                           def.hitLayers, QueryTriggerInteraction.Ignore);
+        //    int nearest = -1;
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        if (b.shooter != null && hits[i].collider.transform.IsChildOf(b.shooter))
+        //            continue;   // never hit the ship that fired it
+        //        if (nearest < 0 || hits[i].distance < hits[nearest].distance)
+        //            nearest = i;
+        //    }
+        //    if (nearest < 0)
+        //        return false;
+
+        //    // Damage only ever goes through IDamageable, and enemies don't hurt each other.
+        //    IDamageable target = hits[nearest].collider.GetComponentInParent<IDamageable>();
+        //    if (target != null && target.IsAlive && target.Faction != Faction.Monsters)
+        //        target.TakeDamage(new DamageInfo(b.damage, b.position, b.reaction, 0, 0f, null));
+        //    return true;
+        //}
+
         private bool HitSomething(ref Ball b, Vector3 direction, float distance)
         {
             int count = Physics.SphereCastNonAlloc(b.position, def.radius, direction, hits, distance,
@@ -101,17 +123,29 @@ namespace Ahoy.Ships
             for (int i = 0; i < count; i++)
             {
                 if (b.shooter != null && hits[i].collider.transform.IsChildOf(b.shooter))
-                    continue;   // never hit the ship that fired it
+                    continue;
                 if (nearest < 0 || hits[i].distance < hits[nearest].distance)
                     nearest = i;
             }
             if (nearest < 0)
                 return false;
 
-            // Damage only ever goes through IDamageable, and enemies don't hurt each other.
-            IDamageable target = hits[nearest].collider.GetComponentInParent<IDamageable>();
+            Collider col = hits[nearest].collider;
+
+            // 1. ship logic, only pass int damage to IShipDamageable
+            IShipDamageable ship = col.GetComponentInParent<IShipDamageable>();
+            if (ship != null)
+            {
+                if (ship.IsAlive)
+                    ship.TakeDamage(Mathf.RoundToInt(b.damage));   
+                return true;
+            }
+
+            // 2. original logic for Idamageable object such as monsters
+            IDamageable target = col.GetComponentInParent<IDamageable>();
             if (target != null && target.IsAlive && target.Faction != Faction.Monsters)
                 target.TakeDamage(new DamageInfo(b.damage, b.position, b.reaction, 0, 0f, null));
+
             return true;
         }
 

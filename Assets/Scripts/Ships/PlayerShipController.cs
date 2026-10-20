@@ -18,6 +18,8 @@ namespace Ahoy.Ships
         private bool isAlive = true;
         public bool IsAlive => isAlive;
 
+        public Faction Faction => Faction.Village;
+
         // Update is called once per frame
         void Update()
         {
@@ -54,7 +56,7 @@ namespace Ahoy.Ships
         {
             if (isAlive)
             {
-                shipHealth -= (damage - shipDefense);
+                shipHealth -= (damage - shipDefense) > 0 ? (damage - shipDefense) : 1;
                 Debug.Log("Player ship took damage: " + damage + ", remaining health: " + shipHealth);
                 if (shipHealth <= 0)
                 {
@@ -64,6 +66,7 @@ namespace Ahoy.Ships
                 }
             }
         }
+
     }
 }
 
