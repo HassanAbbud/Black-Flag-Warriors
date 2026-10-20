@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f081833279c7a54791c1d94adfb9ad5, type: 3}
+  m_Name: MON_Golem
+  m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.BossDef
+  tier: 3
+  strength: 1
+  maxHealth: 3000
+  moveSpeed: 3
+  turnSpeed: 360
+  stopDistance: 2.5
+  aggroRange: 60
+  bodyRadius: 0.5
+  attacks: []
+  minReaction: 1
+  flinchSeconds: 0.3
+  knockbackSeconds: 0.6
+  knockbackDistance: 2
+  blowawayDistance: 4
+  corpseSeconds: 1.5
+  animationCrossFade: 0.1
+  speedDampSeconds: 0.08
+  patterns:
+  - {fileID: 11400000, guid: 6064d6901649a9840b0b4174dbbad717, type: 2}
+  restSeconds: 0.8

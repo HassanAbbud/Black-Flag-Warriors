@@ -87,5 +87,29 @@ namespace Ahoy.Core
         public float cameraStickSpeed = 180f;
         [Tooltip("Degrees per second the camera swings behind him when he raises his guard.")]
         public float cameraRecenterSpeed = 540f;
+
+        [Header("Enemies — crowd budget (R69–R73)")]
+        [Tooltip("Most crowd monsters alive at once. Pools are sized from it and spawns beyond it are refused.")]
+        public int crowdCapacity = 300;
+
+        [Header("Enemies — crowd ground following")]
+        [Tooltip("Layers the ground probe hits: terrain and level geometry. Leave Zahim's layer out.")]
+        public LayerMask groundMask = 1;
+        [Tooltip("Metres above a monster the probe starts, so it survives a spawn inside a slope.")]
+        public float crowdGroundProbeUp = 2f;
+        [Tooltip("Metres below a monster the probe reaches.")]
+        public float crowdGroundProbeDown = 4f;
+        [Tooltip("Frames between one monster's probes. Monsters are offset so they do not all probe on one frame.")]
+        public int crowdGroundProbeInterval = 6;
+        [Tooltip("Metres per second a monster rises or sinks to the probed ground; hides the probe stepping.")]
+        public float crowdGroundFollowSpeed = 20f;
+
+        [Header("Enemies — shared combat")]
+        [Tooltip("Metres added around an enemy hitbox so a hit counts when Zahim's body overlaps it, not just his feet.")]
+        public float enemyHitPadding = 0.4f;
+        [Tooltip("Downward acceleration for named enemies, metres per second squared (negative).")]
+        public float enemyGravity = -25f;
+        [Tooltip("Small downward speed kept while grounded so named enemies hug slopes.")]
+        public float enemyGroundedStickSpeed = -2f;
     }
 }
