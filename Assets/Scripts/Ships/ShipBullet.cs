@@ -1,15 +1,20 @@
+using Ahoy.Core;
 using UnityEngine;
 
-public class ShipBullet : MonoBehaviour
+namespace Ahoy.Ships
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnEnable()
+    public class ShipBullet : MonoBehaviour
     {
-        Invoke("RemoveMe", 1f);
-    }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void OnEnable()
+        {
+            Invoke("RemoveMe", 1f);
+        }
 
-    void RemoveMe()
-    {
-        PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
+        void RemoveMe()
+        {
+            PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
+        }
     }
 }
+

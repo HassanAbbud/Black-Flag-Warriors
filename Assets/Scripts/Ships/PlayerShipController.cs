@@ -1,37 +1,42 @@
+using Ahoy.Core;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class PlayerShipController : ShipController
+namespace Ahoy.Ships
 {
-    private Vector2 moveInput;
-    private Vector3 moveInputZ;
-
-    // Update is called once per frame
-    void Update()
+    public class PlayerShipController : ShipController
     {
-        if(moveInputZ.z >= 0)
-            transform.Translate(shipForwardSpeed * Time.deltaTime * moveInputZ);
-        else
-            transform.Translate(shipReverseSpeed * Time.deltaTime * moveInputZ);
-        
-        transform.Rotate(Vector3.up, shipRotationSpeed * Time.deltaTime * moveInput.x);
-    }
+        private Vector2 moveInput;
+        private Vector3 moveInputZ;
 
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        // Update is called once per frame
+        void Update()
         {
-            PoolManager.Instance.GetObject(shipBullet.name, shipBullet, transform.position + transform.forward, transform.rotation);
+            if (moveInputZ.z >= 0)
+                transform.Translate(shipForwardSpeed * Time.deltaTime * moveInputZ);
+            else
+                transform.Translate(shipReverseSpeed * Time.deltaTime * moveInputZ);
+
+            transform.Rotate(Vector3.up, shipRotationSpeed * Time.deltaTime * moveInput.x);
         }
-    }
 
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-        moveInputZ = new Vector3(0, 0, moveInput.y);
-    }
+        public void OnAttack(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                PoolManager.Instance.GetObject(shipBullet.name, shipBullet, transform.position + transform.forward, transform.rotation);
+            }
+        }
 
+        public void OnMove(InputAction.CallbackContext context)
+        {
+            moveInput = context.ReadValue<Vector2>();
+            moveInputZ = new Vector3(0, 0, moveInput.y);
+        }
+
+    }
 }
+

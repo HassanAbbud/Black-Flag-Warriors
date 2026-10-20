@@ -1,34 +1,22 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraController : MonoBehaviour
+namespace Ahoy.Ships
 {
-    public Transform targetPlayer;
-
-    public float cameraDistance = 10;
-    public float offsetHeight = 30;
-    public float cameraAngle = 35;
-    public float minDistance = 10;
-    public float maxDistance = 30;
-    public float zoomSpeed = 1;
-
-    private Vector3 targetHeader;
-    private PlayerInput input;
-
-    void Start()
+    public class CameraController : MonoBehaviour
     {
-        input = targetPlayer.gameObject.GetComponent<PlayerInput>();
-    }
-    void LateUpdate()
-    {
-        if(input.currentControlScheme == "Keyboard&Mouse" && input.actions["Zoom"].ReadValue<float>() != 0)
+        [SerializeField] private Transform target;
+
+        [SerializeField] private Vector3 offset = new Vector3(0f, 2f, -1f);
+
+        void LateUpdate()
         {
-            cameraDistance -= input.actions["Zoom"].ReadValue<float>() * zoomSpeed;
-            cameraDistance = Mathf.Clamp(cameraDistance, minDistance, maxDistance);
+            if (target == null) return;
+            transform.position = target.position + target.rotation * offset;
+            transform.rotation = target.rotation;
         }
-
-        targetHeader = targetPlayer.position + targetPlayer.up * offsetHeight;
-        this.transform.position = Quaternion.AngleAxis(cameraAngle,targetPlayer.right) * -targetPlayer.forward * cameraDistance + targetHeader;
-        this.transform.rotation = Quaternion.LookRotation(targetHeader - this.transform.position);
     }
 }
+
+

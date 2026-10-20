@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_Name
-      value: ship-pirate-large
+      value: PirateShip_Medium
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713684817533930046, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
