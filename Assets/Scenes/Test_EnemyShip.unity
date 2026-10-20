@@ -119,6 +119,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &318893391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1528107277089413932, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+  m_PrefabInstance: {fileID: 2063795277}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &596791065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8614444198222184062, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+  m_PrefabInstance: {fileID: 2063795277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &765806534
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +307,7 @@ PrefabInstance:
     - target: {fileID: 2786879437377754292, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: playerShip
       value: 
-      objectReference: {fileID: 1619921501}
+      objectReference: {fileID: 2063795278}
     - target: {fileID: 2941181195331496698, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: m_Name
       value: EnemyShipMedium (3)
@@ -374,6 +384,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip
       objectReference: {fileID: 0}
+    - target: {fileID: 5273372722328547071, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279407173917024627, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -430,7 +448,7 @@ PrefabInstance:
     - target: {fileID: 2786879437377754292, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: playerShip
       value: 
-      objectReference: {fileID: 1619921501}
+      objectReference: {fileID: 2063795278}
     - target: {fileID: 2941181195331496698, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: m_Name
       value: EnemyShipMedium (2)
@@ -449,6 +467,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5083093758775003586, guid: f25adb86b1b7ee045af8b6c5092ac6e6, type: 3}
   m_PrefabInstance: {fileID: 1128843495}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1671704500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2197543126055960982, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+  m_PrefabInstance: {fileID: 2063795277}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1671704501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671704500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32a2bcec13ee0c4cb8bbabfeffffdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipCannonController
+  yawLimit: 90
+  maxPitchUp: 30
+  maxPitchDown: 0
+  sensitivityX: 0.1
+  sensitivityY: 0.1
+  invertY: 0
+  lockCursor: 1
 --- !u!1001 &1720843817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -500,7 +542,7 @@ PrefabInstance:
     - target: {fileID: 2786879437377754292, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: playerShip
       value: 
-      objectReference: {fileID: 1619921501}
+      objectReference: {fileID: 2063795278}
     - target: {fileID: 2941181195331496698, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: m_Name
       value: EnemyShipMedium (1)
@@ -514,6 +556,206 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
+--- !u!1001 &2063795277
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8614444198222184062, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_Name
+      value: newPlayerShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 93.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 40.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8614444198222184062, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2063795279}
+    - targetCorrespondingSourceObject: {fileID: 8614444198222184062, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2063795280}
+    - targetCorrespondingSourceObject: {fileID: 2197543126055960982, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1671704501}
+  m_SourcePrefab: {fileID: 100100000, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+--- !u!4 &2063795278 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8991287088083461316, guid: bfc8ad67b590b21448cee7c0e435e223, type: 3}
+  m_PrefabInstance: {fileID: 2063795277}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2063795279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596791065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 3305ea45544c2aa49999d233a655b2e4, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2063795280}
+        m_TargetAssemblyTypeName: Ahoy.Ships.PlayerShipController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: efd001b8-ebae-4160-8835-800b2242c1e0
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2966684f-f008-411d-8635-f4cc02b0fdfd
+    m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2063795280}
+        m_TargetAssemblyTypeName: Ahoy.Ships.PlayerShipController, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 29db1b31-72fc-49c8-8118-97fb7dfd64c8
+    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f084b026-cd15-460d-91dd-17c275353613
+    m_ActionName: 'Player/Zoom[/Mouse/scroll/y]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1f1b6815-6cd0-496a-8dca-dde3bfc6d043
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b8628880-7e4f-4a65-b987-f54bee2c91ee
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e8d2f8de-3365-4484-878f-8a4677995c73
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ee01d955-1643-454b-ae5c-2abe98c9a52d
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 878725bd-4d12-4464-aa46-8d41183db227
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e13e7586-ebb8-4eea-a861-aad003a0b814
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 234335e1-192e-4544-8483-8666cd2ee895
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0644550f-242a-416e-912f-47957d096511
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1a2b404-488e-4c08-97b7-221cdc221615
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4f407a59-8e1f-404f-a966-e875d0e2e33e
+    m_ActionName: UI/TrackedDeviceOrientation
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &2063795280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596791065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6a03310b38f7d498a3eb9c77ca27ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipController
+  shipForwardSpeed: 10
+  shipReverseSpeed: 5
+  shipRotationSpeed: 100
+  shipHealth: 100
+  shipAttack: 100
+  shipDefense: 100
+  shipBullet: {fileID: 1171815924502273452, guid: 4f92807484b403b459c8c5b6395bec57, type: 3}
 --- !u!1001 &2069149276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -565,7 +807,7 @@ PrefabInstance:
     - target: {fileID: 2786879437377754292, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: playerShip
       value: 
-      objectReference: {fileID: 1619921501}
+      objectReference: {fileID: 2063795278}
     - target: {fileID: 2941181195331496698, guid: 8b852d84fb683a54fae6f13f04328c12, type: 3}
       propertyPath: m_Name
       value: EnemyShipMedium (4)
@@ -591,6 +833,7 @@ GameObject:
   - component: {fileID: 2142813868}
   - component: {fileID: 2142813867}
   - component: {fileID: 2142813870}
+  - component: {fileID: 2142813871}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -716,6 +959,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2142813871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142813866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a824c38673f12354ebd3acb225925f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.CameraController
+  target: {fileID: 318893391}
+  offset: {x: 0, y: 2, z: -1}
 --- !u!1001 &2834340749732668419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -856,3 +1113,4 @@ SceneRoots:
   - {fileID: 1343415449}
   - {fileID: 854953969}
   - {fileID: 2069149276}
+  - {fileID: 2063795277}
