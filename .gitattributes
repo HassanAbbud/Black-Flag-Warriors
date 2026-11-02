@@ -1,0 +1,67 @@
+# Git LFS for binary art, audio and video. Scenes, prefabs, materials and other Unity YAML
+# stay in plain git so they can be diffed and merged.
+# Every teammate needs Git LFS installed once: `brew install git-lfs && git lfs install`
+# (GitHub Desktop does this for you).
+
+# 3D models
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.FBX filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.dae filter=lfs diff=lfs merge=lfs -text
+*.3ds filter=lfs diff=lfs merge=lfs -text
+*.max filter=lfs diff=lfs merge=lfs -text
+*.ma filter=lfs diff=lfs merge=lfs -text
+*.mb filter=lfs diff=lfs merge=lfs -text
+
+# Textures and images
+*.png filter=lfs diff=lfs merge=lfs -text
+*.PNG filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.JPG filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.TGA filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+
+# Audio and video
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.WAV filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.aif filter=lfs diff=lfs merge=lfs -text
+*.aiff filter=lfs diff=lfs merge=lfs -text
+*.flac filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.webm filter=lfs diff=lfs merge=lfs -text
+
+# Fonts, documents, archives
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.unitypackage filter=lfs diff=lfs merge=lfs -text
+
+# Packs committed before LFS was added stay in plain git, so nothing shows up as modified by
+# accident and nobody has to rewrite history. New packs go in new folders and use LFS.
+Assets/BK/** -filter -diff -merge
+Assets/Models/Monsters/** -filter -diff -merge
+Assets/Models/Ships[[:space:]]and[[:space:]]Pirate[[:space:]]Set/** -filter -diff -merge
+Assets/Models/The[[:space:]]Portal[[:space:]]Collection/** -filter -diff -merge
+Assets/Models/Items_Gems/** -filter -diff -merge
+Assets/Models/Characters/** -filter -diff -merge
+Assets/Models/Pirate_Ship/** -filter -diff -merge
+Assets/Models/Crates[[:space:]]and[[:space:]]Barrels/** -filter -diff -merge
+Assets/Models/InstantDestruction/** -filter -diff -merge
+Assets/TextMesh[[:space:]]Pro/** -filter -diff -merge
+Assets/Animations/UAL1_Standard.fbx -filter -diff -merge
+Assets/Animations/UAL2_Standard.fbx -filter -diff -merge
