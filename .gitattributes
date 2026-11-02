@@ -65,3 +65,6 @@ Assets/Models/InstantDestruction/** -filter -diff -merge
 Assets/TextMesh[[:space:]]Pro/** -filter -diff -merge
 Assets/Animations/UAL1_Standard.fbx -filter -diff -merge
 Assets/Animations/UAL2_Standard.fbx -filter -diff -merge
+
+# Level scene data (terrain copy, baked NavMesh, lighting) is binary and large.
+Assets/Scenes/IslandMap_Level/*.asset filter=lfs diff=lfs merge=lfs -text
