@@ -4,7 +4,7 @@ namespace Ahoy.Core
 
     public enum Tier { Scuttler, Brute, Captain, Guardian, Giant, Herald }
 
-    public enum PortalPhase { Open, Contested, GuardianOut, Sealed }
+    public enum PortalPhase { Open, Contested, SpawnBoss, Sealed }
 
     public enum ToolType { Bomb, Bow, Boomerang, Harpoon }
 

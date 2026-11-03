@@ -6,15 +6,18 @@ namespace Ahoy.Ships
     // Moves an enemy ship and decides what it is doing. Firing is EnemyShipCannons' job.
     // Wander: sail to a random point near its spawn. Idle: drift there a moment.
     // Engage: circle the player ship at engageDistance so its broadsides bear.
+    // Bombard: the player is on land - stay put, turn a broadside on him and fire.
+    // Targets are found by tag (PlayerShip / Player), so respawned ones are picked up on their own.
     [DisallowMultipleComponent]
     public sealed class EnemyShipController : MonoBehaviour
     {
         // State: one enum, one switch, every transition through SetState.
-        public enum ShipState { Wander, Idle, Engage }
+        public enum ShipState { Wander, Idle, Engage, Bombard }
+
+        private const string PlayerTag = "Player";
+        private const string PlayerShipTag = "PlayerShip";
 
         [SerializeField] private EnemyShipDef def;
-        [Tooltip("The player's ship. Wire it in the scene, or have the spawner call SetTarget (no Find).")]
-        [SerializeField] private Transform playerShip;
         [Tooltip("Told who to shoot at while engaging. Found on this ship automatically if left empty.")]
         [SerializeField] private EnemyShipCannons cannons;
         [Tooltip("Keeps it clear of other ships. Found on this ship automatically if left empty.")]
@@ -25,9 +28,11 @@ namespace Ahoy.Ships
 
         public EnemyShipDef Def => def;
         public ShipState State => state;
-        public Transform PlayerShip => playerShip;
+        public Transform Target => target;
 
         private ShipState state;
+        private Transform target;   // the player ship (Engage) or the player on land (Bombard)
+        private readonly Collider[] nearby = new Collider[16];   // preallocated: NonAlloc queries only
         private Vector3 home;
         private Vector3 wanderPoint;
         private float stateUntil;
@@ -50,14 +55,8 @@ namespace Ahoy.Ships
             home = transform.position;
             speed = 0f;
             nextScanAt = 0f;
+            target = null;
             SetState(ShipState.Wander);
-        }
-
-        public void SetTarget(Transform target)
-        {
-            playerShip = target;
-            if (state == ShipState.Engage && cannons != null)
-                cannons.SetTarget(target);
         }
 
         private void Update()
@@ -85,7 +84,17 @@ namespace Ahoy.Ships
                     break;
 
                 case ShipState.Engage:
-                    Steer(EngageHeading(), def.engageSpeed);
+                case ShipState.Bombard:
+                    if (target == null || !target.gameObject.activeInHierarchy)
+                    {
+                        target = null;
+                        SetState(ShipState.Wander);   // destroyed or switched off mid-fight
+                        break;
+                    }
+                    if (state == ShipState.Engage)
+                        Steer(EngageHeading(), def.engageSpeed);
+                    else
+                        Steer(BroadsideHeading(), 0f);   // turn in place, never sail toward land
                     break;
             }
         }
@@ -104,47 +113,74 @@ namespace Ahoy.Ships
                     stateUntil = Time.time + UnityEngine.Random.Range(def.idleSeconds.x, def.idleSeconds.y);
                     break;
                 case ShipState.Engage:
+                case ShipState.Bombard:
                     lastSeenAt = Time.time;
                     break;
             }
             if (cannons != null)
-                cannons.SetTarget(next == ShipState.Engage ? playerShip : null);
+                cannons.SetTarget(next == ShipState.Engage || next == ShipState.Bombard ? target : null);
             StateChanged?.Invoke(next);
         }
 
         private void Scan()
         {
-            if (CanSeePlayer())
+            bool engaged = state == ShipState.Engage || state == ShipState.Bombard;
+            Transform seen = FindTarget(engaged ? def.loseRange : def.detectRange, engaged, out ShipState mode);
+
+            if (seen != null)
             {
                 lastSeenAt = Time.time;
-                if (state != ShipState.Engage)
-                    SetState(ShipState.Engage);
+                if (seen != target || state != mode)
+                {
+                    target = seen;
+                    SetState(mode);
+                }
             }
-            else if (state == ShipState.Engage && Time.time - lastSeenAt > def.loseSightSeconds)
+            else if (engaged && Time.time - lastSeenAt > def.loseSightSeconds)
             {
+                target = null;
                 SetState(ShipState.Wander);   // heads back to a point near home
             }
         }
 
-        private bool CanSeePlayer()
+        // First object tagged PlayerShip or Player within range and in sight.
+        private Transform FindTarget(float range, bool engaged, out ShipState mode)
         {
-            if (playerShip == null || !playerShip.gameObject.activeInHierarchy)
-                return false;
+            mode = ShipState.Wander;
+            int count = Physics.OverlapSphereNonAlloc(transform.position, range, nearby,
+                                                      def.targetLayers, QueryTriggerInteraction.Ignore);
+            for (int i = 0; i < count; i++)
+            {
+                Transform found = TaggedRoot(nearby[i].transform);
+                if (found == null || !InSight(found, engaged))
+                    continue;
+                mode = found.CompareTag(PlayerShipTag) ? ShipState.Engage : ShipState.Bombard;
+                return found;
+            }
+            return null;
+        }
 
-            Vector3 toPlayer = playerShip.position - transform.position;
-            float range = state == ShipState.Engage ? def.loseRange : def.detectRange;
-            if (toPlayer.sqrMagnitude > range * range)
-                return false;
+        // Walks up from the collider so a tag on the root still counts when the collider is on a child.
+        private static Transform TaggedRoot(Transform t)
+        {
+            for (; t != null; t = t.parent)
+                if (t.CompareTag(PlayerShipTag) || t.CompareTag(PlayerTag))
+                    return t;
+            return null;
+        }
 
-            toPlayer.y = 0f;
-            if (state != ShipState.Engage && def.viewAngle < 360f
-                && Vector3.Angle(transform.forward, toPlayer) > def.viewAngle * 0.5f)
+        private bool InSight(Transform t, bool engaged)
+        {
+            Vector3 toTarget = t.position - transform.position;
+            toTarget.y = 0f;
+            if (!engaged && def.viewAngle < 360f
+                && Vector3.Angle(transform.forward, toTarget) > def.viewAngle * 0.5f)
                 return false;
 
             if (def.sightBlockers != 0)
             {
                 Vector3 lookout = transform.position + Vector3.up * def.lookoutHeight;
-                if (Physics.Linecast(lookout, playerShip.position, def.sightBlockers, QueryTriggerInteraction.Ignore))
+                if (Physics.Linecast(lookout, t.position, def.sightBlockers, QueryTriggerInteraction.Ignore))
                     return false;
             }
             return true;
@@ -154,7 +190,7 @@ namespace Ahoy.Ships
         // out to hold engageDistance.
         private Vector3 EngageHeading()
         {
-            Vector3 toPlayer = playerShip.position - transform.position;
+            Vector3 toPlayer = target.position - transform.position;
             toPlayer.y = 0f;
             float distance = toPlayer.magnitude;
             if (distance < 0.01f)
@@ -165,6 +201,17 @@ namespace Ahoy.Ships
                 tangent = -tangent;   // keep circling the way it is already facing
             float pull = Mathf.Clamp((distance - def.engageDistance) / def.engageDistance, -1f, 1f);
             return tangent + radial * pull;
+        }
+
+        // Heading that puts the nearer side's cannons square on the target, without the pull.
+        private Vector3 BroadsideHeading()
+        {
+            Vector3 toTarget = target.position - transform.position;
+            toTarget.y = 0f;
+            if (toTarget.sqrMagnitude < 0.0001f)
+                return transform.forward;
+            Vector3 tangent = Vector3.Cross(Vector3.up, toTarget.normalized);
+            return Vector3.Dot(tangent, transform.forward) >= 0f ? tangent : -tangent;
         }
 
         private void Steer(Vector3 direction, float targetSpeed)

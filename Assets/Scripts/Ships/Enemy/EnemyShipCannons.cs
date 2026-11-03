@@ -99,11 +99,12 @@ namespace Ahoy.Ships
         {
             float speed = def.muzzleSpeed;
             float gravity = pool.Gravity;
+            Vector3 aimPoint = target.position + Vector3.up * def.aimHeight;
 
             // Aim where the target will be: solve once for the flight time, lead, solve again.
-            if (!TrySolveArc(muzzle, target.position, speed, gravity, out Vector3 velocity, out float flightTime))
+            if (!TrySolveArc(muzzle, aimPoint, speed, gravity, out Vector3 velocity, out float flightTime))
                 return;   // out of range
-            Vector3 lead = target.position + targetVelocity * flightTime;
+            Vector3 lead = aimPoint + targetVelocity * (flightTime * def.leadFraction);
             if (!TrySolveArc(muzzle, lead, speed, gravity, out velocity, out _))
                 return;
 

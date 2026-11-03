@@ -28,12 +28,14 @@ namespace Ahoy.Ships
         [Tooltip("How fast it speeds up or slows down, metres per second squared.")]
         public float acceleration = 2f;
 
-        [Header("Spotting the player ship")]
-        [Tooltip("Metres at which it spots the player ship.")]
+        [Header("Spotting the player")]
+        [Tooltip("Layers the player and the player ship are on. The scan only looks at these.")]
+        public LayerMask targetLayers = ~0;
+        [Tooltip("Metres at which it spots the player or the player ship.")]
         public float detectRange = 60f;
         [Tooltip("Width of its view, degrees. 360 sees all round.")]
         public float viewAngle = 360f;
-        [Tooltip("Metres at which it loses the player ship again. Keep above detectRange.")]
+        [Tooltip("Metres at which it loses the player or the player ship again. Keep above detectRange.")]
         public float loseRange = 80f;
         [Tooltip("Seconds out of range or sight before it gives up and goes back to wandering.")]
         public float loseSightSeconds = 3f;
@@ -69,6 +71,10 @@ namespace Ahoy.Ships
         public float muzzleSpeed = 35f;
         [Tooltip("Random aim error per cannon, degrees.")]
         public float aimSpread = 2f;
+        [Tooltip("Metres above the target's pivot the guns aim at. Pivots sit at the feet or waterline, so aim at the body instead of the ground.")]
+        public float aimHeight = 1f;
+        [Tooltip("How far ahead of a moving target it aims (0 = straight at it, 1 = full prediction).")]
+        [Range(0f, 1f)] public float leadFraction = 0.5f;
         [Tooltip("Damage per cannonball hit.")]
         public float cannonDamage = 50f;
         [Tooltip("How a hit target reacts.")]

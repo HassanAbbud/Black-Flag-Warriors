@@ -143,6 +143,9 @@ namespace Ahoy.Core
         public float lockOnDistanceWeight = 1f;  
         public float lockOnSmoothing = 10f;       
         public float lockOnPitch = 15f;         
-        public float lockOnTargetHeight = 1f;     
+        public float lockOnTargetHeight = 1f;
+
+        [Header("Healing Potion")]
+        public float potionHealAmount = 50f;
     }
 }
