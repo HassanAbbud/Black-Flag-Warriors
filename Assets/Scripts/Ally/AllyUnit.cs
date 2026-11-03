@@ -14,8 +14,8 @@ namespace Ahoy.Allies
         [Header("Identity")]
         [SerializeField] Faction faction = Faction.Village;
         [SerializeField] Tier tier = Tier.Brute;
-        [SerializeField] int locationId;           // home portal (R8)：只有它自己的击杀会推动那个进度条
-        [SerializeField] float strength = 10f;     // 看不见的战斗里的战力值 (R64)
+        [SerializeField] int locationId;           // home portal (R8)： only its own kills will advance that progress bar
+        [SerializeField] float strength = 10f;     // strength is used to calculate damage dealt to enemies in the battle system you can't see 
 
         [Header("Health")]
         [SerializeField] float maxHealth = 100f;
@@ -26,7 +26,7 @@ namespace Ahoy.Allies
 
         float health;
 
-        // 受击表现由动画/特效系统订阅处理，这里只负责广播（M1-04：受害者自己决定移动多远）
+        // hit reaction and death events
         public event Action<HitReaction> Hit;
         public event Action Died;
 
@@ -38,7 +38,7 @@ namespace Ahoy.Allies
         public Tier Tier => tier;
         public int LocationId => locationId;
         public float Strength => strength;
-        public IWeakPoint WeakPoint => null;       // 友军没有弱点
+        public IWeakPoint WeakPoint => null;       // ally has no weak point, but the interface requires it
 
         public float HealthNormalized => health / maxHealth;
 
@@ -61,7 +61,7 @@ namespace Ahoy.Allies
 
         void Die()
         {
-            // 关掉导航和碰撞，怪物就不会再把它当目标，也不会挡路
+            // close off the unit so it can't be hit again, and trigger death animation if any
             if (TryGetComponent(out NavMeshAgent agent)) agent.enabled = false;
             foreach (Collider col in GetComponentsInChildren<Collider>()) col.enabled = false;
 

@@ -1,3 +1,4 @@
+using Ahoy.Core;
 using System;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Ahoy.Ships
     // Bombard: the player is on land - stay put, turn a broadside on him and fire.
     // Targets are found by tag (PlayerShip / Player), so respawned ones are picked up on their own.
     [DisallowMultipleComponent]
-    public sealed class EnemyShipController : MonoBehaviour
+    public sealed class EnemyShipController : ShipController, IShipDamageable
     {
         // State: one enum, one switch, every transition through SetState.
         public enum ShipState { Wander, Idle, Engage, Bombard }
@@ -29,6 +30,9 @@ namespace Ahoy.Ships
         public EnemyShipDef Def => def;
         public ShipState State => state;
         public Transform Target => target;
+
+        private bool isAlive = true;
+        public bool IsAlive => isAlive;
 
         private ShipState state;
         private Transform target;   // the player ship (Engage) or the player on land (Bombard)
@@ -254,6 +258,21 @@ namespace Ahoy.Ships
             Gizmos.DrawWireSphere(transform.position, def.detectRange);
             if (Application.isPlaying && state == ShipState.Wander)
                 Gizmos.DrawLine(transform.position, wanderPoint);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (isAlive)
+            {
+                shipHealth -= (damage - shipDefense);
+                Debug.Log("Enemy ship took damage: " + damage + ", remaining health: " + shipHealth);
+                if (shipHealth <= 0)
+                {
+                    isAlive = false;
+                    // Handle ship destruction logic here
+                    Debug.Log("Enemy ship destroyed!");
+                }
+            }
         }
     }
 }
