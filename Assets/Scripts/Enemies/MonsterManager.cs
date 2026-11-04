@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ahoy.Core;
 using UnityEngine;
 
+
 namespace Ahoy.Enemies
 {
     // The Update Manager for the crowd (Code Patterns 2.8): 300 monsters, one Update. Also owns
@@ -27,6 +28,8 @@ namespace Ahoy.Enemies
         [SerializeField] PoolEntry[] pools;
 
         readonly Dictionary<MonsterDef, Stack<Monster>> free = new Dictionary<MonsterDef, Stack<Monster>>();
+        // Cached at Prewarm so recycling never calls GetComponent.
+        readonly Dictionary<Monster, DestroyedTarget> targets = new Dictionary<Monster, DestroyedTarget>();
         Monster[] active;
         int activeCount;
         int spawnCounter;
@@ -77,6 +80,10 @@ namespace Ahoy.Enemies
                 {
                     Monster monster = Instantiate(entry.prefab, transform);
                     monster.Bind(this, balance, playerTarget);
+
+                    if (monster.TryGetComponent(out DestroyedTarget target))
+                        targets[monster] = target;
+
                     monster.gameObject.SetActive(false);
                     stack.Push(monster);
                 }
@@ -99,7 +106,8 @@ namespace Ahoy.Enemies
         }
 
         // Swap-remove, so the list stays contiguous.
-        internal void Release(Monster monster)
+        // counted = false is for bulk clears (ReleaseAll / ReleaseLocation): no TargetDestroyed event.
+        internal void Release(Monster monster, bool counted = true)
         {
             int index = monster.ActiveIndex;
             if (index < 0) return;
@@ -111,20 +119,24 @@ namespace Ahoy.Enemies
             active[activeCount] = null;
 
             monster.ActiveIndex = -1;
+
+            if (counted && targets.TryGetValue(monster, out DestroyedTarget target))
+                target.Die();
+
             monster.gameObject.SetActive(false);
             free[monster.Def].Push(monster);
         }
 
         public void ReleaseAll()
         {
-            for (int i = activeCount - 1; i >= 0; i--) Release(active[i]);
+            for (int i = activeCount - 1; i >= 0; i--) Release(active[i], false);
         }
 
         // A sealed portal takes its own monsters with it, uncounted.
         public void ReleaseLocation(int locationId)
         {
             for (int i = activeCount - 1; i >= 0; i--)
-                if (active[i].LocationId == locationId) Release(active[i]);
+                if (active[i].LocationId == locationId) Release(active[i], false);
         }
 
         internal void NotifyDied(Monster monster) => UnitDied?.Invoke(monster);
