@@ -62,10 +62,12 @@ namespace Ahoy.Ships
             SteerOffset = offset * def.avoidStrength;
         }
 
-        private bool IsPlayerShip(Collider other)
+        private static bool IsPlayerShip(Collider other)
         {
-            Transform player = controller.PlayerShip;
-            return player != null && other.transform.IsChildOf(player);
+            for (Transform t = other.transform; t != null; t = t.parent)
+                if (t.CompareTag("PlayerShip"))
+                    return true;
+            return false;
         }
 
         private void PushApart(Collider other, bool otherIsEnemy)

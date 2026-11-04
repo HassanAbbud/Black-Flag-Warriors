@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - PlayerShip
+  - Monster
   layers:
   - Default
   - TransparentFX
