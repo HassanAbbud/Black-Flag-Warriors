@@ -7,7 +7,7 @@ namespace Ahoy.Allies
 {
     // Ally's body: health and identity. Implements IUnit (which includes IDamageable) so nothing
     // outside ever needs to know this is an ally.
-    public sealed class AllyUnit : MonoBehaviour, IUnit
+    public sealed class AllyUnit : MonoBehaviour, IUnit, ITargetable
     {
         static readonly int DieHash = Animator.StringToHash("Die");
 
@@ -42,7 +42,14 @@ namespace Ahoy.Allies
 
         public float HealthNormalized => health / maxHealth;
 
+        // ITargetable: where monsters aim.
+        public Vector3 Position => transform.position;
+
         void Awake() => health = maxHealth;
+
+        // Monsters find allies through BattleContext, never by casting to this class.
+        void OnEnable() => BattleContext.Village.Add(this);
+        void OnDisable() => BattleContext.Village.Remove(this);
 
         public void TakeDamage(in DamageInfo info)
         {
@@ -61,6 +68,7 @@ namespace Ahoy.Allies
 
         void Die()
         {
+            BattleContext.Village.Remove(this);   // monsters stop treating it as a target at once
             // 关掉导航和碰撞，怪物就不会再把它当目标，也不会挡路
             if (TryGetComponent(out NavMeshAgent agent)) agent.enabled = false;
             foreach (Collider col in GetComponentsInChildren<Collider>()) col.enabled = false;
@@ -71,4 +79,4 @@ namespace Ahoy.Allies
             Destroy(gameObject, destroyDelay);
         }
     }
-}
+}

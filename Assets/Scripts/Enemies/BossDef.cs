@@ -8,7 +8,11 @@ namespace Ahoy.Enemies
     public sealed class BossDef : MonsterDef
     {
         [Header("Combos")]
+        [Tooltip("R33: the first attack of the encounter. Usually the unguardable one that leaves a punish window.")]
+        public BossPatternDef openingPattern;
         public BossPatternDef[] patterns;
+        [Tooltip("Minimum seconds between the end of one combo and the start of the next. Gives Zahim room to act.")]
+        public float attackGapSeconds = 1.2f;
         [Tooltip("Seconds of breathing room after a stagger ends before it fights again.")]
         public float restSeconds = 0.8f;
     }

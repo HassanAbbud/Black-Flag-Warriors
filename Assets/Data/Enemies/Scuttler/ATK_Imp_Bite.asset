@@ -15,18 +15,19 @@ MonoBehaviour:
   animatorState: 
   playbackSpeed: 1
   crossFadeSeconds: 0.08
-  telegraphSeconds: 0.35
+  telegraphSeconds: 0.55
   telegraphTurnSpeed: 0
+  telegraphAimLockAt: 0.6
   strikeSeconds: 0.15
-  recoverSeconds: 0.5
-  damage: 30
-  reaction: 1
-  hitstopFrames: 4
+  recoverSeconds: 0.8
+  damage: 8
+  reaction: 0
+  hitstopFrames: 0
   unblockable: 0
-  hitboxCenter: {x: 0, y: 1, z: 1.2}
-  hitboxHalfExtents: {x: 1, y: 1, z: 1}
+  hitboxCenter: {x: 0, y: 0.9, z: 0.8}
+  hitboxHalfExtents: {x: 0.6, y: 0.9, z: 0.7}
   minRange: 0
-  maxRange: 1.6
-  cooldownSeconds: 1.2
-  lungeDistance: 0
-  lungeSeconds: 0.15
+  maxRange: 1.5
+  cooldownSeconds: 3.5
+  lungeDistance: 0.5
+  lungeSeconds: 0.1

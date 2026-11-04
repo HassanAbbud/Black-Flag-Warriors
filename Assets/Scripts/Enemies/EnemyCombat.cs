@@ -6,24 +6,35 @@ namespace Ahoy.Enemies
     // Shared by the crowd monster and the boss so the two cannot drift apart.
     static class EnemyCombat
     {
-        // True if the target stood inside the attack's hitbox and took the hit. A box test
-        // against Zahim's position rather than a physics query, so a crowd of attackers costs
-        // nothing. The target's own i-frames and guard (R51) still apply inside TakeDamage.
-        public static bool TryStrike(IUnit attacker, Transform origin, MonsterAttackDef attack,
-                                     IDamageable target, Vector3 targetPosition, float padding)
+        // True if the point stood inside the attack's hitbox. A box test rather than a physics
+        // query, so a crowd of attackers costs nothing.
+        public static bool InHitbox(Transform origin, MonsterAttackDef attack, Vector3 point, float padding)
         {
-            if (!target.IsAlive) return false;
-
-            Vector3 local = Quaternion.Inverse(origin.rotation) * (targetPosition - origin.position)
+            Vector3 local = Quaternion.Inverse(origin.rotation) * (point - origin.position)
                             - attack.hitboxCenter;
             Vector3 half = attack.hitboxHalfExtents;
-            if (Mathf.Abs(local.x) > half.x + padding ||
-                Mathf.Abs(local.y) > half.y + padding ||
-                Mathf.Abs(local.z) > half.z + padding) return false;
+            return Mathf.Abs(local.x) <= half.x + padding &&
+                   Mathf.Abs(local.y) <= half.y + padding &&
+                   Mathf.Abs(local.z) <= half.z + padding;
+        }
 
-            var info = new DamageInfo(attack.damage, origin.position, attack.reaction,
+        // Deals the attack's damage. The target's own i-frames and guard (R51) still apply
+        // inside TakeDamage. damageScale is the difficulty dial from BalanceConfig.
+        public static void Strike(IUnit attacker, Transform origin, MonsterAttackDef attack,
+                                  IDamageable target, float damageScale)
+        {
+            var info = new DamageInfo(attack.damage * damageScale, origin.position, attack.reaction,
                                       attack.hitstopFrames, 0f, attacker, attack.unblockable);
             target.TakeDamage(in info);
+        }
+
+        // One target: true if it stood inside the hitbox and took the hit.
+        public static bool TryStrike(IUnit attacker, Transform origin, MonsterAttackDef attack,
+                                     IDamageable target, Vector3 targetPosition, float padding,
+                                     float damageScale)
+        {
+            if (!target.IsAlive || !InHitbox(origin, attack, targetPosition, padding)) return false;
+            Strike(attacker, origin, attack, target, damageScale);
             return true;
         }
 
@@ -39,6 +50,13 @@ namespace Ahoy.Enemies
         public static void Play(Animator animator, int stateHash, float crossFade)
         {
             if (animator != null) animator.CrossFadeInFixedTime(stateHash, crossFade, 0, 0f);
+        }
+
+        // Flat (ignoring height) distance, for deciding who is near whom.
+        public static float FlatDistance(Vector3 a, Vector3 b)
+        {
+            float dx = a.x - b.x, dz = a.z - b.z;
+            return Mathf.Sqrt(dx * dx + dz * dz);
         }
 
 #if UNITY_EDITOR

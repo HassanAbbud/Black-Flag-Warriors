@@ -21,6 +21,8 @@ namespace Ahoy.Enemies
         public float telegraphSeconds = 0.5f;
         [Tooltip("Degrees per second the attacker keeps turning toward Zahim while winding up. 0 locks the aim at the start, which makes the attack dodgeable.")]
         public float telegraphTurnSpeed = 0f;
+        [Tooltip("Fraction of the wind-up (0 to 1) after which the attacker stops turning. Past it the aim is committed, so a late dodge still works.")]
+        [Range(0f, 1f)] public float telegraphAimLockAt = 0.6f;
         [Tooltip("How long the hitbox is live.")]
         public float strikeSeconds = 0.2f;
         [Tooltip("Vulnerable time after the strike. Inside a boss combo this is the gap before the next step.")]
@@ -50,6 +52,10 @@ namespace Ahoy.Enemies
         [Tooltip("Metres the attacker travels forward when the strike starts.")]
         public float lungeDistance;
         public float lungeSeconds = 0.15f;
+
+        // How far in front of the attacker this can connect: the far edge of the hitbox plus the
+        // lunge. A named enemy only starts the attack inside this, so it never swings at air.
+        public float Reach => hitboxCenter.z + hitboxHalfExtents.z + lungeDistance;
 
         public int StateHash { get; private set; }
         public bool HasClip => !string.IsNullOrEmpty(animatorState);

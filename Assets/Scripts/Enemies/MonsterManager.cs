@@ -6,9 +6,10 @@ using UnityEngine;
 namespace Ahoy.Enemies
 {
     // The Update Manager for the crowd (Code Patterns 2.8): 300 monsters, one Update. Also owns
-    // their pools (2.7), sized from BalanceConfig at load, and answers the player's sweep
-    // through ICrowdQuery. Keep this object at the origin with scale 1; the pool is parented
-    // to it.
+    // their pools (2.7), sized from BalanceConfig at load, the attack slots that keep the crowd
+    // from hitting Zahim all at once, and the crowd queries Zahim and the allies use to find
+    // monsters (registered with BattleContext). Keep this object at the origin with scale 1;
+    // the pool is parented to it.
     public sealed class MonsterManager : MonoBehaviour, ICrowdQuery
     {
         [Serializable]
@@ -32,10 +33,17 @@ namespace Ahoy.Enemies
         IPlayerMotor playerMotor;
         IDamageable playerTarget;
 
+        // Attack slots: how many monsters are committed to an attack right now.
+        int playerAttackers;
+        int allyAttackers;
+        float nextPlayerAttackAt;
+
         // Raised for every crowd kill, so Systems subscribes once instead of to 300 monsters (R8, KO count).
         public event Action<IUnit> UnitDied;
 
         public int ActiveCount => activeCount;
+        public int PlayerAttackers => playerAttackers;
+        public IVillageTargets Village { get; private set; }
 
         void Awake()
         {
@@ -48,9 +56,14 @@ namespace Ahoy.Enemies
                 return;
             }
 
+            Village = BattleContext.Village;
             active = new Monster[balance.crowdCapacity];
             Prewarm();
         }
+
+        // Others find the crowd through BattleContext, never through this class.
+        void OnEnable() => BattleContext.RegisterCrowd(this);
+        void OnDisable() => BattleContext.UnregisterCrowd(this);
 
         // The only Instantiate calls, all at load (Code Patterns 0.5).
         void Prewarm()
@@ -91,6 +104,7 @@ namespace Ahoy.Enemies
             int index = monster.ActiveIndex;
             if (index < 0) return;
 
+            monster.DropAttackSlot();
             Monster last = active[--activeCount];
             active[index] = last;
             last.ActiveIndex = index;
@@ -108,20 +122,47 @@ namespace Ahoy.Enemies
 
         internal void NotifyDied(Monster monster) => UnitDied?.Invoke(monster);
 
+        // ── Attack slots ─────────────────────────────────────────────────────────────
+        // Zahim is limited by both a head-count and a minimum gap between attack starts, so
+        // a ring of monsters arriving together cannot land a volley. Allies get a separate,
+        // looser limit so they last long enough to be worth having.
+        internal bool TryAcquireToken(bool onAlly, float now)
+        {
+            if (onAlly)
+            {
+                if (allyAttackers >= balance.crowdMaxAttackersOnAllies) return false;
+                allyAttackers++;
+                return true;
+            }
+
+            if (playerAttackers >= balance.crowdMaxAttackersOnPlayer || now < nextPlayerAttackAt) return false;
+            playerAttackers++;
+            nextPlayerAttackAt = now + balance.crowdAttackStartInterval + UnityEngine.Random.value * balance.crowdAttackStartJitter;
+            return true;
+        }
+
+        internal void ReturnToken(bool onAlly)
+        {
+            if (onAlly) allyAttackers = Mathf.Max(0, allyAttackers - 1);
+            else playerAttackers = Mathf.Max(0, playerAttackers - 1);
+        }
+
         void Update()
         {
             if (activeCount == 0) return;
 
             float dt = Time.deltaTime;
+            float now = Time.time;
             Vector3 playerPosition = playerMotor.Position;
             bool playerAlive = !playerMotor.IsDead;
             int frame = Time.frameCount;
 
             // Backwards, because a dead monster releases itself and swap-removes.
             for (int i = activeCount - 1; i >= 0; i--)
-                active[i].Tick(dt, playerPosition, playerAlive, frame);
+                active[i].Tick(dt, now, playerPosition, playerAlive, frame);
         }
 
+        // ── ICrowdQuery ──────────────────────────────────────────────────────────────
         public int QueryBox(Vector3 center, Vector3 halfExtents, Quaternion rotation, IDamageable[] results)
         {
             Quaternion inverse = Quaternion.Inverse(rotation);
@@ -140,6 +181,28 @@ namespace Ahoy.Enemies
                     results[found++] = monster;
             }
             return found;
+        }
+
+        public bool TryFindNearest(Vector3 from, float maxDistance, out IDamageable nearest)
+        {
+            nearest = null;
+            float best = maxDistance * maxDistance;
+
+            for (int i = 0; i < activeCount; i++)
+            {
+                Monster monster = active[i];
+                if (!monster.IsAlive) continue;
+
+                Vector3 d = monster.transform.position - from;
+                d.y = 0f;
+                float sqr = d.sqrMagnitude;
+                if (sqr < best)
+                {
+                    best = sqr;
+                    nearest = monster;
+                }
+            }
+            return nearest != null;
         }
     }
 }

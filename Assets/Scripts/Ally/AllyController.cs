@@ -282,8 +282,35 @@ namespace Ahoy.Allies
                 }
             }
 
+            // Crowd monsters have no colliders, so the physics scan above cannot see them.
+            // The crowd answers instead; the nearest one competes with whatever the scan found.
+            if (BattleContext.Crowd.TryFindNearest(transform.position, detectRange, out IDamageable crowdDamageable) &&
+                crowdDamageable.IsAlive && IsHostile(crowdDamageable) &&
+                crowdDamageable is Component crowdComponent)
+            {
+                Transform candidate = crowdComponent.transform;
+                Vector3 toTarget = candidate.position - transform.position;
+                float sqr = toTarget.sqrMagnitude;
+                if (sqr < bestSqr && InFieldOfView(toTarget) && !SightBlocked(eye, candidate.position))
+                {
+                    best = candidate;
+                    bestDamageable = crowdDamageable;
+                }
+            }
+
             return best != null;
         }
+
+        bool InFieldOfView(Vector3 toTarget)
+        {
+            if (fieldOfView >= 360f) return true;
+            Vector3 flat = new Vector3(toTarget.x, 0f, toTarget.z);
+            return flat.sqrMagnitude <= 0.0001f || Vector3.Angle(transform.forward, flat) <= fieldOfView * 0.5f;
+        }
+
+        bool SightBlocked(Vector3 eye, Vector3 targetPosition) =>
+            obstacleMask.value != 0 &&
+            Physics.Linecast(eye, targetPosition + Vector3.up * eyeHeight, obstacleMask, QueryTriggerInteraction.Ignore);
 
         void SetTarget(Transform t, IDamageable dmg)
         {
@@ -337,4 +364,4 @@ namespace Ahoy.Allies
             Gizmos.DrawWireSphere(transform.position, loseTargetRange);
         }
     }
-}
+}

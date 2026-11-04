@@ -15,11 +15,11 @@ MonoBehaviour:
   tier: 3
   strength: 1
   maxHealth: 3000
-  moveSpeed: 3
-  turnSpeed: 360
-  stopDistance: 2.5
+  moveSpeed: 2.2
+  turnSpeed: 90
+  stopDistance: 3
   aggroRange: 60
-  bodyRadius: 0.5
+  bodyRadius: 1.5
   attacks: []
   minReaction: 1
   flinchSeconds: 0.3
@@ -29,6 +29,9 @@ MonoBehaviour:
   corpseSeconds: 1.5
   animationCrossFade: 0.1
   speedDampSeconds: 0.08
+  openingPattern: {fileID: 11400000, guid: 6064d6901649a9840b0b4174dbbad717, type: 2}
   patterns:
   - {fileID: 11400000, guid: 6064d6901649a9840b0b4174dbbad717, type: 2}
-  restSeconds: 0.8
+  - {fileID: 11400000, guid: dc3b1e9220c5a04488ef1ea55926808e, type: 2}
+  attackGapSeconds: 1.2
+  restSeconds: 1.5

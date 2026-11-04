@@ -51,6 +51,7 @@ namespace Ahoy.Player
 
         readonly Collider[] overlap = new Collider[MaxCollidersPerQuery];
         readonly IDamageable[] victims = new IDamageable[MaxVictimsPerSwing];
+        readonly IDamageable[] crowdHits = new IDamageable[MaxVictimsPerSwing];
         readonly float[] victimHitAt = new float[MaxVictimsPerSwing];
         int victimCount;
 
@@ -168,41 +169,59 @@ namespace Ahoy.Player
             for (int i = 0; i < count && smashTarget == null; i++)
             {
                 if (!TryGetDamageable(overlap[i], out IDamageable target)) continue;
-                if (target == (IDamageable)self || !target.IsAlive || target.Faction == Faction.Village) continue;
-
-                int slot = IndexOf(target);
-                if (slot < 0)
-                {
-                    if (victimCount == MaxVictimsPerSwing) continue;
-                    slot = victimCount++;
-                    victims[slot] = target;
-                }
-                else if (current.rehitSeconds <= 0f || now - victimHitAt[slot] < current.rehitSeconds)
-                {
-                    continue;
-                }
-
-                // Hitstop on the first connection of the swing (and of each multi-hit tick)
-                // only, so a sweep through thirty scuttlers does not stutter.
-                bool freeze = !frozeThisSweep && (slot == 0 || victimHitAt[slot] > 0f);
-                frozeThisSweep |= freeze;
-                victimHitAt[slot] = now;
-
-                Vector3 point = overlap[i].bounds.ClosestPoint(center);
-                Vector3 origin = current.push == PushDirection.AlongFacing
-                    ? point - transform.forward
-                    : transform.position;
-
-                var info = new DamageInfo(current.damage, origin, current.reaction,
-                                          freeze ? current.hitstopFrames : 0, current.weakPointDrain, null);
-                target.TakeDamage(in info);
-                Hit?.Invoke(new HitReport(target, current, point, freeze));
-
-                if (freeze) hitstop.Freeze(current.hitstopFrames);
-                smashTarget = SmashTargetOf(target);
+                smashTarget = Connect(target, overlap[i].bounds.ClosestPoint(center), now, ref frozeThisSweep);
             }
 
+            // Crowd monsters have no colliders (Code Patterns, "Physics"), so the query above
+            // cannot see them. The crowd answers the same box instead.
+            int crowdCount = BattleContext.Crowd.QueryBox(center, current.hitboxHalfExtents,
+                                                          transform.rotation, crowdHits);
+            for (int i = 0; i < crowdCount && smashTarget == null; i++)
+            {
+                IDamageable target = crowdHits[i];
+                Vector3 point = target is Component component ? component.transform.position + Vector3.up : center;
+                smashTarget = Connect(target, point, now, ref frozeThisSweep);
+            }
+            Array.Clear(crowdHits, 0, crowdCount);
+
             if (smashTarget != null) BeginSmash(smashTarget);
+        }
+
+        // One connection of a swing: skips what it must not hit, hits the rest under the rehit
+        // rule, and returns the unit to Smash if this hit emptied its gauge (R24).
+        Transform Connect(IDamageable target, Vector3 point, float now, ref bool frozeThisSweep)
+        {
+            if (target == (IDamageable)self || !target.IsAlive || target.Faction == Faction.Village) return null;
+
+            int slot = IndexOf(target);
+            if (slot < 0)
+            {
+                if (victimCount == MaxVictimsPerSwing) return null;
+                slot = victimCount++;
+                victims[slot] = target;
+            }
+            else if (current.rehitSeconds <= 0f || now - victimHitAt[slot] < current.rehitSeconds)
+            {
+                return null;
+            }
+
+            // Hitstop on the first connection of the swing (and of each multi-hit tick)
+            // only, so a sweep through thirty scuttlers does not stutter.
+            bool freeze = !frozeThisSweep && (slot == 0 || victimHitAt[slot] > 0f);
+            frozeThisSweep |= freeze;
+            victimHitAt[slot] = now;
+
+            Vector3 origin = current.push == PushDirection.AlongFacing
+                ? point - transform.forward
+                : transform.position;
+
+            var info = new DamageInfo(current.damage, origin, current.reaction,
+                                      freeze ? current.hitstopFrames : 0, current.weakPointDrain, null);
+            target.TakeDamage(in info);
+            Hit?.Invoke(new HitReport(target, current, point, freeze));
+
+            if (freeze) hitstop.Freeze(current.hitstopFrames);
+            return SmashTargetOf(target);
         }
 
         // R24: the hit that empties a gauge turns straight into the Smash, as in Hyrule Warriors.

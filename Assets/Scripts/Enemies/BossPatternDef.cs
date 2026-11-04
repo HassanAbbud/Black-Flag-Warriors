@@ -19,5 +19,11 @@ namespace Ahoy.Enemies
         public float weight = 1f;
         [Tooltip("Seconds before this combo can be chosen again.")]
         public float cooldownSeconds = 4f;
+
+        [Header("Punish window (R20c, R33)")]
+        [Tooltip("After this combo the enemy stands open. A hit during that window exposes its weak point.")]
+        public bool leavesPunishWindow;
+        [Tooltip("Seconds it stands open after the combo's last recovery.")]
+        public float punishSeconds = 2.5f;
     }
 }

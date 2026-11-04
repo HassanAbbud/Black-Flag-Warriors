@@ -4,29 +4,48 @@ using UnityEngine;
 namespace Ahoy.Enemies
 {
     // A crowd monster: a scuttler or a brute. It has no Update, no Rigidbody and no collider.
-    // MonsterManager ticks it (Code Patterns 2.8) and the player's sweep finds it through
+    // MonsterManager ticks it (Code Patterns 2.8) and everyone else finds it through
     // ICrowdQuery. It holds only its own state; the species comes from its MonsterDef (2.9).
+    //
+    // Musou behaviour: the crowd is there to be mown down, not to win. Most of it walks up and
+    // mills around its target in a loose ring. Only a few monsters at a time hold an attack
+    // slot (a token from the manager), wind up where the player can read it, and swing for
+    // light damage. Everyone else waits their turn.
     public sealed class Monster : MonoBehaviour, IUnit
     {
-        public enum MonsterState { Idle, Chase, Telegraph, Strike, Recover, Staggered, Dead }
+        public enum MonsterState { Idle, Chase, Circle, Telegraph, Strike, Recover, Staggered, Dead }
 
         [Tooltip("Optional. Leave empty for a capsule test dummy. Default state must be Locomotion.")]
         [SerializeField] Animator animator;
 
         BalanceConfig balance;
         MonsterManager manager;
+        IDamageable playerTarget;
+
+        // Who it is fighting: Zahim, or an ally that drew it away from him.
         IDamageable target;
+        ITargetable allyTarget;
 
         MonsterDef def;
         int locationId;
         int probeSlot;          // offsets ground probes so the crowd never probes on one frame
         float groundY;
 
+        // Personality, rolled at activation so a crowd never moves in lockstep.
+        float ringAngle;        // where on the ring around its target it waits, degrees
+        float ringRadius;
+        float circleDirection;  // +1 or -1
+        float speedScale;
+
         MonsterState state;
         float stateTime;
         float stateSeconds;     // length of the timed state: stagger
         float health;
         float nextAttackTime;
+        float nextRetargetTime;
+        float tokenAt;
+        bool holdsToken;
+        bool tokenOnAlly;
         MonsterAttackDef attack;
         bool strikeHit;
         Slide slide;
@@ -36,6 +55,8 @@ namespace Ahoy.Enemies
         public MonsterState State => state;
         public MonsterDef Def => def;
         public float BodyRadius => def.bodyRadius;
+        public bool HoldsAttackSlot => holdsToken;
+        public bool IsFightingAlly => allyTarget != null;
 
         public Faction Faction => Faction.Monsters;
         public bool IsAlive => state != MonsterState.Dead;
@@ -49,7 +70,7 @@ namespace Ahoy.Enemies
         {
             manager = owner;
             balance = config;
-            target = player;
+            playerTarget = player;
         }
 
         internal void Activate(MonsterDef species, int home, Vector3 position, Quaternion rotation, int slot)
@@ -57,6 +78,10 @@ namespace Ahoy.Enemies
             def = species;
             locationId = home;
             probeSlot = slot;
+
+            ringRadius = balance.crowdRingRadius + Random.value * balance.crowdRingRadiusSpread;
+            circleDirection = Random.value < 0.5f ? -1f : 1f;
+            speedScale = 1f + (Random.value * 2f - 1f) * balance.crowdSpeedJitter;
 
             groundY = position.y;
             ProbeGround(position);
@@ -70,14 +95,22 @@ namespace Ahoy.Enemies
         {
             if (def == null) return;
 
+            float now = Time.time;
             health = def.maxHealth;
             state = MonsterState.Idle;
             stateTime = 0f;
             attack = null;
             strikeHit = false;
-            nextAttackTime = 0f;
+            holdsToken = false;
+            target = null;
+            allyTarget = null;
+            nextAttackTime = now + Random.value * balance.crowdFirstAttackDelay;
+            nextRetargetTime = now + Random.value * balance.crowdRetargetInterval;
             slide.Clear();
         }
+
+        // Called by the manager when this monster returns to the pool.
+        internal void DropAttackSlot() => DropToken();
 
         // ── Damage ───────────────────────────────────────────────────────────────────
         public void TakeDamage(in DamageInfo info)
@@ -97,6 +130,7 @@ namespace Ahoy.Enemies
         {
             if (reaction == HitReaction.None || reaction < def.minReaction) return;
 
+            DropToken();   // knocked out of its attack: the slot goes to someone else
             Vector3 away = transform.position - origin;
             away.y = 0f;
             away = away.sqrMagnitude > 0f ? away.normalized : -transform.forward;
@@ -104,6 +138,7 @@ namespace Ahoy.Enemies
             bool flinch = reaction == HitReaction.Flinch;
             SetState(MonsterState.Staggered);
             stateSeconds = flinch ? def.flinchSeconds : def.knockbackSeconds;
+            nextAttackTime = Mathf.Max(nextAttackTime, Time.time + stateSeconds);
             if (!flinch)
             {
                 float distance = reaction == HitReaction.Knockback ? def.knockbackDistance : def.blowawayDistance;
@@ -116,6 +151,7 @@ namespace Ahoy.Enemies
         void Die()
         {
             health = 0f;
+            DropToken();
             SetState(MonsterState.Dead);
             EnemyCombat.Play(animator, MonsterAnimatorIds.Death, def.animationCrossFade);
             manager.NotifyDied(this);
@@ -123,37 +159,57 @@ namespace Ahoy.Enemies
 
         // ── State machine ────────────────────────────────────────────────────────────
         // Called by MonsterManager once a frame. The crowd has no Update of its own.
-        internal void Tick(float dt, Vector3 playerPosition, bool playerAlive, int frame)
+        internal void Tick(float dt, float now, Vector3 playerPosition, bool playerAlive, int frame)
         {
             stateTime += dt;
 
-            Vector3 toPlayer = playerPosition - transform.position;
-            toPlayer.y = 0f;
-            float distance = toPlayer.magnitude;
-            Vector3 direction = distance > 0.0001f ? toPlayer / distance : transform.forward;
+            if (state == MonsterState.Dead)
+            {
+                if (stateTime >= def.corpseSeconds) manager.Release(this);
+                return;
+            }
+
+            // Who to fight. Only between attacks and only without an attack slot, so a monster
+            // never changes its mind in the middle of a swing.
+            bool canRetarget = !holdsToken &&
+                               (state == MonsterState.Idle || state == MonsterState.Chase || state == MonsterState.Circle);
+            if (canRetarget && (now >= nextRetargetTime || target == null || !target.IsAlive))
+            {
+                nextRetargetTime = now + balance.crowdRetargetInterval;
+                PickTarget(playerPosition, playerAlive);
+            }
+            bool hasTarget = target != null && target.IsAlive;
+
+            Vector3 targetPosition = allyTarget != null ? allyTarget.Position : playerPosition;
+            Vector3 toTarget = targetPosition - transform.position;
+            toTarget.y = 0f;
+            float distance = toTarget.magnitude;
+            Vector3 direction = distance > 0.0001f ? toTarget / distance : transform.forward;
             Vector3 velocity = Vector3.zero;
 
             switch (state)
             {
                 case MonsterState.Idle:
-                    if (playerAlive && distance <= def.aggroRange) SetState(MonsterState.Chase);
+                    if (hasTarget && distance <= def.aggroRange) SetState(MonsterState.Chase);
                     break;
 
                 case MonsterState.Chase:
-                    velocity = Chase(dt, direction, distance, playerAlive);
+                case MonsterState.Circle:
+                    velocity = Approach(dt, now, targetPosition, direction, distance, hasTarget);
                     break;
 
                 case MonsterState.Telegraph:
-                    EnemyCombat.Turn(transform, direction, attack.telegraphTurnSpeed, dt);
+                    if (stateTime < attack.telegraphSeconds * attack.telegraphAimLockAt)
+                        EnemyCombat.Turn(transform, direction, attack.telegraphTurnSpeed, dt);
                     if (stateTime >= attack.telegraphSeconds) BeginStrike();
                     break;
 
                 case MonsterState.Strike:
                     velocity = slide.Velocity(stateTime, dt);
-                    if (!strikeHit)
-                        strikeHit = EnemyCombat.TryStrike(this, transform, attack, target, playerPosition,
-                                                          balance.enemyHitPadding);
-                    if (stateTime >= attack.strikeSeconds) SetState(MonsterState.Recover);
+                    if (!strikeHit && target != null)
+                        strikeHit = EnemyCombat.TryStrike(this, transform, attack, target, targetPosition,
+                                                          balance.enemyHitPadding, balance.enemyDamageScale);
+                    if (stateTime >= attack.strikeSeconds) EndStrike();
                     break;
 
                 case MonsterState.Recover:
@@ -164,10 +220,6 @@ namespace Ahoy.Enemies
                     velocity = slide.Velocity(stateTime, dt);
                     if (stateTime >= stateSeconds) SetState(MonsterState.Chase);
                     break;
-
-                case MonsterState.Dead:
-                    if (stateTime >= def.corpseSeconds) manager.Release(this);
-                    return;
             }
 
             Vector3 position = transform.position + velocity * dt;
@@ -176,25 +228,123 @@ namespace Ahoy.Enemies
             transform.position = position;
         }
 
-        Vector3 Chase(float dt, Vector3 direction, float distance, bool playerAlive)
+        // Walk to the ring around the target and mill there, or, with an attack slot, walk
+        // straight in and swing.
+        Vector3 Approach(float dt, float now, Vector3 targetPosition, Vector3 direction, float distance, bool hasTarget)
         {
-            if (!playerAlive)
+            if (!hasTarget)
             {
+                DropToken();
                 SetState(MonsterState.Idle);
                 return Vector3.zero;
             }
 
-            MonsterAttackDef next = PickAttack(distance);
-            if (next != null && Time.time >= nextAttackTime)
+            if (holdsToken) return Commit(dt, now, direction, distance);
+
+            // Close enough and ready: ask for an attack slot.
+            bool ready = now >= nextAttackTime &&
+                         distance <= ringRadius + balance.crowdRingTolerance + balance.crowdAttackRequestRange;
+            if (ready && manager.TryAcquireToken(allyTarget != null, now))
             {
-                BeginAttack(next);
+                holdsToken = true;
+                tokenOnAlly = allyTarget != null;
+                tokenAt = now;
+                SetState(MonsterState.Chase);
+                return Vector3.zero;
+            }
+
+            // Otherwise: far away, close the gap; at the ring, drift around it.
+            MonsterState want = distance > ringRadius + balance.crowdRingTolerance
+                ? MonsterState.Chase : MonsterState.Circle;
+            if (state != want) SetState(want);
+            if (want == MonsterState.Circle)
+                ringAngle += circleDirection * balance.crowdCircleDegreesPerSecond * dt;
+
+            float rad = ringAngle * Mathf.Deg2Rad;
+            Vector3 ringPoint = targetPosition + new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * ringRadius;
+            Vector3 toPoint = ringPoint - transform.position;
+            toPoint.y = 0f;
+            float gap = toPoint.magnitude;
+
+            EnemyCombat.Turn(transform, direction, def.turnSpeed, dt);
+            float speed = def.moveSpeed * speedScale;
+            if (animator != null)
+                animator.SetFloat(MonsterAnimatorIds.Speed, gap > 0.05f ? speed : 0f, def.speedDampSeconds, dt);
+            if (gap <= 0.05f) return Vector3.zero;
+
+            // Never overshoot the point in one frame.
+            float step = Mathf.Min(speed, gap / dt);
+            return toPoint / gap * step;
+        }
+
+        // Holding a slot: go for the target and attack the moment it is in reach.
+        Vector3 Commit(float dt, float now, Vector3 direction, float distance)
+        {
+            if (now - tokenAt > balance.crowdTokenHoldSeconds)
+            {
+                // Could not get a swing in (target ran, or the data has no attack in reach).
+                DropToken();
+                ScheduleNextAttack(now);
+                SetState(MonsterState.Chase);
+                return Vector3.zero;
+            }
+
+            MonsterAttackDef next = PickAttack(distance);
+            if (next != null)
+            {
+                BeginAttack(next, now);
                 return Vector3.zero;
             }
 
             EnemyCombat.Turn(transform, direction, def.turnSpeed, dt);
-            float speed = distance > def.stopDistance ? def.moveSpeed : 0f;
+            float speed = distance > def.stopDistance ? def.moveSpeed * speedScale : 0f;
             if (animator != null) animator.SetFloat(MonsterAnimatorIds.Speed, speed, def.speedDampSeconds, dt);
             return transform.forward * speed;
+        }
+
+        // Zahim by default; an ally if one is closer than he is and within engage range.
+        void PickTarget(Vector3 playerPosition, bool playerAlive)
+        {
+            Vector3 here = transform.position;
+            float playerDistance = playerAlive ? EnemyCombat.FlatDistance(here, playerPosition) : float.MaxValue;
+
+            ITargetable nearestAlly = null;
+            float allyDistance = balance.crowdAllyEngageRange;
+            IVillageTargets village = manager.Village;
+            for (int i = 0; i < village.Count; i++)
+            {
+                ITargetable candidate = village[i];
+                if (!candidate.IsAlive) continue;
+                float d = EnemyCombat.FlatDistance(here, candidate.Position);
+                if (d < allyDistance)
+                {
+                    allyDistance = d;
+                    nearestAlly = candidate;
+                }
+            }
+
+            IDamageable next = null;
+            ITargetable nextAlly = null;
+            if (nearestAlly != null && allyDistance < playerDistance)
+            {
+                next = nearestAlly;
+                nextAlly = nearestAlly;
+            }
+            else if (playerAlive)
+            {
+                next = playerTarget;
+            }
+
+            // New target: approach it from the side the monster is already on, instead of
+            // running through the middle of the crowd to a random point on the ring.
+            if (!ReferenceEquals(next, target) && next != null)
+            {
+                Vector3 centre = nextAlly != null ? nextAlly.Position : playerPosition;
+                Vector3 rel = here - centre;
+                ringAngle = Mathf.Atan2(rel.z, rel.x) * Mathf.Rad2Deg + (Random.value - 0.5f) * 40f;
+            }
+            target = next;
+            allyTarget = nextAlly;
         }
 
         MonsterAttackDef PickAttack(float distance)
@@ -207,11 +357,11 @@ namespace Ahoy.Enemies
             return null;
         }
 
-        void BeginAttack(MonsterAttackDef next)
+        void BeginAttack(MonsterAttackDef next, float now)
         {
             attack = next;
             strikeHit = false;
-            nextAttackTime = Time.time + next.cooldownSeconds;
+            ScheduleNextAttack(now);
             SetState(MonsterState.Telegraph);
 
             if (animator != null && next.HasClip)
@@ -227,15 +377,38 @@ namespace Ahoy.Enemies
             slide.Begin(transform.forward, attack.lungeDistance, attack.lungeSeconds);
         }
 
+        // The swing is over: give the slot back so another monster can step in, then recover.
+        void EndStrike()
+        {
+            DropToken();
+            SetState(MonsterState.Recover);
+        }
+
+        // Each monster's own cooldown, varied so the crowd never swings in step.
+        void ScheduleNextAttack(float now)
+        {
+            float cooldown = attack != null ? attack.cooldownSeconds : balance.crowdFirstAttackDelay;
+            float jitter = 1f + (Random.value * 2f - 1f) * balance.crowdCooldownJitter;
+            nextAttackTime = now + cooldown * jitter;
+        }
+
+        void DropToken()
+        {
+            if (!holdsToken) return;
+            holdsToken = false;
+            manager.ReturnToken(tokenOnAlly);
+        }
+
         // The single place state changes; breakpoint here.
         void SetState(MonsterState next)
         {
-            bool returning = (next == MonsterState.Idle || next == MonsterState.Chase) &&
-                             state != MonsterState.Idle && state != MonsterState.Chase;
+            bool wasLocomotion = state == MonsterState.Idle || state == MonsterState.Chase || state == MonsterState.Circle;
+            bool nowLocomotion = next == MonsterState.Idle || next == MonsterState.Chase || next == MonsterState.Circle;
             state = next;
             stateTime = 0f;
             slide.Clear();
-            if (returning) EnemyCombat.Play(animator, MonsterAnimatorIds.Locomotion, def.animationCrossFade);
+            if (nowLocomotion && !wasLocomotion)
+                EnemyCombat.Play(animator, MonsterAnimatorIds.Locomotion, def.animationCrossFade);
         }
 
         void ProbeGround(Vector3 position)

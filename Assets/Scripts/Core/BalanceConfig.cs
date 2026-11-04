@@ -159,6 +159,46 @@ namespace Ahoy.Core
         public float enemyGravity = -25f;
         [Tooltip("Small downward speed kept while grounded so named enemies hug slopes.")]
         public float enemyGroundedStickSpeed = -2f;
+
+        [Header("Enemies — crowd attack budget (musou: most of the crowd only closes in)")]
+        [Tooltip("Crowd monsters allowed to be winding up or striking at Zahim at once. The rest circle him.")]
+        public int crowdMaxAttackersOnPlayer = 3;
+        [Tooltip("Same limit for crowd monsters fighting allies, so allies are not deleted instantly.")]
+        public int crowdMaxAttackersOnAllies = 6;
+        [Tooltip("Minimum seconds between two crowd attacks starting on Zahim. Spreads hits out instead of a simultaneous volley.")]
+        public float crowdAttackStartInterval = 0.5f;
+        [Tooltip("Random extra seconds added to that interval.")]
+        public float crowdAttackStartJitter = 0.3f;
+        [Tooltip("Seconds a monster may hold an attack slot without attacking before it gives it back.")]
+        public float crowdTokenHoldSeconds = 2.5f;
+        [Tooltip("A monster waits a random 0 to this many seconds after waking before it first wants to attack.")]
+        public float crowdFirstAttackDelay = 2f;
+        [Tooltip("Each monster's attack cooldown varies by this fraction either way, so they never attack in step.")]
+        public float crowdCooldownJitter = 0.5f;
+
+        [Header("Enemies — crowd surround")]
+        [Tooltip("Metres from its target at which a waiting monster mills around.")]
+        public float crowdRingRadius = 2.6f;
+        [Tooltip("Random extra metres per monster, so the crowd is a thick ring, not a circle.")]
+        public float crowdRingRadiusSpread = 1.2f;
+        [Tooltip("A waiting monster counts as at the ring within this many metres of it.")]
+        public float crowdRingTolerance = 0.4f;
+        [Tooltip("How far outside the ring (metres) a monster may stand and still ask for an attack slot.")]
+        public float crowdAttackRequestRange = 1.5f;
+        [Tooltip("Degrees per second a waiting monster drifts around its target.")]
+        public float crowdCircleDegreesPerSecond = 25f;
+        [Tooltip("Each monster's speed varies by this fraction either way.")]
+        public float crowdSpeedJitter = 0.2f;
+        [Tooltip("Seconds between a monster re-checking who to fight.")]
+        public float crowdRetargetInterval = 0.4f;
+        [Tooltip("An ally this close (metres) and nearer than Zahim draws a monster away from him.")]
+        public float crowdAllyEngageRange = 5f;
+
+        [Header("Enemies — named units and difficulty")]
+        [Tooltip("A named enemy only starts an attack once it faces its target within this many degrees.")]
+        public float bossFacingDegrees = 30f;
+        [Tooltip("Multiplies all enemy damage. The difficulty dial; 1 is Normal.")]
+        public float enemyDamageScale = 1f;
         
         [Header("Lock-on")]
         public float lockOnRange = 15f;           

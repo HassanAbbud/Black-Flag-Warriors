@@ -6,12 +6,22 @@ namespace Ahoy.Enemies
 {
     // A named unit: a captain, guardian, giant or herald. Unlike the crowd it gets its own
     // Update (Code Patterns 2.8) and a CharacterController, so Zahim's physics sweep finds it.
-    // It picks a combo from its BossDef, telegraphs, strikes and recovers. Swings never stagger
-    // it; the weak point does (R19–R26), and this reads that state rather than being told.
+    //
+    // The fight, as the weak-point loop expects it (R19-R26, R33, R35):
+    //   1. It walks up and only starts a combo once Zahim is inside that combo's real reach
+    //      and it is facing him, so it never swings at empty air.
+    //   2. The encounter opens with its opening pattern (R33), usually unguardable.
+    //   3. Each attack telegraphs. It tracks Zahim at first, then commits, so a late dodge works.
+    //   4. A combo that leaves a punish window ends with the boss standing open. A hit from
+    //      Zahim then exposes the weak point (R20c). Exposed means staggered; this reads that.
+    //   5. Giants take only a share of ordinary damage until the gauge is exposed (R35).
+    // Swings hit Zahim and any ally standing in the hitbox. Allies never drain the gauge.
     [RequireComponent(typeof(CharacterController))]
     public sealed class BossController : MonoBehaviour, IUnit
     {
-        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Staggered, Dead }
+        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Punish, Staggered, Dead }
+
+        const int MaxStruckPerAttack = 16;
 
         [SerializeField] BossDef def;
         [SerializeField] BalanceConfig balance;
@@ -31,10 +41,11 @@ namespace Ahoy.Enemies
 
         IPlayerMotor motor;
         IDamageable target;
+        IVillageTargets village;
 
         BossState state;
         float stateTime;
-        float stateSeconds;     // length of timed states: recover
+        float stateSeconds;     // length of timed states: recover, punish
         float health;
         float verticalSpeed;
         Slide slide;
@@ -42,12 +53,19 @@ namespace Ahoy.Enemies
         BossPatternDef pattern;
         int stepIndex;
         MonsterAttackDef attack;
-        bool strikeHit;
+        bool opened;            // the opening pattern has been used
+        bool punishOpen;        // from the last strike of a punish combo until the boss recovers
+        float nextPatternAt;
         float[] patternReadyAt;
+
+        // Everyone this attack has already hit, so one swing hits each target once.
+        readonly IDamageable[] struck = new IDamageable[MaxStruckPerAttack];
+        int struckCount;
 
         public BossState State => state;
         public float Health => health;
         public float MaxHealth => def.maxHealth;
+        public bool PunishWindowOpen => punishOpen;
 
         public Faction Faction => Faction.Monsters;
         public bool IsAlive => state != BossState.Dead;
@@ -61,9 +79,17 @@ namespace Ahoy.Enemies
             health = def.maxHealth;
             patternReadyAt = new float[def.patterns != null ? def.patterns.Length : 0];
             WeakPoint = GetComponent<IWeakPoint>();   // null until the weak-point track adds one
+            village = BattleContext.Village;
 
             if (player != null)
                 Initialize(player.GetComponent<IPlayerMotor>(), player.GetComponent<IDamageable>(), locationId);
+        }
+
+        void Start()
+        {
+            // Without a target the boss silently does nothing, which looks like a broken boss.
+            if (motor == null)
+                Debug.LogError($"{name}: no player. Assign Player on the BossController or call Initialize.", this);
         }
 
         // The spawner (Systems) calls this when a portal's guardian comes out.
@@ -79,12 +105,28 @@ namespace Ahoy.Enemies
         {
             if (state == BossState.Dead) return;
 
-            health = Mathf.Max(0f, health - info.Amount);
+            bool fromZahim = info.Source == null;
+
+            // R20c, R33: a hit while it stands open is what shows the gauge.
+            if (punishOpen && fromZahim && !IsExposed()) WeakPoint?.TryExpose(ExposeSource.PunishWindow);
+
+            // R35: a giant shrugs off most damage until its gauge is exposed.
+            float amount = def.tier == Tier.Giant && !IsExposed()
+                ? info.Amount * balance.giantDamageOutsideStun
+                : info.Amount;
+
+            health = Mathf.Max(0f, health - amount);
             HealthChanged?.Invoke(health, def.maxHealth);
-            WeakPoint?.Drain(info.WeakPointDrain);   // R22; the weak point ignores it unless exposed
+
+            // R22: only Zahim's blows drain the gauge; five allies must not empty it for him.
+            if (fromZahim) WeakPoint?.Drain(info.WeakPointDrain);
 
             if (health <= 0f) Die();
         }
+
+        bool IsExposed() =>
+            WeakPoint != null &&
+            (WeakPoint.State == WeakPointState.Exposed || WeakPoint.State == WeakPointState.Smashing);
 
         void Die()
         {
@@ -100,6 +142,7 @@ namespace Ahoy.Enemies
             if (state == BossState.Dead || motor == null) return;
 
             float dt = Time.deltaTime;
+            float now = Time.time;
             stateTime += dt;
 
             Vector3 toPlayer = motor.Position - transform.position;
@@ -109,8 +152,7 @@ namespace Ahoy.Enemies
             bool playerAlive = !motor.IsDead;
 
             // The weak point overrides everything but death: exposed means stand and take it.
-            bool exposed = WeakPoint != null &&
-                           (WeakPoint.State == WeakPointState.Exposed || WeakPoint.State == WeakPointState.Smashing);
+            bool exposed = IsExposed();
             if (exposed && state != BossState.Staggered) EnterStagger();
             else if (!exposed && state == BossState.Staggered) EndStagger();
 
@@ -122,24 +164,28 @@ namespace Ahoy.Enemies
                     break;
 
                 case BossState.Chase:
-                    velocity = Chase(dt, direction, distance, playerAlive);
+                    velocity = Chase(dt, now, direction, distance, playerAlive);
                     break;
 
                 case BossState.Telegraph:
-                    EnemyCombat.Turn(transform, direction, attack.telegraphTurnSpeed, dt);
+                    // Tracks Zahim for the first part of the wind-up, then commits.
+                    if (stateTime < attack.telegraphSeconds * attack.telegraphAimLockAt)
+                        EnemyCombat.Turn(transform, direction, attack.telegraphTurnSpeed, dt);
                     if (stateTime >= attack.telegraphSeconds) BeginStrike();
                     break;
 
                 case BossState.Strike:
                     velocity = slide.Velocity(stateTime, dt);
-                    if (!strikeHit && target != null)
-                        strikeHit = EnemyCombat.TryStrike(this, transform, attack, target, motor.Position,
-                                                          balance.enemyHitPadding);
+                    StrikeTargets();
                     if (stateTime >= attack.strikeSeconds) EndStrike();
                     break;
 
                 case BossState.Recover:
-                    if (stateTime >= stateSeconds) AfterRecover();
+                    if (stateTime >= stateSeconds) AfterRecover(now);
+                    break;
+
+                case BossState.Punish:
+                    if (stateTime >= stateSeconds) SetState(BossState.Chase);   // clears the window
                     break;
 
                 case BossState.Staggered:
@@ -149,28 +195,47 @@ namespace Ahoy.Enemies
             Move(velocity, dt);
         }
 
-        Vector3 Chase(float dt, Vector3 direction, float distance, bool playerAlive)
+        Vector3 Chase(float dt, float now, Vector3 direction, float distance, bool playerAlive)
         {
             if (!playerAlive)
             {
                 SetState(BossState.Idle);
                 return Vector3.zero;
             }
-            if (TryStartPattern(distance)) return Vector3.zero;
 
             EnemyCombat.Turn(transform, direction, def.turnSpeed, dt);
+
+            // Only commit to an attack when it can land and the boss is actually facing Zahim.
+            bool facing = Vector3.Angle(transform.forward, direction) <= balance.bossFacingDegrees;
+            if (now >= nextPatternAt && facing && TryStartPattern(distance, now)) return Vector3.zero;
+
             float speed = distance > def.stopDistance ? def.moveSpeed : 0f;
             if (animator != null) animator.SetFloat(MonsterAnimatorIds.Speed, speed, def.speedDampSeconds, dt);
             return transform.forward * speed;
         }
 
-        // Weighted pick among the combos whose range fits and whose cooldown is over.
-        bool TryStartPattern(float distance)
+        // R33: the encounter opens with its opening pattern. After that, a weighted pick among
+        // the combos whose reach fits and whose cooldown is over.
+        bool TryStartPattern(float distance, float now)
         {
+            if (!opened)
+            {
+                if (def.openingPattern == null)
+                {
+                    opened = true;
+                }
+                else
+                {
+                    if (!InReach(def.openingPattern, distance)) return false;   // wait until it can land
+                    opened = true;
+                    StartPattern(def.openingPattern, now);
+                    return true;
+                }
+            }
+
             BossPatternDef[] patterns = def.patterns;
             if (patterns == null) return false;
 
-            float now = Time.time;
             float total = 0f;
             for (int i = 0; i < patterns.Length; i++)
                 if (Eligible(i, distance, now)) total += patterns[i].weight;
@@ -186,24 +251,35 @@ namespace Ahoy.Enemies
                 if (roll <= 0f) break;
             }
 
-            pattern = patterns[chosen];
-            patternReadyAt[chosen] = now + pattern.cooldownSeconds;
-            stepIndex = 0;
-            BeginStep();
+            StartPattern(patterns[chosen], now);
             return true;
         }
 
-        bool Eligible(int index, float distance, float now)
+        // A combo can start only when Zahim is inside its first attack's real reach.
+        static bool InReach(BossPatternDef p, float distance)
         {
-            BossPatternDef p = def.patterns[index];
-            return p != null && p.steps != null && p.steps.Length > 0 &&
-                   distance >= p.minRange && distance <= p.maxRange && now >= patternReadyAt[index];
+            if (p == null || p.steps == null || p.steps.Length == 0 || p.steps[0] == null) return false;
+            return distance >= p.minRange && distance <= Mathf.Min(p.maxRange, p.steps[0].Reach);
+        }
+
+        bool Eligible(int index, float distance, float now) =>
+            InReach(def.patterns[index], distance) && now >= patternReadyAt[index];
+
+        void StartPattern(BossPatternDef chosen, float now)
+        {
+            for (int i = 0; i < def.patterns.Length; i++)
+                if (def.patterns[i] == chosen) patternReadyAt[i] = now + chosen.cooldownSeconds;
+
+            pattern = chosen;
+            stepIndex = 0;
+            BeginStep();
         }
 
         void BeginStep()
         {
             attack = pattern.steps[stepIndex];
-            strikeHit = false;
+            Array.Clear(struck, 0, struckCount);
+            struckCount = 0;
             SetState(BossState.Telegraph);   // raises TelegraphStarted with this attack
 
             if (animator != null && attack.HasClip)
@@ -219,14 +295,49 @@ namespace Ahoy.Enemies
             slide.Begin(transform.forward, attack.lungeDistance, attack.lungeSeconds);
         }
 
+        // One swing hits Zahim and every ally in the hitbox, each once.
+        void StrikeTargets()
+        {
+            float padding = balance.enemyHitPadding;
+            float scale = balance.enemyDamageScale;
+
+            if (target != null && !HasStruck(target) &&
+                EnemyCombat.TryStrike(this, transform, attack, target, motor.Position, padding, scale))
+                MarkStruck(target);
+
+            for (int i = 0; i < village.Count; i++)
+            {
+                ITargetable ally = village[i];
+                if (!ally.IsAlive || HasStruck(ally)) continue;
+                if (EnemyCombat.TryStrike(this, transform, attack, ally, ally.Position, padding, scale))
+                    MarkStruck(ally);
+            }
+        }
+
+        bool HasStruck(IDamageable who)
+        {
+            for (int i = 0; i < struckCount; i++)
+                if (ReferenceEquals(struck[i], who)) return true;
+            return false;
+        }
+
+        void MarkStruck(IDamageable who)
+        {
+            if (struckCount < MaxStruckPerAttack) struck[struckCount++] = who;
+        }
+
         void EndStrike()
         {
             SetState(BossState.Recover);
             stateSeconds = attack.recoverSeconds;
+
+            // The recovery after the last strike of a punish combo already counts as open.
+            bool lastStep = pattern != null && stepIndex + 1 >= pattern.steps.Length;
+            punishOpen = lastStep && pattern.leavesPunishWindow;
         }
 
-        // Next combo step, or back to the chase when the combo is done.
-        void AfterRecover()
+        // Next combo step, or the end of the combo: rest, then either stand open or chase.
+        void AfterRecover(float now)
         {
             if (pattern != null && attack != null && stepIndex + 1 < pattern.steps.Length)
             {
@@ -234,8 +345,19 @@ namespace Ahoy.Enemies
                 BeginStep();
                 return;
             }
+
+            BossPatternDef finished = pattern;
             pattern = null;
             attack = null;
+            nextPatternAt = now + def.attackGapSeconds;
+
+            if (finished != null && finished.leavesPunishWindow)
+            {
+                SetState(BossState.Punish);
+                stateSeconds = finished.punishSeconds;
+                punishOpen = true;
+                return;
+            }
             SetState(BossState.Chase);
         }
 
@@ -261,6 +383,9 @@ namespace Ahoy.Enemies
             state = next;
             stateTime = 0f;
             slide.Clear();
+
+            // The window spans the last recovery and the punish pose, and nothing else.
+            if (next != BossState.Recover && next != BossState.Punish) punishOpen = false;
 
             if (previous == BossState.Telegraph && next != BossState.Telegraph) TelegraphEnded?.Invoke();
             if (next == BossState.Telegraph) TelegraphStarted?.Invoke(attack);

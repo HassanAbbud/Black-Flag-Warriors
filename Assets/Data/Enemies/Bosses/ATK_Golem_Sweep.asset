@@ -15,16 +15,17 @@ MonoBehaviour:
   animatorState: 
   playbackSpeed: 1
   crossFadeSeconds: 0.08
-  telegraphSeconds: 1
-  telegraphTurnSpeed: 0
+  telegraphSeconds: 0.9
+  telegraphTurnSpeed: 90
+  telegraphAimLockAt: 0.6
   strikeSeconds: 0.3
-  recoverSeconds: 0.8
-  damage: 150
+  recoverSeconds: 0.9
+  damage: 90
   reaction: 2
-  hitstopFrames: 4
+  hitstopFrames: 6
   unblockable: 0
-  hitboxCenter: {x: 0, y: 1, z: 2}
-  hitboxHalfExtents: {x: 2.5, y: 1.5, z: 1.5}
+  hitboxCenter: {x: 0, y: 1, z: 2.5}
+  hitboxHalfExtents: {x: 3, y: 1.5, z: 2.5}
   minRange: 0
   maxRange: 1.8
   cooldownSeconds: 1.2
