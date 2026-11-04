@@ -153,7 +153,7 @@ namespace Ahoy.Enemies
             health = 0f;
             DropToken();
             SetState(MonsterState.Dead);
-            //EnemyCombat.Play(animator, MonsterAnimatorIds.Death, def.animationCrossFade);
+            EnemyCombat.Play(animator, MonsterAnimatorIds.Death, def.animationCrossFade);
             manager.NotifyDied(this);
         }
 
