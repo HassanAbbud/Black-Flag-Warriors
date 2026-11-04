@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2fe73ef75d48c409ef066457e68f8d, type: 3}
   m_Name: ATK_Imp_Bite
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.MonsterAttackDef
-  animatorState: 
+  animatorState: Attack
   playbackSpeed: 1
   crossFadeSeconds: 0.08
   telegraphSeconds: 0.55
