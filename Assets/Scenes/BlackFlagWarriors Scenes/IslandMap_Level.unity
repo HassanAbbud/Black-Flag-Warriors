@@ -212389,6 +212389,113 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 818115881498636699, guid: 7c4900ea99b74307af2356a3d1926a4b, type: 3}
   m_PrefabInstance: {fileID: 454771726}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1348339686
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1430816133}
+    m_Modifications:
+    - target: {fileID: 7289786175893345007, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_Name
+      value: Quest_NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7289786175893345007, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1348339690}
+    - targetCorrespondingSourceObject: {fileID: 7289786175893345007, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1348339689}
+  m_SourcePrefab: {fileID: 100100000, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+--- !u!4 &1348339687 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7953732201619474517, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+  m_PrefabInstance: {fileID: 1348339686}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1348339688 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7289786175893345007, guid: 53aa2650b163b2342a62bdacb8df50f1, type: 3}
+  m_PrefabInstance: {fileID: 1348339686}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1348339689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348339688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864cfde74964529448763b4ff180f41c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestGiver
+  quest: {fileID: 11400000, guid: 9c76dfa39da0eff4faf60347ea3b029e, type: 2}
+--- !u!135 &1348339690
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348339688}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &1348661537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -226675,6 +226782,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1136048239752770022, guid: 5b7f82bb880d4b07a816096326b25e8e, type: 3}
   m_PrefabInstance: {fileID: 1430803460}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1430816132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1430816133}
+  - component: {fileID: 1430816134}
+  - component: {fileID: 1430816135}
+  m_Layer: 0
+  m_Name: -------- NPC -------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1430816133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430816132}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 149.6455, y: 55.68159, z: -4.66728}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1348339687}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430816134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430816132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a9e4cff8b96bd4481282cd9c16e13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+--- !u!114 &1430816135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430816132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877d581504ed87c4192b7f76af19832b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestHUD
+  width: 280
+  margin: 15
+  lineHeight: 40
 --- !u!1001 &1431280104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -338330,3 +338498,4 @@ SceneRoots:
   - {fileID: 2449525178939259567}
   - {fileID: 291934783}
   - {fileID: 4615309543595919090}
+  - {fileID: 1430816133}
