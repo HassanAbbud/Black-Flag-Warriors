@@ -120,6 +120,13 @@ namespace Ahoy.Enemies
             for (int i = activeCount - 1; i >= 0; i--) Release(active[i]);
         }
 
+        // A sealed portal takes its own monsters with it, uncounted.
+        public void ReleaseLocation(int locationId)
+        {
+            for (int i = activeCount - 1; i >= 0; i--)
+                if (active[i].LocationId == locationId) Release(active[i]);
+        }
+
         internal void NotifyDied(Monster monster) => UnitDied?.Invoke(monster);
 
         // ── Attack slots ─────────────────────────────────────────────────────────────
