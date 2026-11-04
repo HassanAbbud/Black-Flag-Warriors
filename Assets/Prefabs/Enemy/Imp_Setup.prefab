@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5375012883095700310, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
       propertyPath: m_Name
-      value: Imp Variant
+      value: Imp_Setup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5375012883095700310, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8731974439939595022}
+    - targetCorrespondingSourceObject: {fileID: 5375012883095700310, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9048449679517801076}
   m_SourcePrefab: {fileID: 100100000, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
 --- !u!1 &1909144131923652285 stripped
 GameObject:
@@ -78,3 +81,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.Monster
   animator: {fileID: 0}
+--- !u!114 &9048449679517801076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909144131923652285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e203bc0018bbfa74a82680dde0cc1603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestroyedTarget
+  targetFaction: 1
