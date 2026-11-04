@@ -42,7 +42,7 @@ namespace Ahoy.Enemies
         public float blowawayDistance = 4f;
 
         [Header("Death")]
-        [Tooltip("Seconds the body stays before it returns to the pool.")]
+        [Tooltip("Seconds the body stays before it returns to the pool. Bosses are destroyed instead.")]
         public float corpseSeconds = 1.5f;
 
         [Header("Animation")]

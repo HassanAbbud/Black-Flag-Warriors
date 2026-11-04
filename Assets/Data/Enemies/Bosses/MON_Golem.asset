@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.BossDef
   tier: 3
   strength: 1
-  maxHealth: 3000
+  maxHealth: 100
   moveSpeed: 2.2
   turnSpeed: 90
   stopDistance: 3

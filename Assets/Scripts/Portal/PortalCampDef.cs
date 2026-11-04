@@ -1,3 +1,4 @@
+using Ahoy.Enemies;
 using UnityEngine;
 
 namespace Ahoy.Portal
@@ -12,7 +13,9 @@ namespace Ahoy.Portal
         public float triggerRadius = 15f;
 
         [Header("Minions")]
-        [Tooltip("One is picked at random for each spawn. Each needs an IDamageable on its root.")]
+        [Tooltip("Crowd species, spawned from the MonsterManager's pool. Each needs a pool entry there.")]
+        public MonsterDef[] monsterSpecies;
+        [Tooltip("Non-pooled minions, Instantiated. Never put a Monster prefab here: use monsterSpecies.")]
         public GameObject[] enemyPrefabs;
         [Tooltip("Monsters the camp holds in total; the boss threshold is a share of this.")]
         public int campSize = 50;

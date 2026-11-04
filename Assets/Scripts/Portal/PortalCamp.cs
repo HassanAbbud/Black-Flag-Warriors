@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Ahoy.Core;
+using Ahoy.Enemies;
 using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
@@ -14,9 +15,9 @@ namespace Ahoy.Portal
     //   SpawnBoss: once bossThreshold of campSize is killed, the boss comes out
     //   Sealed   : the boss is dead; its leftover minions are removed and the swirl greys out
     // Only monsters this portal spawned move its meter (R8). All tuning lives in PortalCampDef.
-    // Known gaps against CODE-PATTERNS, waiting on contracts other tracks own:
-    //   deaths are polled through IDamageable.IsAlive until IUnit carries a Died event, and
-    //   spawning uses Instantiate until ISpawnService and its pool exist.
+    // Crowd species come from the MonsterManager's pool, tagged with this portal's locationId,
+    // and their deaths arrive through MonsterManager.UnitDied. Non-pooled enemyPrefabs still use
+    // Instantiate, with deaths polled through IDamageable.IsAlive.
     public sealed class PortalCamp : MonoBehaviour
     {
         // A spawned minion: the root to remove on sealing, and the unit that says whether it is dead.
@@ -52,6 +53,10 @@ namespace Ahoy.Portal
         [SerializeField] Transform bossSpawnPoint;
         [Tooltip("The portal's centre mesh, using the Custom/URP Portal Swirl shader. Greyed out when sealed.")]
         [SerializeField] Renderer swirl;
+        [Tooltip("Spawns the def's monsterSpecies from its pool.")]
+        [SerializeField] MonsterManager monsters;
+        [Tooltip("Unique per portal; tags its crowd so only its own kills count. Not 0, which the test spawner uses.")]
+        [SerializeField] int locationId = 1;
 
         [Header("Testing")]
         [Tooltip("Current phase. Change it in Play mode to jump straight to a phase; it runs that phase's entry.")]
@@ -62,6 +67,8 @@ namespace Ahoy.Portal
         MaterialPropertyBlock swirlBlock;
         IDamageable boss;
         int spawned;
+        int crowdAlive;     // pooled monsters of this portal still standing
+        bool warnedPoolDry;
         float nextSpawnAt;
 
         public event Action Activated;
@@ -82,7 +89,35 @@ namespace Ahoy.Portal
             Debug.Assert(def != null, "PortalCamp needs a PortalCampDef", this);
             Debug.Assert(player != null, "PortalCamp needs the player wired in the inspector", this);
             Debug.Assert(swirl != null, "PortalCamp needs the portal's swirl renderer to grey it out when sealed", this);
+            // The portal is a prefab and the manager a scene object, so the field is easy to leave empty.
+            bool wantsCrowd = def != null && def.monsterSpecies != null && def.monsterSpecies.Length > 0;
+            if (monsters == null && wantsCrowd)
+            {
+                monsters = FindAnyObjectByType<MonsterManager>();
+                if (monsters != null)
+                    Debug.LogWarning($"{name}: Monsters not wired, using {monsters.name}. Wire it in the inspector.", this);
+                else
+                    Debug.LogError($"{name}: {def.name} lists monsterSpecies but the scene has no MonsterManager", this);
+            }
             swirlBlock = new MaterialPropertyBlock();
+        }
+
+        void OnEnable()
+        {
+            if (monsters != null) monsters.UnitDied += OnCrowdDied;
+        }
+
+        void OnDisable()
+        {
+            if (monsters != null) monsters.UnitDied -= OnCrowdDied;
+        }
+
+        // Every crowd kill comes through here; only this portal's own move its meter.
+        void OnCrowdDied(IUnit unit)
+        {
+            if (unit.LocationId != locationId) return;
+            crowdAlive = Mathf.Max(0, crowdAlive - 1);
+            Kills++;
         }
 
         void Update()
@@ -128,7 +163,12 @@ namespace Ahoy.Portal
 
                 case PortalPhase.SpawnBoss:
                     Transform point = bossSpawnPoint != null ? bossSpawnPoint : transform;
-                    boss = def.bossPrefab != null ? Spawn(def.bossPrefab, OnNavMesh(point.position), point.rotation, out _) : null;
+                    boss = null;
+                    if (def.bossPrefab != null)
+                    {
+                        boss = Spawn(def.bossPrefab, OnNavMesh(point.position), point.rotation, out GameObject bossRoot);
+                        if (boss != null) InitializeBoss(bossRoot);
+                    }
                     if (def.bossPrefab == null) Debug.LogError($"{name}: no boss prefab in {def.name}, the camp cannot be sealed", this);
                     Debug.Log($"{name}: {Kills} kills, the boss is out", this);
                     BossSpawned?.Invoke();
@@ -182,18 +222,40 @@ namespace Ahoy.Portal
             }
         }
 
+        // One pick across both lists: crowd species first, then non-pooled prefabs.
         void SpawnMinions()
         {
+            MonsterDef[] species = monsters != null ? def.monsterSpecies : null;
             GameObject[] prefabs = def.enemyPrefabs;
-            if (prefabs == null || prefabs.Length == 0) return;
-            if (spawned >= def.campSize || alive.Count >= def.maxAlive || Time.time < nextSpawnAt) return;
+            int speciesCount = species?.Length ?? 0;
+            int kinds = speciesCount + (prefabs?.Length ?? 0);
+            if (kinds == 0) return;
+            if (spawned >= def.campSize || alive.Count + crowdAlive >= def.maxAlive || Time.time < nextSpawnAt) return;
 
             nextSpawnAt = Time.time + def.spawnInterval;
-            GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
+            int pick = Random.Range(0, kinds);
             Vector3 position = RandomSpawnPoint();
             Quaternion facing = Quaternion.LookRotation(Flat(position - transform.position, transform.forward));
 
-            IDamageable unit = Spawn(prefab, position, facing, out GameObject root);
+            if (pick < speciesCount)
+            {
+                // Null when the crowd is at capacity or the pool is dry: skip, try next interval.
+                if (monsters.Spawn(species[pick], position, facing, locationId) == null)
+                {
+                    if (!warnedPoolDry)
+                    {
+                        warnedPoolDry = true;
+                        Debug.LogWarning($"{name}: {monsters.name} returned no {species[pick].name}. Is it in the pools " +
+                                         $"list, with a share big enough? ({monsters.ActiveCount} monsters alive)", this);
+                    }
+                    return;
+                }
+                crowdAlive++;
+                spawned++;
+                return;
+            }
+
+            IDamageable unit = Spawn(prefabs[pick - speciesCount], position, facing, out GameObject root);
             spawned++;
             if (unit != null) alive.Add(new Minion(root, unit));
         }
@@ -206,6 +268,8 @@ namespace Ahoy.Portal
                 if (alive[i].Root != null) Destroy(alive[i].Root);
             }
             alive.Clear();
+            if (monsters != null) monsters.ReleaseLocation(locationId);
+            crowdAlive = 0;
         }
 
         IDamageable Spawn(GameObject prefab, Vector3 position, Quaternion rotation, out GameObject instance)
@@ -217,6 +281,22 @@ namespace Ahoy.Portal
 
             Debug.LogError($"{name}: {prefab.name} has no IDamageable on it or its children, so it can never be killed", this);
             return null;
+        }
+
+        // A spawned boss has no scene references; hand it Zahim and its home portal before its Start.
+        void InitializeBoss(GameObject root)
+        {
+            BossController controller = root.GetComponentInChildren<BossController>();
+            if (controller == null || player == null) return;
+
+            var motor = player.GetComponentInParent<IPlayerMotor>();
+            var target = player.GetComponentInParent<IDamageable>();
+            if (motor == null || target == null)
+            {
+                Debug.LogError($"{name}: {player.name} needs IPlayerMotor and IDamageable for the boss to target", this);
+                return;
+            }
+            controller.Initialize(motor, target, locationId);
         }
 
         // Dead once it stops being alive or is destroyed outright.
