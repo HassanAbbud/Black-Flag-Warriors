@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.BossDef
   tier: 3
   strength: 1
-  maxHealth: 100
+  maxHealth: 2000
   moveSpeed: 2.2
   turnSpeed: 90
   stopDistance: 3
@@ -35,3 +35,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc3b1e9220c5a04488ef1ea55926808e, type: 2}
   attackGapSeconds: 1.2
   restSeconds: 1.5
+  hasCounterTool: 0
+  counterTool: 0
+  downedSeconds: 2.5
+  staggerClip: {fileID: 7400000, guid: 8ffbbbd3726b4bcd9f261f1943b30134, type: 2}

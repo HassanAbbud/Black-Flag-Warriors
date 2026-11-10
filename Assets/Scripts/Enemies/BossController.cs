@@ -13,13 +13,17 @@ namespace Ahoy.Enemies
     //   2. The encounter opens with its opening pattern (R33), usually unguardable.
     //   3. Each attack telegraphs. It tracks Zahim at first, then commits, so a late dodge works.
     //   4. A combo that leaves a punish window ends with the boss standing open. A hit from
-    //      Zahim then exposes the weak point (R20c). Exposed means staggered; this reads that.
+    //      Zahim then exposes the weak point (R20c). So does a hit during a wind-up that opens a
+    //      counter window (the red diamond), which interrupts the attack. Exposed means
+    //      staggered; this reads that.
     //   5. Giants take only a share of ordinary damage until the gauge is exposed (R35).
+    //   6. Draining the gauge brings Zahim's Weak Point Smash (R24). It kills a captain or
+    //      guardian outright; a giant loses a share of its health and lies Downed for a while.
     // Swings hit Zahim and any ally standing in the hitbox. Allies never drain the gauge.
     [RequireComponent(typeof(CharacterController))]
     public sealed class BossController : MonoBehaviour, IUnit
     {
-        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Punish, Staggered, Dead }
+        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Punish, Staggered, Downed, Dead }
 
         const int MaxStruckPerAttack = 16;
 
@@ -42,6 +46,7 @@ namespace Ahoy.Enemies
         IPlayerMotor motor;
         IDamageable target;
         IVillageTargets village;
+        WeakPointGauge gauge;   // the real gauge when present; a test stub never reaches Smashing
 
         BossState state;
         float stateTime;
@@ -63,6 +68,7 @@ namespace Ahoy.Enemies
         int struckCount;
 
         public BossState State => state;
+        public BossDef Def => def;
         public float Health => health;
         public float MaxHealth => def.maxHealth;
         public bool PunishWindowOpen => punishOpen;
@@ -79,10 +85,21 @@ namespace Ahoy.Enemies
             health = def.maxHealth;
             patternReadyAt = new float[def.patterns != null ? def.patterns.Length : 0];
             WeakPoint = GetComponent<IWeakPoint>();   // null until the weak-point track adds one
+            gauge = WeakPoint as WeakPointGauge;
             village = BattleContext.Village;
 
             if (player != null)
                 Initialize(player.GetComponent<IPlayerMotor>(), player.GetComponent<IDamageable>(), locationId);
+        }
+
+        void OnEnable()
+        {
+            if (gauge != null) gauge.SmashLanded += OnSmashLanded;
+        }
+
+        void OnDisable()
+        {
+            if (gauge != null) gauge.SmashLanded -= OnSmashLanded;
         }
 
         void Start()
@@ -107,8 +124,19 @@ namespace Ahoy.Enemies
 
             bool fromZahim = info.Source == null;
 
+            // R24: once the gauge is empty, Zahim's next blow is the Smash and nothing else
+            // counts; the Smash's damage is set by its rule, not by the swing.
+            if (gauge != null && gauge.State == WeakPointState.Smashing)
+            {
+                if (fromZahim) gauge.TryLandSmash();   // raises SmashLanded when it connects
+                return;
+            }
+
             // R20c, R33: a hit while it stands open is what shows the gauge.
             if (punishOpen && fromZahim && !IsExposed()) WeakPoint?.TryExpose(ExposeSource.PunishWindow);
+            // Hit while winding up with the red diamond showing: exposed, and the swing is cut off.
+            else if (fromZahim && WeakPoint != null && WeakPoint.State == WeakPointState.Telegraphing)
+                WeakPoint.TryExpose(ExposeSource.TelegraphHit);
 
             // R35: a giant shrugs off most damage until its gauge is exposed.
             float amount = def.tier == Tier.Giant && !IsExposed()
@@ -127,6 +155,26 @@ namespace Ahoy.Enemies
         bool IsExposed() =>
             WeakPoint != null &&
             (WeakPoint.State == WeakPointState.Exposed || WeakPoint.State == WeakPointState.Smashing);
+
+        // R24: a captain or guardian dies to the Smash; a giant loses a share of its maximum health.
+        void OnSmashLanded()
+        {
+            if (state == BossState.Dead) return;
+
+            float loss = def.tier == Tier.Giant ? def.maxHealth * balance.smashGiantHealthFraction : health;
+            health = Mathf.Max(0f, health - loss);
+            HealthChanged?.Invoke(health, def.maxHealth);
+
+            if (health <= 0f)
+            {
+                Die();
+                return;
+            }
+            SetState(BossState.Downed);
+            stateSeconds = def.downedSeconds;
+            // Same clip as the stagger until the animator has a get-up state of its own.
+            PlayStagger(def.downedSeconds);   // the Smash lands as a fresh, slow hit
+        }
 
         void Die()
         {
@@ -193,6 +241,10 @@ namespace Ahoy.Enemies
 
                 case BossState.Staggered:
                     break;   // held until the weak point closes
+
+                case BossState.Downed:
+                    if (stateTime >= stateSeconds) EndStagger();
+                    break;
             }
 
             Move(velocity, dt);
@@ -369,6 +421,16 @@ namespace Ahoy.Enemies
             pattern = null;
             attack = null;
             SetState(BossState.Staggered);
+            PlayStagger(balance.wpWindowSeconds);
+        }
+
+        // One slow play of the hit across the stun instead of a loop at normal speed. Smashing keeps
+        // the same state, so the clip carries on and holds its last frame if the stun runs over.
+        void PlayStagger(float seconds)
+        {
+            if (animator == null) return;
+            if (def.staggerClip != null && seconds > 0f)
+                animator.SetFloat(MonsterAnimatorIds.StunSpeed, def.staggerClip.length / seconds);
             EnemyCombat.Play(animator, MonsterAnimatorIds.Stagger, def.animationCrossFade);
         }
 

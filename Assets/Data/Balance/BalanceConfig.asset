@@ -15,6 +15,8 @@ MonoBehaviour:
   playerHealth: 1000
   moveSpeed: 7
   sprintSpeed: 10
+  autoSprintDelay: 1
+  autoSprintStickThreshold: 0.7
   turnSpeed: 900
   speedDampSeconds: 0.08
   gravity: -25
@@ -24,15 +26,92 @@ MonoBehaviour:
   dodgeInvulnerability: 0.3
   dodgeRecovery: 0.12
   dodgeAnimationSpeed: 3.1
+  guardArcDegrees: 120
+  guardMoveSpeed: 3
+  guardPushback: 0.4
+  guardHitSeconds: 0.2
+  guardPoseBlendSpeed: 10
   flinchSeconds: 0.35
   knockbackSeconds: 0.8
   knockbackDistance: 2.5
   blowawayDistance: 5
   animationCrossFade: 0.1
   inputBufferSeconds: 0.2
+  attackAssistRange: 5
+  attackAssistAngle: 60
+  hitFlashSeconds: 0.08
+  shakeMaxOffset: 0.3
+  shakeMaxAngle: 3
+  shakeFrequency: 22
+  shakeDecayPerSecond: 2.5
+  hitVfxPoolSize: 24
+  playerHitTrauma: 0.45
+  blockTrauma: 0.2
+  lockOnFlickThreshold: 0.8
+  lockOnMouseFlickPixels: 30
+  lockOnSwitchCooldown: 0.25
+  wpGaugeCaptain: 100
+  wpGaugeGiant: 40
+  wpWindowSeconds: 5
+  wpMemorySeconds: 20
+  smashGiantHealthFraction: 0.25
+  giantDamageOutsideStun: 0.25
+  wpSmashGraceSeconds: 0.15
+  wpSmashTimeoutSeconds: 3
+  openHitTrauma: 0.2
+  openHitExtraHitstopFrames: 4
+  openHitFovPunch: 2.5
+  openZoomDegrees: 7
+  openVolumeWeight: 0.6
+  smashZoomDegrees: 13
+  breakTrauma: 0.45
+  breakFovPunch: 5
+  breakHitstopFrames: 6
+  smashLandTrauma: 0.9
+  smashLandFovPunch: 9
+  smashLandHitstopFrames: 10
+  zoomHoldSharpness: 5
+  zoomPunchRecovery: 9
   cameraDistance: 6
   cameraPivotHeight: 1.6
   cameraDefaultPitch: 15
   cameraPitchLimits: {x: -20, y: 60}
   cameraMouseSensitivity: 0.12
   cameraStickSpeed: 180
+  cameraRecenterSpeed: 540
+  crowdCapacity: 300
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  crowdGroundProbeUp: 2
+  crowdGroundProbeDown: 4
+  crowdGroundProbeInterval: 6
+  crowdGroundFollowSpeed: 20
+  enemyHitPadding: 0.4
+  enemyGravity: -25
+  enemyGroundedStickSpeed: -2
+  crowdMaxAttackersOnPlayer: 3
+  crowdMaxAttackersOnAllies: 6
+  crowdAttackStartInterval: 0.5
+  crowdAttackStartJitter: 0.3
+  crowdTokenHoldSeconds: 2.5
+  crowdFirstAttackDelay: 2
+  crowdCooldownJitter: 0.5
+  crowdRingRadius: 2.6
+  crowdRingRadiusSpread: 1.2
+  crowdRingTolerance: 0.4
+  crowdAttackRequestRange: 1.5
+  crowdCircleDegreesPerSecond: 25
+  crowdSpeedJitter: 0.2
+  crowdRetargetInterval: 0.4
+  crowdAllyEngageRange: 5
+  bossFacingDegrees: 30
+  enemyDamageScale: 1
+  lockOnRange: 15
+  lockOnBreakRange: 20
+  lockOnMaxAngle: 50
+  lockOnDistanceWeight: 1
+  lockOnSmoothing: 10
+  lockOnPitch: 15
+  lockOnTargetHeight: 1
+  potionHealAmount: 50
