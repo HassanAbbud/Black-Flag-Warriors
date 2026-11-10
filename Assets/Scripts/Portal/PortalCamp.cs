@@ -18,6 +18,9 @@ namespace Ahoy.Portal
     // Crowd species come from the MonsterManager's pool, tagged with this portal's locationId,
     // and their deaths arrive through MonsterManager.UnitDied. Non-pooled enemyPrefabs still use
     // Instantiate, with deaths polled through IDamageable.IsAlive.
+    // The battle simulation hears its phase and meter through BattleEvents; when the simulation
+    // says its location fell back to the monsters, a sealed camp reopens (GDD Core Loop). Spawn
+    // rate and cap follow BattleContext.Pacing (W5.6).
     public sealed class PortalCamp : MonoBehaviour
     {
         // A spawned minion: the root to remove on sealing, and the unit that says whether it is dead.
@@ -105,11 +108,34 @@ namespace Ahoy.Portal
         void OnEnable()
         {
             if (monsters != null) monsters.UnitDied += OnCrowdDied;
+            BattleEvents.LocationChanged += OnLocationChanged;
         }
 
         void OnDisable()
         {
             if (monsters != null) monsters.UnitDied -= OnCrowdDied;
+            BattleEvents.LocationChanged -= OnLocationChanged;
+        }
+
+        void Start()
+        {
+            // Tell the simulation a real camp holds this location, and where it starts.
+            BattleEvents.RaisePortalPhaseChanged(locationId, phase);
+            BattleEvents.RaisePortalMeterChanged(locationId, Progress);
+        }
+
+        // Undefended, the sealed portal was cracked back open by the portals still open.
+        void OnLocationChanged(int changedId, Faction holder)
+        {
+            if (changedId != locationId || holder != Faction.Monsters || phase != PortalPhase.Sealed) return;
+            Kills = 0;
+            spawned = 0;
+            crowdAlive = 0;
+            boss = null;
+            alive.Clear();
+            warnedPoolDry = false;
+            Debug.Log($"{name}: left undefended, the portal reopened", this);
+            SetPhase(PortalPhase.Open);
         }
 
         // Every crowd kill comes through here; only this portal's own move its meter.
@@ -118,6 +144,7 @@ namespace Ahoy.Portal
             if (unit.LocationId != locationId) return;
             crowdAlive = Mathf.Max(0, crowdAlive - 1);
             Kills++;
+            BattleEvents.RaisePortalMeterChanged(locationId, Progress);
         }
 
         void Update()
@@ -181,6 +208,8 @@ namespace Ahoy.Portal
                     break;
             }
             PhaseChanged?.Invoke(next);
+            BattleEvents.RaisePortalPhaseChanged(locationId, next);
+            BattleEvents.RaisePortalMeterChanged(locationId, next == PortalPhase.Sealed ? 1f : Progress);
         }
 
         // Overrides the swirl's colours on this renderer only, leaving the shared material green.
@@ -218,6 +247,7 @@ namespace Ahoy.Portal
                 {
                     alive.RemoveAt(i);
                     Kills++;
+                    BattleEvents.RaisePortalMeterChanged(locationId, Progress);
                 }
             }
         }
@@ -230,9 +260,12 @@ namespace Ahoy.Portal
             int speciesCount = species?.Length ?? 0;
             int kinds = speciesCount + (prefabs?.Length ?? 0);
             if (kinds == 0) return;
-            if (spawned >= def.campSize || alive.Count + crowdAlive >= def.maxAlive || Time.time < nextSpawnAt) return;
+            // W5.6: the crowd director paces every portal; read when spawning, never per frame.
+            ISpawnPacing pacing = BattleContext.Pacing;
+            int cap = Mathf.Max(1, Mathf.CeilToInt(def.maxAlive * pacing.MonsterCapScale));
+            if (spawned >= def.campSize || alive.Count + crowdAlive >= cap || Time.time < nextSpawnAt) return;
 
-            nextSpawnAt = Time.time + def.spawnInterval;
+            nextSpawnAt = Time.time + def.spawnInterval * pacing.MonsterIntervalScale;
             int pick = Random.Range(0, kinds);
             Vector3 position = RandomSpawnPoint();
             Quaternion facing = Quaternion.LookRotation(Flat(position - transform.position, transform.forward));

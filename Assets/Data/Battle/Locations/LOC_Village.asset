@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c01a2827ab70453dae6517758efafb7, type: 3}
+  m_Name: LOC_Village
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocationDef
+  kind: 0
+  startHolder: 0
+  startMonsterStrength: 0
+  startAllyStrength: 30
+  waveStrength: 0
+  waveInterval: 60
+  maxMonsterStrength: 60
+  holdStrength: 60
+  marchRate: 0
+  captureStrength: 1
+  allyRegen: 0.5
+  maxAllyStrength: 40
+  garrisonOnCapture: 0
+  seenRadius: 90

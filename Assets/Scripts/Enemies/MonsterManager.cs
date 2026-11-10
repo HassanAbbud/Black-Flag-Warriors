@@ -139,7 +139,11 @@ namespace Ahoy.Enemies
                 if (active[i].LocationId == locationId) Release(active[i], false);
         }
 
-        internal void NotifyDied(Monster monster) => UnitDied?.Invoke(monster);
+        internal void NotifyDied(Monster monster)
+        {
+            UnitDied?.Invoke(monster);
+            BattleEvents.RaiseUnitKilled(monster);   // KO count and the battle simulation (R64)
+        }
 
         // ── Attack slots ─────────────────────────────────────────────────────────────
         // Zahim is limited by both a head-count and a minimum gap between attack starts, so

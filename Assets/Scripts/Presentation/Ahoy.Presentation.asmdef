@@ -2,7 +2,9 @@
     "name": "Ahoy.Presentation",
     "rootNamespace": "Ahoy.Presentation",
     "references": [
-        "Ahoy.Core"
+        "Ahoy.Core",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
