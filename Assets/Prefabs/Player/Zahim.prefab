@@ -1,5 +1,81 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &17689530248025521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022975836106570328}
+  - component: {fileID: 3097583561782336485}
+  - component: {fileID: 7689360612522806728}
+  - component: {fileID: 9179279509770897710}
+  m_Layer: 0
+  m_Name: '[OpenStage VFX]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022975836106570328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17689530248025521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5133171474917059430}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3097583561782336485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17689530248025521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 1550363596407388853, guid: d04c324fdaf1f7545860e699615b08d3, type: 3}
+--- !u!114 &7689360612522806728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17689530248025521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 2383832435003897702, guid: 3ef34c909a3b0be4ebb443a6a8750fe7, type: 3}
+--- !u!114 &9179279509770897710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17689530248025521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c266a05c09fc4c3f8060d2025d06c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.VfxPool
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  prefab: {fileID: 1713947261110525064, guid: 00d3de8dcd2c6b64f8642cf6c01c4df9, type: 3}
 --- !u!1001 &2841575568354960125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -659,6 +735,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6941170378494478747, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1022975836106570328}
     - targetCorrespondingSourceObject: {fileID: 3182045789424458345, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7727972678631478847}
@@ -711,6 +790,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8316293858127091791}
+    - targetCorrespondingSourceObject: {fileID: 7716967450076566305, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8537096243505245288}
   m_SourcePrefab: {fileID: 100100000, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
 --- !u!4 &812803138314958996 stripped
 Transform:
@@ -720,6 +802,11 @@ Transform:
 --- !u!95 &1287075765755883804 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3941724422588421089, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
+  m_PrefabInstance: {fileID: 2841575568354960125}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5133171474917059430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6941170378494478747, guid: e45da7e8811f71b4b8841733edbf759a, type: 3}
   m_PrefabInstance: {fileID: 2841575568354960125}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5509979248307810780 stripped
@@ -1014,6 +1101,28 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &8537096243505245288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509979248307810780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bccd1a8ff994c0744ad0adb22bccf79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Player::Ahoy.Player.OpenStageFeedback
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  attack: {fileID: 6260058805499335281}
+  lockOn: {fileID: 8316293858127091791}
+  hitstop: {fileID: 5677997043511607594}
+  shake: {fileID: 5305517504019158835}
+  zoom: {fileID: 0}
+  openHit: {fileID: 3097583561782336485}
+  breakBurst: {fileID: 7689360612522806728}
+  smashBurst: {fileID: 9179279509770897710}
+  burstHeight: 1.5
 --- !u!1001 &4960037817773357359
 PrefabInstance:
   m_ObjectHideFlags: 0

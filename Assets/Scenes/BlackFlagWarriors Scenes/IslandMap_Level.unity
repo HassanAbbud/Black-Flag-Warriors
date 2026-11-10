@@ -153296,6 +153296,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194233}
+  - component: {fileID: 963194234}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -153374,7 +153375,8 @@ Transform:
   m_LocalPosition: {x: 150, y: 58.77028, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1229104246}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -7.46, y: -229.34, z: -0.144}
 --- !u!114 &963194233
@@ -153421,6 +153423,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &963194234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128676a4b22c0964c88f411df0bbc95a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Feel::Ahoy.Feel.CameraZoom
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
+  volume: {fileID: 1229104247}
 --- !u!1001 &964080813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -194720,6 +194736,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8075895503936385206, guid: d85b0b99ba2541fc8d1d67b661fcae64, type: 3}
   m_PrefabInstance: {fileID: 1227647135}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1229104245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1229104246}
+  - component: {fileID: 1229104247}
+  m_Layer: 0
+  m_Name: OpenStage Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1229104246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229104245}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 963194228}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1229104247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229104245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 10
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: e09ecc15abaaae147a568eca3c773e79, type: 2}
 --- !u!1001 &1229623872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -338798,6 +338863,10 @@ PrefabInstance:
     - target: {fileID: 4178013983663284845, guid: bdae10cb7446b422f888574026229096, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533897998581003894, guid: bdae10cb7446b422f888574026229096, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6567004417623180260, guid: bdae10cb7446b422f888574026229096, type: 3}
       propertyPath: m_Name

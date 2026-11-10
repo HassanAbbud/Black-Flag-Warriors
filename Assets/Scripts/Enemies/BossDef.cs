@@ -1,3 +1,4 @@
+using Ahoy.Core;
 using UnityEngine;
 
 namespace Ahoy.Enemies
@@ -15,5 +16,16 @@ namespace Ahoy.Enemies
         public float attackGapSeconds = 1.2f;
         [Tooltip("Seconds of breathing room after a stagger ends before it fights again.")]
         public float restSeconds = 0.8f;
+
+        [Header("Weak point (R19-R26)")]
+        [Tooltip("R20a: true when a tool thrown during a counter-window telegraph exposes the gauge.")]
+        public bool hasCounterTool;
+        [Tooltip("The tool that counters this species (King Dodongo: bomb). Ignored unless Has Counter Tool is set.")]
+        public ToolType counterTool = ToolType.Bomb;
+        [Tooltip("Seconds a giant lies down after a Weak Point Smash before it fights again (R24).")]
+        public float downedSeconds = 2.5f;
+        [Tooltip("The clip on the animator's Stagger state (Golem_Stunned). Set, it is played once, slowed " +
+                 "to last the whole stun, through the StunSpeed parameter. Empty, Stagger plays at its own speed.")]
+        public AnimationClip staggerClip;
     }
 }

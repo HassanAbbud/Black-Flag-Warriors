@@ -160,6 +160,7 @@ MonoBehaviour:
   animator: {fileID: 5591298385424483056}
   hitstop: {fileID: 6631169514200564888}
   flash: {fileID: 5540953380166920053}
+  stunnedClip: {fileID: 7400000, guid: 8ffbbbd3726b4bcd9f261f1943b30134, type: 2}
   player: {fileID: 0}
   tier: 4
   maxHealth: 6000

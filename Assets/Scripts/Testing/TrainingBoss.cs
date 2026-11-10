@@ -12,7 +12,7 @@ namespace Ahoy.Testing
     //   crush   — the opening attack (R33): glows red while it winds up, cannot be guarded,
     //             launches; dodge it
     //   punish  — after the crush it stands open (yellow); hit it then and the gauge appears (R20c)
-    //   exposed — stunned and flashing; every hit drains DamageInfo.WeakPointDrain for 8 s (R22–R23)
+    //   exposed — stunned; every hit drains DamageInfo.WeakPointDrain for 8 s (R22–R23)
     //   smash   — gauge empty: Zahim's Weak Point Smash lands for 25% of max health (R24)
     // Outside the stun it takes a quarter of ordinary damage (R35). F4 exposes it at once,
     // standing in for a tool counter or Focus Spirit Attack. Delete before submission.
@@ -26,12 +26,16 @@ namespace Ahoy.Testing
         static readonly int CrushState = Animator.StringToHash("Crush");
         static readonly int StunnedState = Animator.StringToHash("Stunned");
         static readonly int DieState = Animator.StringToHash("Die");
+        static readonly int StunSpeedParam = Animator.StringToHash("StunSpeed");
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
         [SerializeField] BalanceConfig balance;
         [SerializeField] Animator animator;
         [SerializeField] HitstopReceiver hitstop;
         [SerializeField] HitFlash flash;
+        [Tooltip("The clip on the Stunned state (Golem_Stunned). Its length sets how slowly it plays, " +
+                 "so one hit is dragged out across the whole stun instead of looping.")]
+        [SerializeField] AnimationClip stunnedClip;
         [Tooltip("Zahim. Must have an IDamageable.")]
         [SerializeField] GameObject player;
         [Tooltip("Giant: smash takes 25% of max health. Captain or Guardian: the smash kills.")]
@@ -73,7 +77,6 @@ namespace Ahoy.Testing
         [SerializeField] float smashGraceSeconds = 0.15f;
         [Tooltip("R25: if the Smash never connects, it lands anyway. The player never loses a Smash.")]
         [SerializeField] float smashTimeoutSeconds = 3f;
-        [SerializeField] float exposedFlashInterval = 0.3f;
         [SerializeField] float respawnSeconds = 5f;
         [Tooltip("Length of the golem's Die clip; it loops, so it is held on its last frame.")]
         [SerializeField] float dieClipSeconds = 1.15f;
@@ -91,7 +94,6 @@ namespace Ahoy.Testing
         float health;
         float gauge;
         float memoryUntil = float.NegativeInfinity;
-        float nextFlash;
         int playing;
 
         // ── IUnit ─────────────────────────────────────────────────────────────────────────
@@ -117,7 +119,7 @@ namespace Ahoy.Testing
             // R23: a partly drained gauge keeps its progress for a while.
             if (Time.time > memoryUntil) gauge = GaugeMax;
             State = WeakPointState.Exposed;
-            SetPhase(Phase.Exposed, StunnedState);
+            Stun(Phase.Exposed, balance.wpWindowSeconds);
             Debug.Log($"{name}: weak point exposed ({source}), gauge {gauge:0}/{GaugeMax:0}", this);
             return true;
         }
@@ -217,11 +219,6 @@ namespace Ahoy.Testing
                     break;
 
                 case Phase.Exposed:
-                    if (Time.time >= nextFlash)
-                    {
-                        nextFlash = Time.time + exposedFlashInterval;
-                        flash.Flash();   // R26: flashes white while exposed
-                    }
                     if (phaseTime >= balance.wpWindowSeconds)
                     {
                         State = WeakPointState.Hidden;
@@ -277,7 +274,7 @@ namespace Ahoy.Testing
             health = tier == Tier.Giant ? health - maxHealth * balance.smashGiantHealthFraction : 0f;
             Debug.Log($"{name}: Weak Point Smash! {Mathf.Max(0f, health):0}/{maxHealth:0} left", this);
             if (health <= 0f) Die();
-            else SetPhase(Phase.Downed, StunnedState);
+            else Stun(Phase.Downed, downedSeconds);   // the Smash lands as a fresh, slow hit
         }
 
         void Die()
@@ -304,6 +301,18 @@ namespace Ahoy.Testing
             phase = next;
             phaseTime = 0f;
             Play(animatorState);
+        }
+
+        // One slow play of the hit clip across the whole stun, held on its last frame if the stun
+        // runs over (Smashing carries on from where the exposed window left it).
+        void Stun(Phase next, float seconds)
+        {
+            phase = next;
+            phaseTime = 0f;
+            float length = stunnedClip != null ? stunnedClip.length : 0f;
+            animator.SetFloat(StunSpeedParam, length > 0f && seconds > 0f ? length / seconds : 1f);
+            playing = StunnedState;
+            animator.CrossFadeInFixedTime(StunnedState, 0.15f, 0, 0f);
         }
 
         void Play(int animatorState)

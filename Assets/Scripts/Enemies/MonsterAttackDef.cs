@@ -23,6 +23,8 @@ namespace Ahoy.Enemies
         public float telegraphTurnSpeed = 0f;
         [Tooltip("Fraction of the wind-up (0 to 1) after which the attacker stops turning. Past it the aim is committed, so a late dodge still works.")]
         [Range(0f, 1f)] public float telegraphAimLockAt = 0.6f;
+        [Tooltip("R20a: while this winds up, the boss's weak point is Telegraphing and the counter tool can expose it.")]
+        public bool opensCounterWindow = true;
         [Tooltip("How long the hitbox is live.")]
         public float strikeSeconds = 0.2f;
         [Tooltip("Vulnerable time after the strike. Inside a boss combo this is the gap before the next step.")]
