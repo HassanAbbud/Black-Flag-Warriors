@@ -25,6 +25,13 @@ namespace Ahoy.Allies
         [SerializeField] Animator animator;        // trigger "Die"
 
         float health;
+        Collider[] colliders;
+        NavMeshAgent agent;
+
+        // Set by a spawner that pools its allies: after the death delay the body deactivates and
+        // goes back to the pool instead of being destroyed (Code Patterns 2.7).
+        public bool ReturnToPool { get; set; }
+        public event Action<AllyUnit> Despawned;
 
         // hit reaction and death events
         public event Action<HitReaction> Hit;
@@ -45,11 +52,27 @@ namespace Ahoy.Allies
         // ITargetable: where monsters aim.
         public Vector3 Position => transform.position;
 
-        void Awake() => health = maxHealth;
+        void Awake()
+        {
+            health = maxHealth;
+            colliders = GetComponentsInChildren<Collider>();
+            agent = GetComponent<NavMeshAgent>();
+        }
 
         // Monsters find allies through BattleContext, never by casting to this class.
-        void OnEnable() => BattleContext.Village.Add(this);
+        // A pooled ally comes back whole: health, colliders and agent are reset here.
+        void OnEnable()
+        {
+            health = maxHealth;
+            for (int i = 0; i < colliders.Length; i++) colliders[i].enabled = true;
+            if (agent != null) agent.enabled = true;
+            BattleContext.Village.Add(this);
+        }
+
         void OnDisable() => BattleContext.Village.Remove(this);
+
+        // The spawner tells a pooled ally which location it fights for (R8).
+        public void SetHome(int home) => locationId = home;
 
         public void TakeDamage(in DamageInfo info)
         {
@@ -71,13 +94,21 @@ namespace Ahoy.Allies
 
             BattleContext.Village.Remove(this);   // monsters stop treating it as a target at once
             // close off the unit so it can't be hit again, and trigger death animation if any
-            if (TryGetComponent(out NavMeshAgent agent)) agent.enabled = false;
-            foreach (Collider col in GetComponentsInChildren<Collider>()) col.enabled = false;
+            if (agent != null) agent.enabled = false;
+            for (int i = 0; i < colliders.Length; i++) colliders[i].enabled = false;
 
             if (animator != null) animator.SetTrigger(DieHash);
 
             Died?.Invoke();
-            Destroy(gameObject, destroyDelay);
+            BattleEvents.RaiseUnitKilled(this);   // the battle simulation takes it off its location (R64)
+            if (ReturnToPool) Invoke(nameof(Despawn), destroyDelay);
+            else Destroy(gameObject, destroyDelay);
+        }
+
+        void Despawn()
+        {
+            gameObject.SetActive(false);
+            Despawned?.Invoke(this);
         }
     }
 }

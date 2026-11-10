@@ -19,9 +19,13 @@ namespace Ahoy.Core
     {
         static readonly VillageList village = new VillageList();
         static ICrowdQuery crowd = NullCrowd.Instance;
+        static IBattleProgress progress = NullProgress.Instance;
+        static ISpawnPacing pacing = NullPacing.Instance;
 
         public static ICrowdQuery Crowd => crowd;
         public static IVillageTargets Village => village;
+        public static IBattleProgress Progress => progress;
+        public static ISpawnPacing Pacing => pacing;
 
         public static void RegisterCrowd(ICrowdQuery service) => crowd = service ?? NullCrowd.Instance;
 
@@ -30,11 +34,27 @@ namespace Ahoy.Core
             if (crowd == service) crowd = NullCrowd.Instance;
         }
 
+        public static void RegisterProgress(IBattleProgress service) => progress = service ?? NullProgress.Instance;
+
+        public static void UnregisterProgress(IBattleProgress service)
+        {
+            if (progress == service) progress = NullProgress.Instance;
+        }
+
+        public static void RegisterPacing(ISpawnPacing service) => pacing = service ?? NullPacing.Instance;
+
+        public static void UnregisterPacing(ISpawnPacing service)
+        {
+            if (pacing == service) pacing = NullPacing.Instance;
+        }
+
         // The project enters Play Mode without a domain reload, so statics outlive the session.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetOnPlay()
         {
             crowd = NullCrowd.Instance;
+            progress = NullProgress.Instance;
+            pacing = NullPacing.Instance;
             village.Clear();
         }
 
@@ -66,6 +86,44 @@ namespace Ahoy.Core
                 nearest = null;
                 return false;
             }
+        }
+
+        // Stub: no battle simulation in this scene.
+        sealed class NullProgress : IBattleProgress
+        {
+            public static readonly NullProgress Instance = new NullProgress();
+
+            public int LocationCount => 0;
+            public BattleLocationStatus GetLocation(int index) => default;
+
+            public bool TryGetLocation(int locationId, out BattleLocationStatus status)
+            {
+                status = default;
+                return false;
+            }
+
+            public int PortalCount => 0;
+            public int SealedCount => 0;
+            public int HeldCount => 0;
+            public float Progress01 => 0f;
+            public float VillageIntegrity01 => 1f;
+            public int KoCount => 0;
+            public float BattleSeconds => 0f;
+            public int SeenLocationId => -1;
+            public bool Ended => false;
+        }
+
+        // Stub: authored spawn rates, no allies.
+        sealed class NullPacing : ISpawnPacing
+        {
+            public static readonly NullPacing Instance = new NullPacing();
+
+            public float MonsterIntervalScale => 1f;
+            public float MonsterCapScale => 1f;
+            public float WaveStrengthScale => 1f;
+            public float AllyInterval => 0f;
+            public int AllyMaxAlive => 0;
+            public float AllyRegenScale => 1f;
         }
     }
 }
