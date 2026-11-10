@@ -5,6 +5,8 @@ public class QuestHUD : MonoBehaviour
     [SerializeField] private float width = 280f;
     [SerializeField] private float margin = 15f;
     [SerializeField] private float lineHeight = 22f;
+    [SerializeField] private int minimapHeight = 450;
+    
 
     private GUIStyle titleStyle, questStyle, doneStyle;
 
@@ -39,7 +41,7 @@ public class QuestHUD : MonoBehaviour
 
         // everytask takes 2 lines, so the height is calculated as follows
         float height = 40f + qm.ActiveQuests.Count * lineHeight * 2.2f;
-        Rect window = new Rect(Screen.width - width - margin, margin, width, height);
+        Rect window = new Rect(Screen.width - width - margin, minimapHeight + margin, width, height);
 
         GUI.Box(window, GUIContent.none);   
 

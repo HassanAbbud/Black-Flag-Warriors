@@ -126,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
       propertyPath: m_Name
-      value: Golem Variant
+      value: Golem_Setup
       objectReference: {fileID: 0}
     - target: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
       propertyPath: m_Layer
@@ -153,6 +153,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4776023768289992306}
+    - targetCorrespondingSourceObject: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8024100814930165864}
   m_SourcePrefab: {fileID: 100100000, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
 --- !u!1 &8084314436104281227 stripped
 GameObject:
@@ -215,3 +218,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.Testing.StubWeakPoint
   windowSeconds: 8
+--- !u!114 &-8024100814930165864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8084314436104281227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 6
+  color: {r: 0.18238991, g: 0, b: 0, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
   questId: 1
   title: Defend the village
-  description: Kill the monsters wandering around the village
+  description: Kill the teleported monsters in the village
   targetFaction: 1
-  requiredAmount: 10
+  requiredAmount: 20

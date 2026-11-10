@@ -121,6 +121,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5375012883095700310, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6512778395467035732}
+    - targetCorrespondingSourceObject: {fileID: 5375012883095700310, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4632911918249897320}
   m_SourcePrefab: {fileID: 100100000, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}
 --- !u!1 &1909144131923652285 stripped
 GameObject:
@@ -165,6 +168,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestroyedTarget
   targetFaction: 1
+--- !u!114 &-4632911918249897320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909144131923652285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 2
+  color: {r: 1, g: 0, b: 0, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0
 --- !u!95 &5176140108312161917 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1674245894089524118, guid: 6e313ba197c9f7a48827ef5a9221e22c, type: 3}

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 02846b2f6c708b6438eca38316a0458c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - minimapCamera: {instanceID: 0}
+  - gameplayCamera: {instanceID: 0}
+  - minimapRoot: {instanceID: 0}
+  - iconRoot: {instanceID: 0}
+  - northMark: {instanceID: 0}
+  - iconPrefab: {fileID: 6931470979193518842, guid: a16721e86aa69da4180e212b5db22013, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
