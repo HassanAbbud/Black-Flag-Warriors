@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2fe73ef75d48c409ef066457e68f8d, type: 3}
   m_Name: ATK_Golem_Slam
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.MonsterAttackDef
-  animatorState: 
-  playbackSpeed: 1
+  animatorState: Slam
+  playbackSpeed: 1.25
   crossFadeSeconds: 0.08
   telegraphSeconds: 1.4
   telegraphTurnSpeed: 90
   telegraphAimLockAt: 0.55
+  opensCounterWindow: 1
   strikeSeconds: 0.25
   recoverSeconds: 1
   damage: 160

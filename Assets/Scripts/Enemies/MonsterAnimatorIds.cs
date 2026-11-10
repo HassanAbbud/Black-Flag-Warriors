@@ -8,6 +8,8 @@ namespace Ahoy.Enemies
     {
         public static readonly int Speed = Animator.StringToHash("Speed");
         public static readonly int AttackSpeed = Animator.StringToHash("AttackSpeed");
+        // Bosses only: drives the Stagger state so one hit is dragged out across the whole stun.
+        public static readonly int StunSpeed = Animator.StringToHash("StunSpeed");
 
         public static readonly int Locomotion = Animator.StringToHash("Locomotion");
         public static readonly int HitFlinch = Animator.StringToHash("HitFlinch");

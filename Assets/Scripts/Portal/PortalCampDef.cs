@@ -27,6 +27,14 @@ namespace Ahoy.Portal
         public Vector2 spawnRadius = new Vector2(2f, 6f);
         [Tooltip("Metres a spawn point may move to land on the NavMesh.")]
         public float navMeshSnapDistance = 4f;
+        [Tooltip("Layers a spawn stands on: terrain and level geometry. Leave out units and the portal itself.")]
+        public LayerMask spawnGroundMask = 1;
+        [Tooltip("Metres above and below the portal a spawn point looks for the ground. Covers hills and slopes.")]
+        public float spawnGroundProbeHeight = 30f;
+        [Tooltip("Most metres a spawn's ground may sit above or below the portal's, so nothing appears down a cliff or on a roof.")]
+        public float spawnMaxHeightDifference = 5f;
+        [Tooltip("Random points tried per spawn before giving up until the next interval. Never spawns in the air.")]
+        public int spawnAttempts = 6;
         [Tooltip("Keep sending minions while the boss is out, until campSize have spawned.")]
         public bool spawnDuringBoss = true;
 
@@ -71,6 +79,9 @@ namespace Ahoy.Portal
             spawnRadius.x = Mathf.Max(0f, spawnRadius.x);
             spawnRadius.y = Mathf.Max(spawnRadius.x, spawnRadius.y);
             navMeshSnapDistance = Mathf.Max(0f, navMeshSnapDistance);
+            spawnGroundProbeHeight = Mathf.Max(0f, spawnGroundProbeHeight);
+            spawnMaxHeightDifference = Mathf.Max(0f, spawnMaxHeightDifference);
+            spawnAttempts = Mathf.Max(1, spawnAttempts);
             ringWidth = Mathf.Max(0f, ringWidth);
             ringSegments = Mathf.Max(3, ringSegments);
             ringGroundProbeHeight = Mathf.Max(0f, ringGroundProbeHeight);

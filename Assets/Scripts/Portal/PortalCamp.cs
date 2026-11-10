@@ -37,6 +37,8 @@ namespace Ahoy.Portal
         }
 
         const float MinDirectionSqr = 0.001f;
+        // Ground rays may pass through the portal, trees and props before reaching the ground.
+        const int GroundHitCapacity = 16;
         const int GizmoSegments = 48;
         static readonly Color GizmoDormant = Color.yellow;
         static readonly Color GizmoActive = Color.red;
@@ -66,12 +68,14 @@ namespace Ahoy.Portal
         [SerializeField] PortalPhase phase = PortalPhase.Open;
 
         readonly List<Minion> alive = new List<Minion>();
+        readonly RaycastHit[] groundHits = new RaycastHit[GroundHitCapacity];
         PortalPhase enteredPhase = PortalPhase.Open;
         MaterialPropertyBlock swirlBlock;
         IDamageable boss;
         int spawned;
         int crowdAlive;     // pooled monsters of this portal still standing
         bool warnedPoolDry;
+        bool warnedNoGround;
         float nextSpawnAt;
 
         public event Action Activated;
@@ -193,7 +197,9 @@ namespace Ahoy.Portal
                     boss = null;
                     if (def.bossPrefab != null)
                     {
-                        boss = Spawn(def.bossPrefab, OnNavMesh(point.position), point.rotation, out GameObject bossRoot);
+                        // A boss always comes out; if no ground is found it falls back to the point itself.
+                        Vector3 bossAt = TryGround(point.position, out Vector3 grounded) ? grounded : point.position;
+                        boss = Spawn(def.bossPrefab, bossAt, point.rotation, out GameObject bossRoot);
                         if (boss != null) InitializeBoss(bossRoot);
                     }
                     if (def.bossPrefab == null) Debug.LogError($"{name}: no boss prefab in {def.name}, the camp cannot be sealed", this);
@@ -266,8 +272,18 @@ namespace Ahoy.Portal
             if (spawned >= def.campSize || alive.Count + crowdAlive >= cap || Time.time < nextSpawnAt) return;
 
             nextSpawnAt = Time.time + def.spawnInterval * pacing.MonsterIntervalScale;
+            // No ground found this time (cliff, water, off the mesh): skip rather than spawn in the air.
+            if (!TryRandomSpawnPoint(out Vector3 position))
+            {
+                if (!warnedNoGround)
+                {
+                    warnedNoGround = true;
+                    Debug.LogWarning($"{name}: no ground under any spawn point. Check that {def.name}'s Spawn Ground " +
+                                     "Mask includes the terrain's layer.", this);
+                }
+                return;
+            }
             int pick = Random.Range(0, kinds);
-            Vector3 position = RandomSpawnPoint();
             Quaternion facing = Quaternion.LookRotation(Flat(position - transform.position, transform.forward));
 
             if (pick < speciesCount)
@@ -338,18 +354,73 @@ namespace Ahoy.Portal
             return (unit is Object obj && obj == null) || !unit.IsAlive;
         }
 
-        Vector3 RandomSpawnPoint()
+        // A point on the ring around the portal, standing on real ground. Prefers ground within
+        // spawnMaxHeightDifference of the portal's; if every try is further off (a steep hill), the
+        // closest one is used. Only fails when no try found ground at all.
+        bool TryRandomSpawnPoint(out Vector3 position)
         {
-            Vector2 circle = Random.insideUnitCircle.normalized * Random.Range(def.spawnRadius.x, def.spawnRadius.y);
-            return OnNavMesh(transform.position + new Vector3(circle.x, 0f, circle.y));
+            // Ground under the portal, skipping its own colliders; its root is the fallback.
+            float portalGround = TryGround(transform.position, out Vector3 under) ? under.y : transform.position.y;
+
+            bool any = false;
+            float bestDifference = float.PositiveInfinity;
+            position = default;
+            for (int i = 0; i < def.spawnAttempts; i++)
+            {
+                Vector2 circle = Random.insideUnitCircle.normalized * Random.Range(def.spawnRadius.x, def.spawnRadius.y);
+                Vector3 candidate = transform.position + new Vector3(circle.x, 0f, circle.y);
+                if (!TryGround(candidate, out Vector3 ground)) continue;
+
+                float difference = Mathf.Abs(ground.y - portalGround);
+                if (difference <= def.spawnMaxHeightDifference)
+                {
+                    position = ground;
+                    return true;
+                }
+                if (difference < bestDifference)
+                {
+                    bestDifference = difference;
+                    position = ground;
+                    any = true;
+                }
+            }
+            return any;
         }
 
-        // NavMeshAgents placed off the mesh never move, so snap to it when there is one nearby.
-        Vector3 OnNavMesh(Vector3 position)
+        // Finds the ground under (or above) a point: a ray from high above down past it, so a point
+        // inside a hill or over a dip both land on the surface. Then snaps to the NavMesh near that
+        // surface, since NavMeshAgents placed off the mesh never move.
+        bool TryGround(Vector3 point, out Vector3 ground)
         {
-            return NavMesh.SamplePosition(position, out NavMeshHit hit, def.navMeshSnapDistance, NavMesh.AllAreas)
-                ? hit.position
-                : position;
+            float height = def.spawnGroundProbeHeight;
+            Vector3 origin = point + Vector3.up * height;
+            int count = Physics.RaycastNonAlloc(origin, Vector3.down, groundHits, height * 2f, def.spawnGroundMask,
+                                                QueryTriggerInteraction.Ignore);
+
+            // The highest hit that is not part of this portal. NonAlloc hits come back unordered.
+            bool found = false;
+            float best = float.NegativeInfinity;
+            for (int i = 0; i < count; i++)
+            {
+                Transform hitTransform = groundHits[i].collider.transform;
+                if (hitTransform.IsChildOf(transform)) continue;
+                if (groundHits[i].point.y > best)
+                {
+                    best = groundHits[i].point.y;
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                ground = point;
+                return false;
+            }
+
+            Vector3 surface = new Vector3(point.x, best, point.z);
+            ground = NavMesh.SamplePosition(surface, out NavMeshHit onMesh, def.navMeshSnapDistance, NavMesh.AllAreas)
+                ? onMesh.position
+                : surface;
+            return true;
         }
 
         static Vector3 Flat(Vector3 direction, Vector3 fallback)

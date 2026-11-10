@@ -119,6 +119,40 @@ namespace Ahoy.Core
         public float smashGiantHealthFraction = 0.25f;
         [Tooltip("Share of ordinary damage a giant takes while its gauge is not exposed (R35).")]
         public float giantDamageOutsideStun = 0.25f;
+        [Tooltip("Seconds after the gauge empties during which further hits still belong to the swing that emptied it, so they do not land the Smash early.")]
+        public float wpSmashGraceSeconds = 0.15f;
+        [Tooltip("R25: seconds after the gauge empties before the Smash lands on its own. The player never loses a Smash.")]
+        public float wpSmashTimeoutSeconds = 3f;
+
+        [Header("Combat feel — boss open stage (R22–R26)")]
+        [Tooltip("Extra trauma on each swing beat that lands on an exposed boss, on top of the attack's own.")]
+        public float openHitTrauma = 0.2f;
+        [Tooltip("Extra frames Zahim freezes on a swing beat that lands on an exposed boss.")]
+        public int openHitExtraHitstopFrames = 4;
+        [Tooltip("Degrees of field of view a hit on an exposed boss kicks in, then springs back.")]
+        public float openHitFovPunch = 2.5f;
+        [Tooltip("Degrees the camera stays zoomed in for as long as the boss is exposed.")]
+        public float openZoomDegrees = 7f;
+        [Tooltip("Weight (0..1) of the open-stage post-processing Volume while the boss is exposed.")]
+        public float openVolumeWeight = 0.6f;
+        [Tooltip("Degrees the camera zooms in while the Smash is on its way.")]
+        public float smashZoomDegrees = 13f;
+        [Tooltip("Trauma when the weak point is exposed: the 'break' moment.")]
+        public float breakTrauma = 0.45f;
+        [Tooltip("Degrees of field of view the break kicks in.")]
+        public float breakFovPunch = 5f;
+        [Tooltip("Frames Zahim freezes when the break happens.")]
+        public int breakHitstopFrames = 6;
+        [Tooltip("Trauma when the Smash lands.")]
+        public float smashLandTrauma = 0.9f;
+        [Tooltip("Degrees of field of view the Smash landing kicks in.")]
+        public float smashLandFovPunch = 9f;
+        [Tooltip("Frames Zahim freezes when the Smash lands.")]
+        public int smashLandHitstopFrames = 10;
+        [Tooltip("How fast the held zoom eases in and out (1/seconds; higher is snappier).")]
+        public float zoomHoldSharpness = 5f;
+        [Tooltip("How fast a field-of-view kick springs back (1/seconds; higher is snappier).")]
+        public float zoomPunchRecovery = 9f;
 
         [Header("Zahim — follow camera")]
         [Tooltip("Metres behind the pivot.")]

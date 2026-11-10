@@ -2,7 +2,8 @@
     "name": "Ahoy.Feel",
     "rootNamespace": "Ahoy.Feel",
     "references": [
-        "Ahoy.Core"
+        "Ahoy.Core",
+        "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
