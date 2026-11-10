@@ -53212,6 +53212,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 904664502871182204, guid: 27693c9157bbde748b287999718d5b69, type: 3}
       insertIndex: -1
       addedObject: {fileID: 331365299}
+    - targetCorrespondingSourceObject: {fileID: 904664502871182204, guid: 27693c9157bbde748b287999718d5b69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 331365301}
   m_SourcePrefab: {fileID: 100100000, guid: 27693c9157bbde748b287999718d5b69, type: 3}
 --- !u!1 &331365296 stripped
 GameObject:
@@ -53252,6 +53255,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.96
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &331365301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331365296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 3
+  color: {r: 1, g: 1, b: 1, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0
 --- !u!1001 &331460905
 PrefabInstance:
   m_ObjectHideFlags: 0
