@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5c08820f49d4150908a69ed4c1aa532, type: 3}
   m_Name: MON_EnemyShip
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   wanderRadius: 25
   wanderSpeed: 4
   arriveDistance: 4
@@ -41,5 +41,7 @@ MonoBehaviour:
   broadsideArc: 45
   muzzleSpeed: 35
   aimSpread: 2
+  aimHeight: 1
+  leadFraction: 0.5
   cannonDamage: 50
   hitReaction: 2
