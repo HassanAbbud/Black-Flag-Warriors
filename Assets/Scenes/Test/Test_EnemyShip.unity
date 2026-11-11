@@ -885,6 +885,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2142813871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142813866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a824c38673f12354ebd3acb225925f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.CameraController
+  target: {fileID: 318893391}
+  offset: {x: 0, y: 1.5, z: -1}
 --- !u!1001 &2145096617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -946,20 +960,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a553c9aa5496a14aaacdfbc2af08dff, type: 3}
---- !u!114 &2142813871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142813866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a824c38673f12354ebd3acb225925f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.CameraController
-  target: {fileID: 318893391}
-  offset: {x: 0, y: 1.5, z: -1}
 --- !u!1001 &2834340749732668419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1077,13 +1077,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8479401557177898028, guid: 3c1abb30b6eb9f14ab0c98cb564d9826, type: 3}
-      propertyPath: cannonballPrefab
-      value: 
-      objectReference: {fileID: 1171815924502273452, guid: a0cf438cebb04d10a62b2280690f6a40, type: 3}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6823847639656419859, guid: 3c1abb30b6eb9f14ab0c98cb564d9826, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1abb30b6eb9f14ab0c98cb564d9826, type: 3}

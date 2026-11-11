@@ -36,7 +36,7 @@ namespace Ahoy.Ships
 
         private ShipState state;
         private Transform target;   // the player ship (Engage) or the player on land (Bombard)
-        private readonly Collider[] nearby = new Collider[16];   // preallocated: NonAlloc queries only
+        private readonly System.Collections.Generic.List<GameObject> tagged = new System.Collections.Generic.List<GameObject>(4);
         private Vector3 home;
         private Vector3 wanderPoint;
         private float stateUntil;
@@ -147,30 +147,33 @@ namespace Ahoy.Ships
             }
         }
 
-        // First object tagged PlayerShip or Player within range and in sight.
+        // Nearest object tagged PlayerShip or Player within range and in sight. Looked up by tag
+        // rather than a physics overlap, so scenery colliders (an island's rocks and trees) can't
+        // crowd the player out of the results.
         private Transform FindTarget(float range, bool engaged, out ShipState mode)
         {
             mode = ShipState.Wander;
-            int count = Physics.OverlapSphereNonAlloc(transform.position, range, nearby,
-                                                      def.targetLayers, QueryTriggerInteraction.Ignore);
-            for (int i = 0; i < count; i++)
-            {
-                Transform found = TaggedRoot(nearby[i].transform);
-                if (found == null || !InSight(found, engaged))
-                    continue;
-                mode = found.CompareTag(PlayerShipTag) ? ShipState.Engage : ShipState.Bombard;
-                return found;
-            }
-            return null;
+            Transform best = null;
+            float bestDistance = range;
+            ConsiderTagged(PlayerShipTag, ref best, ref bestDistance, engaged);
+            ConsiderTagged(PlayerTag, ref best, ref bestDistance, engaged);
+            if (best != null)
+                mode = best.CompareTag(PlayerShipTag) ? ShipState.Engage : ShipState.Bombard;
+            return best;
         }
 
-        // Walks up from the collider so a tag on the root still counts when the collider is on a child.
-        private static Transform TaggedRoot(Transform t)
+        private void ConsiderTagged(string tag, ref Transform best, ref float bestDistance, bool engaged)
         {
-            for (; t != null; t = t.parent)
-                if (t.CompareTag(PlayerShipTag) || t.CompareTag(PlayerTag))
-                    return t;
-            return null;
+            GameObject.FindGameObjectsWithTag(tag, tagged);   // fills the reused list, no allocation
+            for (int i = 0; i < tagged.Count; i++)
+            {
+                Transform t = tagged[i].transform;
+                float distance = FlatDistance(t.position);
+                if (distance > bestDistance || !InSight(t, engaged))
+                    continue;
+                best = t;
+                bestDistance = distance;
+            }
         }
 
         private bool InSight(Transform t, bool engaged)

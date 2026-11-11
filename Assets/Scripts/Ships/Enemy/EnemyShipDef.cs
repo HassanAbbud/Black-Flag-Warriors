@@ -29,8 +29,6 @@ namespace Ahoy.Ships
         public float acceleration = 2f;
 
         [Header("Spotting the player")]
-        [Tooltip("Layers the player and the player ship are on. The scan only looks at these.")]
-        public LayerMask targetLayers = ~0;
         [Tooltip("Metres at which it spots the player or the player ship.")]
         public float detectRange = 60f;
         [Tooltip("Width of its view, degrees. 360 sees all round.")]
