@@ -112761,7 +112761,7 @@ MonoBehaviour:
   width: 280
   margin: 15
   lineHeight: 40
-  minimapHeight: 450
+  minimapHeight: 470
 --- !u!114 &706796820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339527,6 +339527,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 277861834122518359, guid: bdae10cb7446b422f888574026229096, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1667
+      objectReference: {fileID: 0}
+    - target: {fileID: 277861834122518359, guid: bdae10cb7446b422f888574026229096, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -547
+      objectReference: {fileID: 0}
     - target: {fileID: 4178013983663284845, guid: bdae10cb7446b422f888574026229096, type: 3}
       propertyPath: m_Pivot.x
       value: 0
