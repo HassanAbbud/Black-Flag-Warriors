@@ -15,12 +15,16 @@ MonoBehaviour:
   animatorState: C5
   playbackSpeed: 1.6
   crossFadeSeconds: 0.08
-  damage: 220
+  damage: 80
   reaction: 4
   hitstopFrames: 8
   weakPointDrain: 10
   hitboxCenter: {x: 0, y: 1, z: 0.8}
   hitboxHalfExtents: {x: 3.5, y: 1.5, z: 3.5}
+  rehitSeconds: 0.35
+  push: 0
+  hitVfx: 1
+  shakeTrauma: 0.45
   lungeDistance: 1.5
   lungeSeconds: 0.3
   nextLight: {fileID: 0}

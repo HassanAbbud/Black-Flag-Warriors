@@ -1,0 +1,151 @@
+/* Overall layout styling */
+.window-container {
+    display: flex;
+    flex-direction: row; /* Split screen: horizontal layout */
+    height: 100%;
+    background-color: #2b2b2b; /* Unity dark mode background color */
+    color: #e0e0e0;
+}
+
+/* Left Side: 3D Preview Panel */
+.preview-viewport-panel {
+    flex-grow: 1;
+    background-color: #1a1a1a; /* Dark background for preview visibility */
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: #151515;
+    margin: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Center placeholder text inside preview viewport */
+.preview-placeholder-text {
+    font-size: 12px;
+    color: #6a6a6a;
+    -unity-text-align: middle-center;
+}
+
+/* Right Side: Settings Panel container */
+.settings-panel {
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    border-left-width: 1px;
+    border-left-color: #202020;
+}
+
+/* Scroll view for settings content */
+.content-scroll {
+    flex-grow: 1;
+}
+
+/* Section styling */
+.section-container {
+    background-color: #232323;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-width: 1px;
+    border-color: #3c3c3c;
+}
+
+.section-title {
+    font-size: 12px;
+    -unity-font-style: bold;
+    color: #38a1db; /* Stylish primary blue */
+    margin-bottom: 6px;
+    border-bottom-width: 1px;
+    border-bottom-color: #2d2d2d;
+    padding-bottom: 2px;
+}
+
+/* Individual property fields */
+.property-field {
+    margin-bottom: 4px;
+}
+
+/* Footer / Action buttons container */
+.footer-container {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top-width: 1px;
+    border-top-color: #3f3f3f;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Common button styling */
+.btn {
+    flex-grow: 1;
+    height: 28px;
+    font-size: 11px;
+    -unity-font-style: bold;
+    border-radius: 4px;
+    border-width: 0;
+    cursor: link;
+    transition: background-color 0.15s ease;
+}
+
+/* Primary Action button (Simulation trigger) */
+.btn-primary {
+    background-color: #1f80b8;
+    color: #ffffff;
+    margin-right: 4px;
+}
+
+.btn-primary:hover {
+    background-color: #2997d6;
+}
+
+.btn-primary:active {
+    background-color: #165b83;
+}
+
+/* Secondary Action button (Reset trigger) */
+.btn-secondary {
+    background-color: #4f4f4f;
+    color: #e0e0e0;
+    margin-left: 4px;
+}
+
+.btn-secondary:hover {
+    background-color: #616161;
+}
+
+.btn-secondary:active {
+    background-color: #3a3a3a;
+}
+
+/* Left panel and Information panel styling */
+.left-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-panel {
+    background-color: #232323;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 6px;
+    margin-top: 0px;
+    border-width: 1px;
+    border-color: #3c3c3c;
+}
+
+.info-title {
+    font-size: 12px;
+    -unity-font-style: bold;
+    color: #e0e0e0;
+    margin-bottom: 4px;
+}
+
+.info-content {
+    font-size: 11px;
+    color: #a0a0a0;
+    white-space: normal;
+}
+

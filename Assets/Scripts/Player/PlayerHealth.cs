@@ -1,5 +1,6 @@
 using System;
 using Ahoy.Core;
+using Ahoy.Feel;
 using UnityEngine;
 
 namespace Ahoy.Player
@@ -13,6 +14,8 @@ namespace Ahoy.Player
 
         public event Action<float, float> HealthChanged;   // current, max
         public event Action Died;
+        public event Action<Vector3> Damaged;   // origin of the hit
+        public event Action<Vector3> Blocked;   // origin of the blocked hit
 
         public float Current { get; private set; }
         public float Max => balance.playerHealth;
@@ -28,12 +31,14 @@ namespace Ahoy.Player
             if (motor.TryBlock(in info))                     // R51 guard
             {
                 hitstop.Freeze(info.HitstopFrames);
+                Blocked?.Invoke(info.Origin);
                 return;
             }
 
             Current = Mathf.Max(0f, Current - info.Amount);
             HealthChanged?.Invoke(Current, Max);
             hitstop.Freeze(info.HitstopFrames);
+            Damaged?.Invoke(info.Origin);
 
             if (Current > 0f)
             {

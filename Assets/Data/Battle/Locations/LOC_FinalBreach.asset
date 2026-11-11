@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c01a2827ab70453dae6517758efafb7, type: 3}
+  m_Name: LOC_FinalBreach
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocationDef
+  kind: 5
+  startHolder: 1
+  startMonsterStrength: 30
+  startAllyStrength: 0
+  waveStrength: 8
+  waveInterval: 90
+  maxMonsterStrength: 60
+  holdStrength: 20
+  marchRate: 0.2
+  captureStrength: 6
+  allyRegen: 0.15
+  maxAllyStrength: 20
+  garrisonOnCapture: 12
+  seenRadius: 80

@@ -13,8 +13,9 @@ with this document, say so and ask — do not quietly invent a different structu
 
 1. **One pattern per problem.** The patterns in section 2 are the whole vocabulary. Do not
    introduce a new architectural pattern without changing this file first.
-2. **Contracts live in `Ahoy.Core`.** Every assembly references Core and nothing else.
-   Two tracks never reference each other's concrete classes.
+2. **Contracts live in `Ahoy.Core`.** Every assembly references Core, may reference the
+   shared `Ahoy.Feel` toolkit, and nothing else. Two tracks never reference each other's
+   concrete classes.
 3. **Data, not code, for tuning.** Any number a designer might change is a field on a
    ScriptableObject. A magic number in a method body is a bug.
 4. **Nothing allocates per frame.** No LINQ, no `new` in `Update`, no `foreach` over
@@ -38,7 +39,9 @@ with this document, say so and ask — do not quietly invent a different structu
 Assets/
   Scripts/
     Core/           Ahoy.Core        contracts, enums, structs. No MonoBehaviours.
-    Player/         Ahoy.Player      motor, health, attacks, hitstop      (Andres)
+    Feel/           Ahoy.Feel        shared feel components: hitstop, hit flash,
+                                     VFX pool, camera shake. References Core only.
+    Player/         Ahoy.Player      motor, health, attacks, combat feedback (Andres)
     Enemies/        Ahoy.Enemies     monsters, captains, bosses           (Hassan)
     Island/         Ahoy.Island      portals, objectives, simulation      (Systems)
     Ships/          Ahoy.Ships       boat + naval enemies                 (Xiaowei / Siying)
@@ -46,6 +49,7 @@ Assets/
     Tools/          Ahoy.Tools       debug overlay, editor helpers
   Data/
     Attacks/        AttackDef assets
+    Feel/           flash and VFX materials
     Units/          stats assets
     Balance/        BalanceConfig.asset  (the single tuning source)
   Prefabs/
@@ -75,7 +79,7 @@ describe, split it.
 **Our rule:** an `enum` plus one `switch`, or one class per state when a state owns real
 behaviour. Transitions go through a single `SetState` method so there is exactly one place
 to breakpoint. Never track mode with a pile of bools (`isAttacking && !isDodging && ...`).
-**Example:** `PlayerMotor.MotorState { Locomotion, Dodging, Attacking, Staggered, Dead }`.
+**Example:** `PlayerMotor.MotorState { Locomotion, Guarding, Dodging, Attacking, Staggered, Dead }`.
 
 ### 2.3 Type Object (ScriptableObject as data)
 **Use for:** attacks, unit stats, patterns, portal configuration.
@@ -163,9 +167,38 @@ touch `Time.timeScale` for feel effects — it would freeze the entire battlefie
 | To know the player died | `PlayerHealth.Died` | Check `health <= 0` from outside |
 | To spawn anything | `ISpawnService` | `Instantiate` |
 | A tuning number | `BalanceConfig` | A literal in a method |
+| To freeze or flash on a hit | `HitstopReceiver`, `HitFlash` (`Ahoy.Feel`) | `Time.timeScale`, a copied flash script |
+| Sparks, dust, any burst | `VfxPool` (`Ahoy.Feel`) | `Instantiate` per hit |
 
 If you need something that is not in `Ahoy.Core`, do not reach across — propose the contract,
 add it to Core, and tell the owning track.
+
+### Combat feel: who does what
+
+A hit is felt on both sides, and each side owns its half (Component + Observer + Object Pool,
+nothing new):
+
+- **Attacker:** freezes its own Animator on the first connection of a swing, adds camera
+  trauma, plays sparks at the contact point. Zahim does this in `CombatFeedback`, which only
+  listens to `PlayerAttack.Hit` and `PlayerHealth.Damaged` / `Blocked`.
+- **Victim:** in `TakeDamage`, freezes for `DamageInfo.HitstopFrames` (`HitstopReceiver.Freeze`,
+  or `HitstopReceiver.Seconds` without an Animator), flashes (`HitFlash`), and moves by
+  `DamageInfo.Reaction` — flinch, knockback, launch, blowaway; hits while airborne juggle.
+  `Ahoy.Testing.TrainingDummy` is the reference implementation.
+
+`Ahoy.Feel` holds only components that every track needs identically. Gameplay rules never
+go there; if a feel component needs to know *why* something happened, it is in the wrong place.
+
+### Lock-on and the Smash: what a powerful monster must provide
+
+Zahim never asks for a monster's class; he reads the Core contracts.
+
+- **Lock-on (R52)** targets any `IUnit` on the Monster layer whose `Tier` is above `Scuttler`.
+  Put the collider on the same object as the `IUnit` (or a child of it).
+- **The Smash (R24)** starts on its own when one of Zahim's hits leaves `IUnit.WeakPoint.State`
+  at `Smashing`. From then on the monster treats Zahim's next hit as the Smash, kills a captain
+  or takes 25% from a giant, and resolves it anyway after a timeout so no Smash is lost (R25).
+  `Ahoy.Testing.TrainingBoss` is the reference implementation.
 
 ---
 

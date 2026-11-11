@@ -1,0 +1,68 @@
+#pragma kernel CSMain
+
+struct FragmentVertex {
+    float3 position;    // Current vertex coordinates
+    float3 normal;      // Normal
+    float2 uv;          // UV coordinates
+    float3 center;      // Triangle centroid (axis for rotation and scattering)
+    float randomId;     // Per-fragment random value (used for rotation speed/direction variance)
+    float3 velocity;    // For movement vector
+    float3 rotationaxis;// Rotation axis
+    float3 impactforce; // Vector representing the direction and magnitude of the impact force
+};
+
+// Buffer passed from C#
+RWStructuredBuffer<FragmentVertex> _FragmentBuffer;
+
+// Parameters passed from C#
+float _DeltaTime;
+float _ExplosionSpeed;
+float3 _ExplosionCenter;
+float4x4 _CustomLocalToWorld;
+float3 _ImpactVelocity;
+float _ImpactStrength;
+
+// Main compute shader kernel for calculating the physics of each fragment.
+// It determines the velocity, impact force, and rotation axis for each fragment 
+// based on the explosion center, impact velocity, and individual random IDs.
+[numthreads(64, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // Prevent out-of-bounds buffer access
+    uint count, stride;
+    _FragmentBuffer.GetDimensions(count, stride);
+    if (id.x >= count) return;
+
+    FragmentVertex v = _FragmentBuffer[id.x];
+
+    // Calculate direction from the center
+    // Processing to prevent division by zero
+    // v.center is in local coordinates, so multiply by the matrix to get current world position
+    float3 worldCenter = mul(_CustomLocalToWorld, float4(v.center, 1.0)).xyz;
+    float3 direction = worldCenter - _ExplosionCenter;
+    float dist = length(direction);
+    float3 dirNormalized = dist > 0.0001 ? direction / dist : float3(0, 1, 0);
+
+    // Calculate inversely proportional coefficient to distance (closer is larger, farther is smaller)
+    // Add a constant to dist and divide to prevent division by zero or extreme numbers
+    float distanceMultiplier = 1.0 + 1.0 / (dist + 0.1);
+
+    // Determine vector: direction * speed * random variation * distance-based multiplier
+    v.velocity = dirNormalized * _ExplosionSpeed * (1.0 + v.randomId) * distanceMultiplier;
+
+    // Calculate impact effect
+    // Multiply by attenuation coefficient based on distance (dist) to lessen impact effect on distant fragments from collision point (_ExplosionCenter)
+    float impactFalloff = 1.0 / (1.0 + dist * 1.0); // Approximates 0 as dist increases
+    v.impactforce = (_ImpactVelocity * impactFalloff) * _ImpactStrength;
+
+    // Generates a random rotation axis for each fragment using mathematical operations on randomId
+    float3 axis = float3(
+        frac(sin(v.randomId * 123.45)), 
+        frac(sin(v.randomId * 456.78)), 
+        frac(sin(v.randomId * 789.01))
+    );
+    v.rotationaxis = normalize(axis * 2.0 - 1.0); // Normalize to range -1.0 to 1.0
+
+    // Write back
+    _FragmentBuffer[id.x] = v;
+}
