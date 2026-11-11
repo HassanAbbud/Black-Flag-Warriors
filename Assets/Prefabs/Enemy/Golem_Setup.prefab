@@ -80,7 +80,7 @@ MonoBehaviour:
   gaugeFill: {fileID: 3833835480501144452}
   windowFill: {fileID: 6628005838520454764}
   gaugeGroup: {fileID: 4206664798863345301}
-  telegraphColor: {r: 1, g: 0.35, b: 0.3, a: 1}
+  vulnerableColor: {r: 1, g: 0.2, b: 0.15, a: 1}
   exposedColor: {r: 1, g: 0.8, b: 0.2, a: 1}
   smashColor: {r: 1, g: 1, b: 1, a: 1}
   pulseSpeed: 18
@@ -620,6 +620,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5175071761992977607}
+    - targetCorrespondingSourceObject: {fileID: 8476470139333261811, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6477375523123463638}
   m_SourcePrefab: {fileID: 100100000, guid: 942a26fe9c997894fba00414a19eea67, type: 3}
 --- !u!95 &2798649692867609048 stripped
 Animator:
@@ -693,3 +696,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.WeakPointGauge
   balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
   boss: {fileID: 3001649604301675954}
+--- !u!114 &6477375523123463638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8084314436104281227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 6
+  color: {r: 0, g: 0, b: 0, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0
