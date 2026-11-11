@@ -190,6 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1274494968059816222}
   - component: {fileID: 7060978774998981460}
+  - component: {fileID: -6537146318511224160}
   m_Layer: 0
   m_Name: ALY_Soldier
   m_TagString: Untagged
@@ -227,6 +228,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea75316973624b478df52312b7a03aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.AllySoldier
+--- !u!114 &-6537146318511224160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328582396222507130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 1
+  color: {r: 0.14867693, g: 1, b: 0, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0
 --- !u!1 &8021266290278954517
 GameObject:
   m_ObjectHideFlags: 0
