@@ -31,11 +31,16 @@ namespace Ahoy.Island
         [SerializeField] float spawnSpread = 7f;
         [Tooltip("Props a unit must not appear inside: trees, rocks, buildings.")]
         [SerializeField] LayerMask obstacleMask = 1;
+        [Tooltip("The road between the two sides, monster end first: walkable points across the field.")]
+        [SerializeField] Vector3[] road;
+        [Tooltip("Share of reinforcements that march down the road to meet the enemy; the rest guard their end.")]
+        [Range(0f, 1f)] [SerializeField] float roadShare = 0.5f;
 
         readonly IUnit[] monsters = new IUnit[MaxPerSide];
         readonly IUnit[] allies = new IUnit[MaxPerSide];
         int monsterCount;
         int allyCount;
+        Vector3[] roadBack;   // the road walked from the ally end
         float nextMonsterAt;
         float nextAllyAt;
 
@@ -44,7 +49,14 @@ namespace Ahoy.Island
         public int FieldMonsters => monsterCount;
         public int FieldAllies => allyCount;
 
-        // Called by BattleSimulation each step while Zahim is near. Rank 0 is the nearest front.
+        void Awake()
+        {
+            if (road == null || road.Length < 2) return;
+            roadBack = (Vector3[])road.Clone();
+            System.Array.Reverse(roadBack);
+        }
+
+        // Called by BattleSimulation each step. Rank 0 is the front nearest Zahim.
         internal void Tick(float now, int rank, ISpawnPacing pacing)
         {
             Active = true;
@@ -59,12 +71,12 @@ namespace Ahoy.Island
             if (now >= nextMonsterAt && monsterCount < monsterWant)
             {
                 nextMonsterAt = now + pacing.FrontMonsterInterval;
-                Spawn(Faction.Monsters, monsterSpecies, monsterEntry, monsters, ref monsterCount, monsterWant, pacing.FrontBurst);
+                Spawn(Faction.Monsters, monsterSpecies, monsterEntry, road, monsters, ref monsterCount, monsterWant, pacing.FrontBurst);
             }
             if (now >= nextAllyAt && allyCount < allyWant)
             {
                 nextAllyAt = now + pacing.FrontAllyInterval;
-                Spawn(Faction.Village, allySpecies, allyPost, allies, ref allyCount, allyWant, pacing.FrontBurst);
+                Spawn(Faction.Village, allySpecies, allyPost, roadBack, allies, ref allyCount, allyWant, pacing.FrontBurst);
             }
         }
 
@@ -78,16 +90,20 @@ namespace Ahoy.Island
             Release(Faction.Village, allies, ref allyCount);
         }
 
-        void Spawn(Faction side, ScriptableObject[] species, Transform at, IUnit[] list, ref int count, int want, int burst)
+        // Each unit either guards its end or marches the road toward the other side.
+        void Spawn(Faction side, ScriptableObject[] species, Transform at, Vector3[] march, IUnit[] list, ref int count, int want, int burst)
         {
             if (species == null || species.Length == 0 || at == null) return;
             ISpawnService spawner = BattleContext.Spawner(side);
             for (int n = 0; n < burst && count < want && count < list.Length; n++)
             {
-                if (!TryClearPoint(at.position, out Vector3 position)) return;   // all tries blocked: next burst
+                bool marching = march != null && Random.value < roadShare;
+                Vector3 origin = marching ? march[0] : at.position;
+                if (!TryClearPoint(origin, out Vector3 position)) return;   // all tries blocked: next burst
                 Quaternion facing = at.rotation * Quaternion.Euler(0f, Random.Range(-30f, 30f), 0f);
                 IUnit unit = spawner.SpawnCrowd(species[Random.Range(0, species.Length)], position, facing, location.LocationId);
                 if (unit == null) return;   // pool dry or crowd at capacity: next burst
+                if (marching && unit is IRouteFollower follower) follower.FollowRoute(march);
                 list[count++] = unit;
             }
         }
@@ -152,11 +168,9 @@ namespace Ahoy.Island
                 Gizmos.color = new Color(0.2f, 0.5f, 1f, 0.8f);
                 Gizmos.DrawWireSphere(allyPost.position, spawnSpread);
             }
-            if (monsterEntry != null && allyPost != null)
-            {
-                Gizmos.color = Color.white;
-                Gizmos.DrawLine(monsterEntry.position + Vector3.up, allyPost.position + Vector3.up);
-            }
+            if (road == null) return;
+            Gizmos.color = Color.white;
+            for (int i = 1; i < road.Length; i++) Gizmos.DrawLine(road[i - 1] + Vector3.up, road[i] + Vector3.up);
         }
     }
 }

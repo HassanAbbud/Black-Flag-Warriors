@@ -11,8 +11,12 @@ namespace Ahoy.Enemies
     // mills around its target in a loose ring. Only a few monsters at a time hold an attack
     // slot (a token from the manager), wind up where the player can read it, and swing for
     // light damage. Everyone else waits their turn.
-    public sealed class Monster : MonoBehaviour, IUnit
+    public sealed class Monster : MonoBehaviour, IUnit, IRouteFollower
     {
+        const float RouteReach = 1.5f;        // metres from a road point that counts as there
+        const float RouteSpread = 4f;         // metres each monster walks beside the road, so a column is not a single file
+        const float MarchPace = 0.6f;         // share of moveSpeed while marching
+        const float LeashScale = 1.5f;        // gives up chasing Zahim past aggroRange times this
         public enum MonsterState { Idle, Chase, Circle, Telegraph, Strike, Recover, Staggered, Dead }
 
         [Tooltip("Optional. Leave empty for a capsule test dummy. Default state must be Locomotion.")]
@@ -54,6 +58,9 @@ namespace Ahoy.Enemies
         internal float SavedTime;               // R70: time owed while thinking every few frames
         internal IUnit LastAttacker;            // who landed the last hit; null when it was Zahim
         Vector3 lastVelocity;                   // R70: carried on the frames it does not think
+        Vector3[] route;                        // a battle front's road; null when it just stands guard
+        int routeIndex;
+        Vector3 routeOffset;
         internal int TickSlot => probeSlot;
 
         public MonsterState State => state;
@@ -114,6 +121,15 @@ namespace Ahoy.Enemies
             nextAttackTime = now + Random.value * balance.crowdFirstAttackDelay;
             nextRetargetTime = now + Random.value * balance.crowdRetargetInterval;
             slide.Clear();
+            route = null;
+        }
+
+        public void FollowRoute(Vector3[] points)
+        {
+            route = points;
+            routeIndex = 0;
+            Vector2 side = Random.insideUnitCircle * RouteSpread;
+            routeOffset = new Vector3(side.x, 0f, side.y);
         }
 
         // Called by the manager when this monster returns to the pool.
@@ -200,6 +216,7 @@ namespace Ahoy.Enemies
             {
                 case MonsterState.Idle:
                     if (hasTarget && distance <= def.aggroRange) SetState(MonsterState.Chase);
+                    else velocity = March(dt);
                     break;
 
                 case MonsterState.Chase:
@@ -255,7 +272,9 @@ namespace Ahoy.Enemies
         // straight in and swing.
         Vector3 Approach(float dt, float now, Vector3 targetPosition, Vector3 direction, float distance, bool hasTarget)
         {
-            if (!hasTarget)
+            // Lost the target, or Zahim got far away: back to its road (musou fronts stay put).
+            bool leashed = allyTarget == null && distance > def.aggroRange * LeashScale;
+            if (!hasTarget || leashed)
             {
                 DropToken();
                 SetState(MonsterState.Idle);
@@ -298,6 +317,29 @@ namespace Ahoy.Enemies
             // Never overshoot the point in one frame.
             float step = Mathf.Min(speed, gap / dt);
             return toPoint / gap * step;
+        }
+
+        // Nothing to fight: walk the road it was given, if any, and stand at its end.
+        Vector3 March(float dt)
+        {
+            if (route == null || routeIndex >= route.Length)
+            {
+                if (animator != null) animator.SetFloat(MonsterAnimatorIds.Speed, 0f, def.speedDampSeconds, dt);
+                return Vector3.zero;
+            }
+            Vector3 to = route[routeIndex] + routeOffset - transform.position;
+            to.y = 0f;
+            float gap = to.magnitude;
+            if (gap <= RouteReach)
+            {
+                routeIndex++;
+                return Vector3.zero;
+            }
+            Vector3 direction = to / gap;
+            EnemyCombat.Turn(transform, direction, def.turnSpeed, dt);
+            float speed = def.moveSpeed * speedScale * MarchPace;
+            if (animator != null) animator.SetFloat(MonsterAnimatorIds.Speed, speed, def.speedDampSeconds, dt);
+            return direction * speed;
         }
 
         // Holding a slot: go for the target and attack the moment it is in reach.

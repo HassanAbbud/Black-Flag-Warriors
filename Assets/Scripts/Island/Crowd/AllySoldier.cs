@@ -12,8 +12,10 @@ namespace Ahoy.Island
     //   Stagger: hit; flinches or slides back
     //   Dead   : lies there for corpseSeconds, then goes back to the pool
     // shortcut: placeholder capsule with no animation, until a soldier model and animator are ready.
-    public sealed class AllySoldier : MonoBehaviour, IUnit, ITargetable
+    public sealed class AllySoldier : MonoBehaviour, IUnit, ITargetable, IRouteFollower
     {
+        const float RouteReach = 1.5f;
+        const float RouteSpread = 4f;
         enum SoldierState { Hold, Chase, Swing, Stagger, Dead }
 
         AllyCrowd crowd;
@@ -36,6 +38,8 @@ namespace Ahoy.Island
         Transform targetBody;
         Vector3 slideVelocity;
         Vector3 lastVelocity;   // R70: carried on the frames it does not think
+        Vector3[] route;        // a battle front's road; the post is its end
+        int routeIndex;
         IUnit lastAttacker;
 
         internal int ActiveIndex = -1;
@@ -85,12 +89,22 @@ namespace Ahoy.Island
             slideVelocity = Vector3.zero;
             lastVelocity = Vector3.zero;
             lastAttacker = null;
+            route = null;
             nextRetargetAt = Time.time + Random.value * def.retargetInterval;
             nextSwingAt = Time.time + Random.value * def.attackCooldown;
             BattleContext.Village.Add(this);
         }
 
         void OnDisable() => BattleContext.Village.Remove(this);
+
+        public void FollowRoute(Vector3[] points)
+        {
+            route = points;
+            routeIndex = 0;
+            post = points[points.Length - 1];
+            Vector2 side = Random.insideUnitCircle * RouteSpread;
+            postOffset = new Vector3(side.x, 0f, side.y);
+        }
 
         // ── Damage ───────────────────────────────────────────────────────────────────
         public void TakeDamage(in DamageInfo info)
@@ -209,9 +223,16 @@ namespace Ahoy.Island
         Vector3 HoldPost(float dt)
         {
             if (state != SoldierState.Hold) SetState(SoldierState.Hold);
-            Vector3 to = post + postOffset - transform.position;
+            // Marching: the next road point; then the post at the road's end.
+            Vector3 goal = route != null && routeIndex < route.Length ? route[routeIndex] : post;
+            Vector3 to = goal + postOffset - transform.position;
             to.y = 0f;
             float gap = to.magnitude;
+            if (route != null && routeIndex < route.Length && gap <= RouteReach)
+            {
+                routeIndex++;
+                return Vector3.zero;
+            }
             if (gap <= 0.3f) return Vector3.zero;
             Vector3 direction = to / gap;
             Turn(direction, dt);
