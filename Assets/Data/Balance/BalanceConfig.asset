@@ -80,6 +80,8 @@ MonoBehaviour:
   cameraStickSpeed: 180
   cameraRecenterSpeed: 540
   crowdCapacity: 300
+  crowdFullSimRadius: 40
+  crowdFarTickInterval: 3
   groundMask:
     serializedVersion: 2
     m_Bits: 1
@@ -91,7 +93,7 @@ MonoBehaviour:
   enemyGravity: -25
   enemyGroundedStickSpeed: -2
   crowdMaxAttackersOnPlayer: 3
-  crowdMaxAttackersOnAllies: 6
+  crowdMaxAttackersOnAllies: 30
   crowdAttackStartInterval: 0.5
   crowdAttackStartJitter: 0.3
   crowdTokenHoldSeconds: 2.5

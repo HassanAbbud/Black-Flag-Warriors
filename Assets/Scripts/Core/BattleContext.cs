@@ -21,11 +21,17 @@ namespace Ahoy.Core
         static ICrowdQuery crowd = NullCrowd.Instance;
         static IBattleProgress progress = NullProgress.Instance;
         static ISpawnPacing pacing = NullPacing.Instance;
+        static ISpawnService monsterSpawner = NullSpawner.Instance;
+        static ISpawnService allySpawner = NullSpawner.Instance;
 
         public static ICrowdQuery Crowd => crowd;
         public static IVillageTargets Village => village;
         public static IBattleProgress Progress => progress;
         public static ISpawnPacing Pacing => pacing;
+
+        // The crowd spawner of a faction: monsters, or the village's soldiers.
+        public static ISpawnService Spawner(Faction faction) =>
+            faction == Faction.Monsters ? monsterSpawner : faction == Faction.Village ? allySpawner : NullSpawner.Instance;
 
         public static void RegisterCrowd(ICrowdQuery service) => crowd = service ?? NullCrowd.Instance;
 
@@ -48,6 +54,18 @@ namespace Ahoy.Core
             if (pacing == service) pacing = NullPacing.Instance;
         }
 
+        public static void RegisterSpawner(Faction faction, ISpawnService service)
+        {
+            if (faction == Faction.Monsters) monsterSpawner = service ?? NullSpawner.Instance;
+            else if (faction == Faction.Village) allySpawner = service ?? NullSpawner.Instance;
+        }
+
+        public static void UnregisterSpawner(Faction faction, ISpawnService service)
+        {
+            if (faction == Faction.Monsters && monsterSpawner == service) monsterSpawner = NullSpawner.Instance;
+            else if (faction == Faction.Village && allySpawner == service) allySpawner = NullSpawner.Instance;
+        }
+
         // The project enters Play Mode without a domain reload, so statics outlive the session.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetOnPlay()
@@ -55,6 +73,8 @@ namespace Ahoy.Core
             crowd = NullCrowd.Instance;
             progress = NullProgress.Instance;
             pacing = NullPacing.Instance;
+            monsterSpawner = NullSpawner.Instance;
+            allySpawner = NullSpawner.Instance;
             village.Clear();
         }
 
@@ -110,7 +130,8 @@ namespace Ahoy.Core
             public int KoCount => 0;
             public float BattleSeconds => 0f;
             public int SeenLocationId => -1;
-            public bool Ended => false;
+            public int FieldMonsters => 0;
+            public int FieldAllies => 0;
         }
 
         // Stub: authored spawn rates, no allies.
@@ -121,9 +142,22 @@ namespace Ahoy.Core
             public float MonsterIntervalScale => 1f;
             public float MonsterCapScale => 1f;
             public float WaveStrengthScale => 1f;
-            public float AllyInterval => 0f;
-            public int AllyMaxAlive => 0;
             public float AllyRegenScale => 1f;
+            public int FrontMonsterCap(int rank) => 0;
+            public int FrontAllyCap(int rank) => 0;
+            public float FrontMonsterInterval => 1f;
+            public float FrontAllyInterval => 1f;
+            public int FrontBurst => 0;
+        }
+
+        // Stub: no pool for this faction in this scene.
+        sealed class NullSpawner : ISpawnService
+        {
+            public static readonly NullSpawner Instance = new NullSpawner();
+
+            public int Capacity => 0;
+            public IUnit SpawnCrowd(ScriptableObject species, Vector3 position, Quaternion rotation, int locationId) => null;
+            public void Despawn(IUnit unit) { }
         }
     }
 }

@@ -9,9 +9,11 @@ namespace Ahoy.Enemies
     // The Update Manager for the crowd (Code Patterns 2.8): 300 monsters, one Update. Also owns
     // their pools (2.7), sized from BalanceConfig at load, the attack slots that keep the crowd
     // from hitting Zahim all at once, and the crowd queries Zahim and the allies use to find
-    // monsters (registered with BattleContext). Keep this object at the origin with scale 1;
-    // the pool is parented to it.
-    public sealed class MonsterManager : MonoBehaviour, ICrowdQuery
+    // monsters (registered with BattleContext). It is also the monsters' ISpawnService, so
+    // portals and battle fronts spawn through BattleContext.Spawner (W5.6). Monsters beyond
+    // crowdFullSimRadius think every few frames (R70). Keep this object at the origin with
+    // scale 1; the pool is parented to it.
+    public sealed class MonsterManager : MonoBehaviour, ICrowdQuery, ISpawnService
     {
         [Serializable]
         struct PoolEntry
@@ -45,6 +47,7 @@ namespace Ahoy.Enemies
         public event Action<IUnit> UnitDied;
 
         public int ActiveCount => activeCount;
+        public int Capacity => active != null ? active.Length : balance.crowdCapacity;
         public int PlayerAttackers => playerAttackers;
         public IVillageTargets Village { get; private set; }
 
@@ -65,8 +68,29 @@ namespace Ahoy.Enemies
         }
 
         // Others find the crowd through BattleContext, never through this class.
-        void OnEnable() => BattleContext.RegisterCrowd(this);
-        void OnDisable() => BattleContext.UnregisterCrowd(this);
+        void OnEnable()
+        {
+            BattleContext.RegisterCrowd(this);
+            BattleContext.RegisterSpawner(Faction.Monsters, this);
+        }
+
+        void OnDisable()
+        {
+            BattleContext.UnregisterCrowd(this);
+            BattleContext.UnregisterSpawner(Faction.Monsters, this);
+        }
+
+        // ── ISpawnService ────────────────────────────────────────────────────────────
+        public IUnit SpawnCrowd(ScriptableObject species, Vector3 position, Quaternion rotation, int locationId)
+        {
+            return species is MonsterDef def ? Spawn(def, position, rotation, locationId) : null;
+        }
+
+        // A front Zahim walked away from: back to the pool, not a kill.
+        public void Despawn(IUnit unit)
+        {
+            if (unit is Monster monster && monster.ActiveIndex >= 0) Release(monster, false);
+        }
 
         // The only Instantiate calls, all at load (Code Patterns 0.5).
         void Prewarm()
@@ -142,7 +166,7 @@ namespace Ahoy.Enemies
         internal void NotifyDied(Monster monster)
         {
             UnitDied?.Invoke(monster);
-            BattleEvents.RaiseUnitKilled(monster);   // KO count and the battle simulation (R64)
+            BattleEvents.RaiseUnitKilled(monster, monster.LastAttacker);   // KO count and the battle simulation (R64)
         }
 
         // ── Attack slots ─────────────────────────────────────────────────────────────
@@ -179,10 +203,27 @@ namespace Ahoy.Enemies
             Vector3 playerPosition = playerMotor.Position;
             bool playerAlive = !playerMotor.IsDead;
             int frame = Time.frameCount;
+            float fullSimSqr = balance.crowdFullSimRadius * balance.crowdFullSimRadius;
+            int farInterval = Mathf.Max(1, balance.crowdFarTickInterval);
 
             // Backwards, because a dead monster releases itself and swap-removes.
+            // R70: far monsters think every few frames, catching up on the time they saved, and
+            // glide along their last velocity in between so they never jump.
             for (int i = activeCount - 1; i >= 0; i--)
-                active[i].Tick(dt, now, playerPosition, playerAlive, frame);
+            {
+                Monster monster = active[i];
+                Vector3 offset = monster.transform.position - playerPosition;
+                float flatSqr = offset.x * offset.x + offset.z * offset.z;
+                if (flatSqr > fullSimSqr && (frame + monster.TickSlot) % farInterval != 0)
+                {
+                    monster.SavedTime += dt;
+                    monster.Glide(dt, frame);
+                    continue;
+                }
+                float step = dt + monster.SavedTime;
+                monster.SavedTime = 0f;
+                monster.Tick(step, dt, now, playerPosition, playerAlive, frame);
+            }
         }
 
         // ── ICrowdQuery ──────────────────────────────────────────────────────────────

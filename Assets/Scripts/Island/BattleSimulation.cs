@@ -9,8 +9,15 @@ namespace Ahoy.Island
     //   proportion to the other's (R64). A village-held location the monsters retake changes hands,
     //   so a sealed portal left undefended reopens; monsters in an undefended village wear down its
     //   integrity, and the battle is lost at zero.
-    //   Where Zahim stands the real units fight instead: their deaths (BattleEvents.UnitKilled)
-    //   come off that location's strength, and its portal camp reports its own phase and meter.
+    //   The village answers the same way: soldiers a village-held location cannot hold march out to
+    //   its nearest monster-held neighbour on the route and fight there.
+    //   Every land location has a BattleFront that keeps those numbers on the field as real crowds
+    //   of monsters and village soldiers, all over the island at once, musou style; their deaths
+    //   (BattleEvents.UnitKilled) come off the numbers, and a portal camp reports its own phase and
+    //   meter. Fronts are ranked by distance to Zahim for their share of the crowd budget (W5.6,
+    //   R69–R73). Places reached only by sea fight as numbers.
+    //   A watchtower keep falls to whoever clears it; a stronghold once its guardian is dead and
+    //   its ground cleared; sealing the final breach wins the battle.
     // Registers as IBattleProgress so the HUD and the spawn pacing read it through BattleContext.
     // One Update for every location (Code Patterns 2.8), stepping every tickSeconds; no allocation.
     public sealed class BattleSimulation : MonoBehaviour, IBattleProgress
@@ -23,6 +30,9 @@ namespace Ahoy.Island
         [SerializeField] BattleLocation[] locations;
 
         int[] indexById;
+        int[] frontOrder;
+        int fieldMonsters;
+        int fieldAllies;
         float stepTimer;
         float integrity;
         float battleSeconds;
@@ -52,7 +62,8 @@ namespace Ahoy.Island
         public int KoCount => koCount;
         public float BattleSeconds => battleSeconds;
         public int SeenLocationId => seenId;
-        public bool Ended => ended;
+        public int FieldMonsters => fieldMonsters;
+        public int FieldAllies => fieldAllies;
 
         void Awake()
         {
@@ -73,9 +84,9 @@ namespace Ahoy.Island
                 int id = locations[i].LocationId;
                 if (indexById[id] >= 0) Debug.LogError($"{name}: two locations use id {id}", locations[i]);
                 indexById[id] = i;
-                if (locations[i].Def.kind != LocationKind.Village && locations[i].Def.kind != LocationKind.Stronghold
-                    && locations[i].Def.kind != LocationKind.Outpost) portalCount++;
+                if (IsPortal(locations[i].Def.kind)) portalCount++;
             }
+            frontOrder = new int[locations.Length];
             ResetBattle();
         }
 
@@ -123,20 +134,28 @@ namespace Ahoy.Island
             UpdateSeen();
 
             for (int i = 0; i < locations.Length; i++) Reinforce(locations[i], dt, pacing);
-            for (int i = 0; i < locations.Length; i++) March(locations[i], dt);
+            for (int i = 0; i < locations.Length; i++)
+            {
+                March(locations[i], dt);
+                SendAllies(locations[i], dt);
+            }
             for (int i = 0; i < locations.Length; i++)
             {
                 BattleLocation location = locations[i];
                 location.monsters = Mathf.Min(location.monsters + location.incoming, location.Def.maxMonsterStrength);
+                location.allies = Mathf.Min(location.allies + location.incomingAllies, Mathf.Max(location.Def.maxAllyStrength, location.allies));
                 location.incoming = 0f;
+                location.incomingAllies = 0f;
             }
             for (int i = 0; i < locations.Length; i++)
             {
                 Fight(locations[i], dt);
                 Settle(locations[i]);
+                Debug.Assert(locations[i].monsters >= 0f && locations[i].allies >= 0f, "battle strength went negative", locations[i]);
             }
             WearVillage(dt);
             Recount();
+            UpdateFronts(pacing);
         }
 
         // Zahim is at the nearest location whose seen radius he is inside.
@@ -153,6 +172,7 @@ namespace Ahoy.Island
                 float sqr = to.sqrMagnitude;
                 float radius = location.Def.seenRadius;
                 location.seen = false;
+                location.playerDistance = Mathf.Sqrt(sqr);
                 if (sqr <= radius * radius && sqr < best)
                 {
                     best = sqr;
@@ -183,11 +203,46 @@ namespace Ahoy.Island
         {
             BattleLocation next = location.Next;
             if (next == null || location.locked) return;
-            float spare = location.monsters - location.Def.holdStrength;
+            // Monsters already standing on the field stay and fight; only the rest march on.
+            float fielded = location.Materialized ? location.front.FieldMonsters : 0f;
+            float spare = location.monsters - Mathf.Max(location.Def.holdStrength, fielded);
             if (spare <= 0f) return;
             float moving = Mathf.Min(spare, location.Def.marchRate * dt);
             location.monsters -= moving;
             next.incoming += moving;
+        }
+
+        // The village pushes back: what a village-held location cannot hold marches to the nearest
+        // monster-held neighbour on the route (upstream or downstream) and fights there.
+        void SendAllies(BattleLocation location, float dt)
+        {
+            if (location.holder != Faction.Village) return;
+            float fielded = location.Materialized ? location.front.FieldAllies : 0f;
+            float spare = location.allies - Mathf.Max(location.Def.allyHold, fielded);
+            if (spare <= 0f) return;
+            BattleLocation target = AllyTarget(location);
+            if (target == null) return;
+            float moving = Mathf.Min(spare, location.Def.allyMarchRate * dt);
+            location.allies -= moving;
+            target.incomingAllies += moving;
+        }
+
+        BattleLocation AllyTarget(BattleLocation from)
+        {
+            BattleLocation best = null;
+            float bestSqr = float.MaxValue;
+            for (int i = 0; i < locations.Length; i++)
+            {
+                BattleLocation candidate = locations[i];
+                bool neighbour = from.Next == candidate || candidate.Next == from;
+                if (!neighbour || candidate.holder != Faction.Monsters || !candidate.OnLand || candidate.locked) continue;
+                float sqr = (candidate.transform.position - from.transform.position).sqrMagnitude;
+                if (sqr >= bestSqr) continue;
+                bestSqr = sqr;
+                best = candidate;
+            }
+            from.allyTarget = best;
+            return best;
         }
 
         // R64: out of sight, each side loses strength in proportion to the other's.
@@ -195,10 +250,12 @@ namespace Ahoy.Island
         void Fight(BattleLocation location, float dt)
         {
             float empty = def.emptyStrength;
-            location.fighting = (location.monsters > empty && location.allies > empty)
-                                || (location.hasCamp && location.seen
-                                    && (location.campPhase == PortalPhase.Contested || location.campPhase == PortalPhase.SpawnBoss));
-            if (location.seen || location.monsters <= empty || location.allies <= empty) return;
+            bool fieldBattle = location.Materialized && location.front.FieldMonsters > 0 && location.front.FieldAllies > 0;
+            bool campBattle = location.hasCamp && location.seen
+                              && (location.campPhase == PortalPhase.Contested || location.campPhase == PortalPhase.SpawnBoss);
+            location.fighting = fieldBattle || campBattle || (location.monsters > empty && location.allies > empty);
+            // On the field the real crowds do the fighting; only the unseen battle is resolved here.
+            if (location.seen || location.Materialized || location.monsters <= empty || location.allies <= empty) return;
 
             float monsterLoss = location.allies * def.killRate * dt;
             float allyLoss = location.monsters * def.killRate * dt;
@@ -221,10 +278,15 @@ namespace Ahoy.Island
                 return;
             }
 
-            // Portals are only sealed by beating their guardian (PortalCamp reports it). Outposts and
-            // strongholds fall back to the village once Zahim clears them in person.
-            bool portal = d.kind == LocationKind.Portal || d.kind == LocationKind.SeaPortal || d.kind == LocationKind.FinalBreach;
-            if (!portal && location.seen && location.monsters <= empty) SetHolder(location, Faction.Village);
+            // Portals are only sealed by beating their guardian (PortalCamp reports it). A keep falls to
+            // whoever clears it, Zahim or the soldiers sent there. Outposts and strongholds fall back
+            // to the village once Zahim clears them in person, a stronghold only after its guardian.
+            bool cleared = location.monsters <= empty;
+            if (d.kind == LocationKind.Keep && cleared && (location.seen || location.allies > empty))
+                SetHolder(location, Faction.Village);
+            else if (!IsPortal(d.kind) && d.kind != LocationKind.Keep && cleared && location.seen
+                     && (d.kind != LocationKind.Stronghold || location.guardianDown))
+                SetHolder(location, Faction.Village);
             location.meter = d.maxMonsterStrength > 0f && !location.hasCamp
                 ? 1f - Mathf.Clamp01(location.monsters / d.maxMonsterStrength)
                 : location.meter;
@@ -271,8 +333,7 @@ namespace Ahoy.Island
                 BattleLocation location = locations[i];
                 if (location == village || location.holder != Faction.Village) continue;
                 heldCount++;
-                LocationKind kind = location.Def.kind;
-                if (kind == LocationKind.Portal || kind == LocationKind.SeaPortal || kind == LocationKind.FinalBreach) sealedCount++;
+                if (IsPortal(location.Def.kind)) sealedCount++;
             }
             for (int i = 0; i < locations.Length; i++)
             {
@@ -282,14 +343,15 @@ namespace Ahoy.Island
         }
 
         // ── Real units and real portals ──────────────────────────────────────────────
-        void OnUnitKilled(IUnit unit)
+        void OnUnitKilled(IUnit unit, IUnit killer)
         {
             if (unit == null) return;
-            if (unit.Faction == Faction.Monsters) koCount++;
+            if (unit.Faction == Faction.Monsters && killer == null) koCount++;   // Zahim's own KOs (GDD Scoring)
 
             BattleLocation location = Find(unit.LocationId);
             if (location == null) return;
             if (unit.Faction == Faction.Monsters) location.monsters = Mathf.Max(0f, location.monsters - unit.Strength);
+            if (unit.Faction == Faction.Monsters && unit.Tier >= Tier.Guardian) location.guardianDown = true;
             else if (unit.Faction == Faction.Village) location.allies = Mathf.Max(0f, location.allies - unit.Strength);
         }
 
@@ -300,6 +362,12 @@ namespace Ahoy.Island
             location.hasCamp = true;
             location.campPhase = phase;
             if (phase == PortalPhase.Sealed) SetHolder(location, Faction.Village);
+            if (phase == PortalPhase.Sealed && location.Def.kind == LocationKind.FinalBreach && !ended)
+            {
+                ended = true;
+                Debug.Log($"{name}: the great breach is closed, the island is won", this);
+                BattleEvents.RaiseBattleEnded(true);
+            }
             else if (phase == PortalPhase.Open && location.holder == Faction.Monsters) location.meter = 0f;
             Recount();
         }
@@ -309,6 +377,46 @@ namespace Ahoy.Island
             BattleLocation location = Find(locationId);
             if (location != null) location.meter = Mathf.Clamp01(meter);
         }
+
+        // Every front is on the field, ranked by distance to Zahim: rank 0 gets the biggest share of
+        // the crowd budget. Only a locked final breach, or the end of the battle, stands down.
+        void UpdateFronts(ISpawnPacing pacing)
+        {
+            int count = 0;
+            for (int i = 0; i < locations.Length; i++)
+            {
+                BattleLocation location = locations[i];
+                if (location.front == null) continue;
+                // shortcut: sea portals and sea towers fight as numbers only, until ship combat can take them.
+                if (ended || location.locked || !location.OnLand)
+                {
+                    location.front.Deactivate();
+                    continue;
+                }
+                // Insertion sort by distance; at most a dozen locations.
+                int at = count++;
+                while (at > 0 && locations[frontOrder[at - 1]].playerDistance > location.playerDistance)
+                {
+                    frontOrder[at] = frontOrder[at - 1];
+                    at--;
+                }
+                frontOrder[at] = i;
+            }
+
+            float now = Time.time;
+            fieldMonsters = 0;
+            fieldAllies = 0;
+            for (int rank = 0; rank < count; rank++)
+            {
+                BattleFront front = locations[frontOrder[rank]].front;
+                front.Tick(now, rank, pacing);
+                fieldMonsters += front.FieldMonsters;
+                fieldAllies += front.FieldAllies;
+            }
+        }
+
+        static bool IsPortal(LocationKind kind) =>
+            kind == LocationKind.Portal || kind == LocationKind.SeaPortal || kind == LocationKind.FinalBreach;
 
         BattleLocation Find(int locationId)
         {

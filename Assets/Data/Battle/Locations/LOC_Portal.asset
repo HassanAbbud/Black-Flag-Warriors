@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocationDef
   kind: 1
   startHolder: 1
-  startMonsterStrength: 12
+  startMonsterStrength: 80
   startAllyStrength: 0
-  waveStrength: 6
+  waveStrength: 20
   waveInterval: 60
-  maxMonsterStrength: 40
-  holdStrength: 10
-  marchRate: 0.25
-  captureStrength: 4
-  allyRegen: 0.15
-  maxAllyStrength: 15
-  garrisonOnCapture: 10
+  maxMonsterStrength: 150
+  holdStrength: 40
+  marchRate: 0.5
+  captureStrength: 8
+  allyRegen: 0.3
+  maxAllyStrength: 40
+  garrisonOnCapture: 25
+  allyHold: 20
+  allyMarchRate: 0.3
   seenRadius: 60

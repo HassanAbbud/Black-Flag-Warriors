@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SIM_Island
   m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleSimDef
   tickSeconds: 0.5
-  killRate: 0.04
+  killRate: 0.02
   emptyStrength: 0.05
   villageIntegrity: 100
-  integrityDamage: 0.15
+  integrityDamage: 0.03
   loseWhenVillageFalls: 1
-  sealedForFinalBreach: 6
+  sealedForFinalBreach: 3

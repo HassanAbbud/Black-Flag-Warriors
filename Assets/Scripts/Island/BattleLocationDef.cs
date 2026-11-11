@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Ahoy.Island
 {
     // Type Object: one asset per kind of battle location (portal, sea portal, stronghold, outpost,
-    // village, final breach). BattleLocation holds where it is; this holds how it behaves.
+    // village, final breach, watchtower keep). BattleLocation holds where it is; this holds how it behaves.
     // Strengths are in R64 units: one Imp is worth its MonsterDef.strength.
     [CreateAssetMenu(menuName = "Ahoy/Battle Location Def", fileName = "LOC_")]
     public sealed class BattleLocationDef : ScriptableObject
@@ -36,9 +36,13 @@ namespace Ahoy.Island
         public float maxAllyStrength = 15f;
         [Tooltip("Ally strength that moves in the moment the village takes it (a portal is sealed).")]
         public float garrisonOnCapture = 8f;
+        [Tooltip("Ally strength the village keeps here; anything above marches out to attack the nearest monster-held neighbour.")]
+        public float allyHold = 20f;
+        [Tooltip("Ally strength per second that marches out.")]
+        public float allyMarchRate = 0.3f;
 
         [Header("Zahim")]
-        [Tooltip("Metres. Inside it the real units fight and the simulation stops resolving this location.")]
+        [Tooltip("Metres. Zahim inside it is 'at' this location (HUD, captures).")]
         public float seenRadius = 60f;
 
         void OnValidate()
@@ -54,6 +58,8 @@ namespace Ahoy.Island
             allyRegen = Mathf.Max(0f, allyRegen);
             maxAllyStrength = Mathf.Max(0f, maxAllyStrength);
             garrisonOnCapture = Mathf.Max(0f, garrisonOnCapture);
+            allyHold = Mathf.Max(0f, allyHold);
+            allyMarchRate = Mathf.Max(0f, allyMarchRate);
             seenRadius = Mathf.Max(0f, seenRadius);
         }
     }
