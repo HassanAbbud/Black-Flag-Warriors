@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2fe73ef75d48c409ef066457e68f8d, type: 3}
   m_Name: ATK_Golem_Sweep
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.MonsterAttackDef
-  animatorState: 
+  animatorState: Sweep
   playbackSpeed: 1
   crossFadeSeconds: 0.08
   telegraphSeconds: 0.9
   telegraphTurnSpeed: 90
   telegraphAimLockAt: 0.6
+  opensCounterWindow: 1
   strikeSeconds: 0.3
   recoverSeconds: 0.9
   damage: 90
