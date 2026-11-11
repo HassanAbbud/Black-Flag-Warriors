@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1443d3e65881710419fd5a1a1fc23200, type: 3}
+  m_Name: PTN_Portal_7
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Portal.PortalCampDef
+  triggerRadius: 20
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  enemyPrefabs: []
+  campSize: 60
+  maxAlive: 14
+  spawnInterval: 0.5
+  spawnRadius: {x: 2, y: 6}
+  navMeshSnapDistance: 4
+  spawnGroundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  spawnGroundProbeHeight: 30
+  spawnMaxHeightDifference: 5
+  spawnAttempts: 6
+  spawnDuringBoss: 1
+  bossPrefab: {fileID: 8084314436104281227, guid: 1e410aa1d672f70418cfc98854df903d, type: 3}
+  bossThreshold: 0.6
+  sealedColorA: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  sealedColorB: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  sealedGlow: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  sealedSwirlSpeed: 0.1
+  ringDormantColor: {r: 1, g: 0.9, b: 0.2, a: 0.6}
+  ringActiveColor: {r: 1, g: 0.1, b: 0.1, a: 0.9}
+  ringSealedColor: {r: 0.2, g: 0.4, b: 1, a: 0.9}
+  ringWidth: 0.3
+  ringSegments: 64
+  ringGroundOffset: 0.05
+  ringGroundProbeHeight: 10
+  ringGroundMask:
+    serializedVersion: 2
+    m_Bits: 1

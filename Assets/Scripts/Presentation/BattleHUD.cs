@@ -8,7 +8,7 @@ namespace Ahoy.Presentation
 {
     // W5.6 battle progress bar and counters. Reads only IBattleProgress through BattleContext and
     // listens to BattleEvents.BattleEnded: island reclaimed, portals sealed, village integrity, KO
-    // count, battle time, the meter of the location Zahim is at, and where the sides are fighting
+    // count, battle time, the crowds on the field, the meter of the location Zahim is at, and where the sides are fighting
     // right now (GDD HUD). Text is refreshed a few times a second with SetText, which does not allocate.
     public sealed class BattleHUD : MonoBehaviour
     {
@@ -39,6 +39,8 @@ namespace Ahoy.Presentation
         [Header("Counters")]
         [SerializeField] TMP_Text koLabel;
         [SerializeField] TMP_Text timeLabel;
+        [Tooltip("Real crowds fighting at the battle fronts right now.")]
+        [SerializeField] TMP_Text fieldLabel;
 
         [Header("Where Zahim is")]
         [SerializeField] GameObject herePanel;
@@ -93,6 +95,8 @@ namespace Ahoy.Presentation
             koLabel.SetText("KO  {0:0}", (float)battle.KoCount);
             int seconds = Mathf.FloorToInt(battle.BattleSeconds);
             timeLabel.SetText("{0:00}:{1:00}", (float)(seconds / 60), (float)(seconds % 60));
+            if (fieldLabel != null)
+                fieldLabel.SetText("Allies {0:0}  vs  Monsters {1:0}", (float)battle.FieldAllies, (float)battle.FieldMonsters);
 
             RefreshHere(battle);
             RefreshRows(battle);

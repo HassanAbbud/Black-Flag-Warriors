@@ -15,14 +15,16 @@ MonoBehaviour:
   kind: 4
   startHolder: 0
   startMonsterStrength: 0
-  startAllyStrength: 12
+  startAllyStrength: 30
   waveStrength: 0
   waveInterval: 60
-  maxMonsterStrength: 40
-  holdStrength: 8
-  marchRate: 0.2
-  captureStrength: 4
-  allyRegen: 0.2
-  maxAllyStrength: 15
-  garrisonOnCapture: 10
+  maxMonsterStrength: 100
+  holdStrength: 20
+  marchRate: 0.3
+  captureStrength: 8
+  allyRegen: 0.4
+  maxAllyStrength: 40
+  garrisonOnCapture: 25
+  allyHold: 15
+  allyMarchRate: 0.3
   seenRadius: 60

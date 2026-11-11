@@ -65,8 +65,6 @@ namespace Ahoy.Allies
         Transform target;
         IDamageable targetDamageable;
 
-        bool restart;
-
         public AllyState State { get; private set; }
         public Transform Target => target;
 
@@ -82,24 +80,9 @@ namespace Ahoy.Allies
 
         void Start() => ChangeState(AllyState.Idle);
 
-        // A pooled ally starts over where it was spawned. The agent may still be off this frame,
-        // so the state machine restarts on the first Update.
-        void OnEnable()
-        {
-            home = transform.position;
-            target = null;
-            targetDamageable = null;
-            restart = true;
-        }
-
         void Update()
         {
             if (!agent.isOnNavMesh) return;
-            if (restart)
-            {
-                restart = false;
-                ChangeState(AllyState.Idle);
-            }
 
             float dt = Time.deltaTime;
             stateTimer += dt;
@@ -381,4 +364,4 @@ namespace Ahoy.Allies
             Gizmos.DrawWireSphere(transform.position, loseTargetRange);
         }
     }
-}
+}

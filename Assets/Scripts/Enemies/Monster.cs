@@ -51,6 +51,10 @@ namespace Ahoy.Enemies
         Slide slide;
 
         internal int ActiveIndex = -1;
+        internal float SavedTime;               // R70: time owed while thinking every few frames
+        internal IUnit LastAttacker;            // who landed the last hit; null when it was Zahim
+        Vector3 lastVelocity;                   // R70: carried on the frames it does not think
+        internal int TickSlot => probeSlot;
 
         public MonsterState State => state;
         public MonsterDef Def => def;
@@ -78,6 +82,9 @@ namespace Ahoy.Enemies
             def = species;
             locationId = home;
             probeSlot = slot;
+            SavedTime = 0f;
+            LastAttacker = null;
+            lastVelocity = Vector3.zero;
 
             ringRadius = balance.crowdRingRadius + Random.value * balance.crowdRingRadiusSpread;
             circleDirection = Random.value < 0.5f ? -1f : 1f;
@@ -118,6 +125,7 @@ namespace Ahoy.Enemies
             if (state == MonsterState.Dead) return;
 
             health -= info.Amount;
+            LastAttacker = info.Source;
             if (health <= 0f)
             {
                 Die();
@@ -159,7 +167,8 @@ namespace Ahoy.Enemies
 
         // ── State machine ────────────────────────────────────────────────────────────
         // Called by MonsterManager once a frame. The crowd has no Update of its own.
-        internal void Tick(float dt, float now, Vector3 playerPosition, bool playerAlive, int frame)
+        // dt is the time since it last thought; moveDt is this frame's, since Glide moved it in between.
+        internal void Tick(float dt, float moveDt, float now, Vector3 playerPosition, bool playerAlive, int frame)
         {
             stateTime += dt;
 
@@ -222,6 +231,20 @@ namespace Ahoy.Enemies
                     break;
             }
 
+            lastVelocity = velocity;
+            Move(velocity, moveDt, frame);
+        }
+
+        // R70: a far monster that is not thinking this frame keeps walking the way it was going,
+        // so it moves smoothly instead of jumping every few frames.
+        internal void Glide(float dt, int frame)
+        {
+            if (state == MonsterState.Dead) return;
+            Move(lastVelocity, dt, frame);
+        }
+
+        void Move(Vector3 velocity, float dt, int frame)
+        {
             Vector3 position = transform.position + velocity * dt;
             if ((frame + probeSlot) % Mathf.Max(1, balance.crowdGroundProbeInterval) == 0) ProbeGround(position);
             position.y = Mathf.MoveTowards(position.y, groundY, balance.crowdGroundFollowSpeed * dt);

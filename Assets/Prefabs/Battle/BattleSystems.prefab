@@ -1,5 +1,291 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &29358109924075098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7762804641812370681}
+  - component: {fileID: 988760126918705155}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7762804641812370681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29358109924075098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2656527104424653459}
+  - {fileID: 7743920150800769166}
+  m_Father: {fileID: 4407511555654645683}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &988760126918705155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29358109924075098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 6350712956860860806}
+  monsterEntry: {fileID: 2656527104424653459}
+  allyPost: {fileID: 7743920150800769166}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 5
+--- !u!1 &59737788698536357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9052049738330502323}
+  - component: {fileID: 6302722705408104866}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9052049738330502323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59737788698536357}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3148669867155400333}
+  - {fileID: 3729824362803593770}
+  m_Father: {fileID: 490762458868388075}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6302722705408104866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59737788698536357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 1422776619142139522}
+  monsterEntry: {fileID: 3148669867155400333}
+  allyPost: {fileID: 3729824362803593770}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
+--- !u!1 &77854379648153125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5636040790871616547}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5636040790871616547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77854379648153125}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.34329906, z: -0, w: 0.93922615}
+  m_LocalPosition: {x: -2.579483, y: -0.013580322, z: 3.057167}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7908349835092253368}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &78877477078154938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3148669867155400333}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3148669867155400333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78877477078154938}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.3432989, z: -0, w: 0.9392262}
+  m_LocalPosition: {x: 19.34613, y: 0.9231911, z: -22.928745}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9052049738330502323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &140188993295108451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1951842730904144896}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1951842730904144896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140188993295108451}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.74666625, z: -0, w: 0.66519886}
+  m_LocalPosition: {x: 3.9734497, y: -0.13682175, z: -0.46008348}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1392120961802953603}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &283930292153806731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3729824362803593770}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3729824362803593770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283930292153806731}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9392262, z: -0, w: 0.3432989}
+  m_LocalPosition: {x: 2.5794983, y: -0.32464218, z: -3.057167}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9052049738330502323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &655691927528752354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3037761359106502730}
+  - component: {fileID: 4848775865977296170}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3037761359106502730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655691927528752354}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3188849299344963629}
+  - {fileID: 386008554871702762}
+  m_Father: {fileID: 4481989420023652058}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4848775865977296170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655691927528752354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 2423423245865760269}
+  monsterEntry: {fileID: 3188849299344963629}
+  allyPost: {fileID: 386008554871702762}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 5
 --- !u!1 &759288480242899858
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,7 +312,7 @@ Transform:
   m_GameObject: {fileID: 759288480242899858}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 150, y: 46.183186, z: 242}
+  m_LocalPosition: {x: 150, y: 50, z: 242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47,7 +333,272 @@ MonoBehaviour:
   locationId: 8
   displayName: Sea Portal (NE)
   def: {fileID: 11400000, guid: ee4f243b69bb84031826cd8e7cdead36, type: 2}
-  next: {fileID: 7576512548650839868}
+  next: {fileID: 1044911612066520645}
+  startAllyOverride: -1
+  onLand: 0
+--- !u!1 &776739974060592289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5782947347219861351}
+  - component: {fileID: 2874955800100760072}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5782947347219861351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776739974060592289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4013015307300868348}
+  - {fileID: 8596886696482009219}
+  m_Father: {fileID: 2079416920295448536}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2874955800100760072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776739974060592289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 1044911612066520645}
+  monsterEntry: {fileID: 4013015307300868348}
+  allyPost: {fileID: 8596886696482009219}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
+--- !u!1 &1234610681348102932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8306386574236925608}
+  - component: {fileID: 354514668125070852}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8306386574236925608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234610681348102932}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9011981255040435732}
+  - {fileID: 949508183021513150}
+  m_Father: {fileID: 8431889406195152067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &354514668125070852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234610681348102932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 5518248814269853700}
+  monsterEntry: {fileID: 9011981255040435732}
+  allyPost: {fileID: 949508183021513150}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 5
+--- !u!1 &1343768775460965957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4481989420023652058}
+  - component: {fileID: 2423423245865760269}
+  m_Layer: 0
+  m_Name: LOC_11_WatchtowerNorth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4481989420023652058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343768775460965957}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -109, y: 60.616142, z: 187}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3037761359106502730}
+  m_Father: {fileID: 7764224897620459494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2423423245865760269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343768775460965957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 11
+  displayName: Watchtower North
+  def: {fileID: 11400000, guid: 0fb3c570395d44583af04ef95935450d, type: 2}
+  next: {fileID: 704820586426440966}
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &1785528080183515002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1916163442634629363}
+  - component: {fileID: 1366116006864426854}
+  m_Layer: 0
+  m_Name: LOC_15_SeaTowerSouthWest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1916163442634629363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785528080183515002}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -300, y: 50, z: -185}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7764224897620459494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366116006864426854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785528080183515002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 15
+  displayName: Sea Tower South-West
+  def: {fileID: 11400000, guid: 0fb3c570395d44583af04ef95935450d, type: 2}
+  next: {fileID: 2168589338344054814}
+  startAllyOverride: -1
+  onLand: 0
+--- !u!1 &2029647925260669498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7908349835092253368}
+  - component: {fileID: 1351617774562815444}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7908349835092253368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029647925260669498}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5636040790871616547}
+  - {fileID: 7569865728943053680}
+  m_Father: {fileID: 8274880219283197624}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1351617774562815444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029647925260669498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 2168589338344054814}
+  monsterEntry: {fileID: 5636040790871616547}
+  allyPost: {fileID: 7569865728943053680}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
 --- !u!1 &2212420570357669471
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,7 +628,8 @@ Transform:
   m_LocalPosition: {x: -275, y: 58.221573, z: 55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 9052049738330502323}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1422776619142139522
@@ -96,7 +648,9 @@ MonoBehaviour:
   displayName: Village
   def: {fileID: 11400000, guid: 727e58ab5ac9649c48629f67ffce053d, type: 2}
   next: {fileID: 0}
---- !u!1 &2564030010956424319
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &2266095314413627030
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,50 +658,111 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2731333352702630122}
-  - component: {fileID: 181598453018147495}
+  - component: {fileID: 9011981255040435732}
   m_Layer: 0
-  m_Name: Allies_FishersCamp
+  m_Name: MonsterEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2731333352702630122
+--- !u!4 &9011981255040435732
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2564030010956424319}
+  m_GameObject: {fileID: 2266095314413627030}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 176, y: 53.031895, z: -11}
+  m_LocalRotation: {x: -0, y: -0.45966446, z: -0, w: 0.8880927}
+  m_LocalPosition: {x: -3.265808, y: 0.0045661926, z: 2.3096695}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3276528361420031044}
+  m_Father: {fileID: 8306386574236925608}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &181598453018147495
+--- !u!1 &2850375864735351844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3188849299344963629}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3188849299344963629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2850375864735351844}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.0766966, z: -0, w: 0.99705446}
+  m_LocalPosition: {x: -0.611763, y: 0.29238892, z: 3.952942}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3037761359106502730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2995189839321015774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8012071278297686261}
+  - component: {fileID: 2004543438589751122}
+  m_Layer: 0
+  m_Name: AllyCrowd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8012071278297686261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2995189839321015774}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4709173045198881892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2004543438589751122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2564030010956424319}
+  m_GameObject: {fileID: 2995189839321015774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f288e162631974330bd31ffc7c933753, type: 3}
+  m_Script: {fileID: 11500000, guid: c2f0cd42489ff42d79b24e8a0d4a7dc8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Allies.AllySpawner
-  prefab: {fileID: 6572161300743259941, guid: e2b0e6ab0e8b5d24baa568dab9853761, type: 3}
-  poolSize: 8
-  locationId: 1
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.AllyCrowd
+  balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
   player: {fileID: 0}
-  activationRadius: 50
-  spawnRadius: 6
-  navMeshSnapDistance: 4
---- !u!1 &3152229440219789676
+  pools:
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 7060978774998981460, guid: ec8c1538c321343508c8454812b43c43, type: 3}
+    count: 140
+--- !u!1 &3504780880142726227
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,50 +770,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3002898647208905464}
-  - component: {fileID: 558005802431031696}
+  - component: {fileID: 6310500656615746236}
+  - component: {fileID: 262996918575032326}
   m_Layer: 0
-  m_Name: Allies_Village
+  m_Name: LOC_14_SeaTowerLagoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3002898647208905464
+--- !u!4 &6310500656615746236
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3152229440219789676}
+  m_GameObject: {fileID: 3504780880142726227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -275, y: 58.221573, z: 55}
+  m_LocalPosition: {x: -70, y: 50, z: -80}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3276528361420031044}
+  m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &558005802431031696
+--- !u!114 &262996918575032326
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3152229440219789676}
+  m_GameObject: {fileID: 3504780880142726227}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f288e162631974330bd31ffc7c933753, type: 3}
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Allies.AllySpawner
-  prefab: {fileID: 6572161300743259941, guid: e2b0e6ab0e8b5d24baa568dab9853761, type: 3}
-  poolSize: 8
-  locationId: 10
-  player: {fileID: 0}
-  activationRadius: 80
-  spawnRadius: 6
-  navMeshSnapDistance: 4
---- !u!1 &3465716652689262286
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 14
+  displayName: Sea Tower Lagoon
+  def: {fileID: 11400000, guid: 0fb3c570395d44583af04ef95935450d, type: 2}
+  next: {fileID: 2168589338344054814}
+  startAllyOverride: -1
+  onLand: 0
+--- !u!1 &3518426354426359722
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,31 +820,168 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3276528361420031044}
+  - component: {fileID: 4013015307300868348}
   m_Layer: 0
-  m_Name: AllySpawners
+  m_Name: MonsterEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3276528361420031044
+--- !u!4 &4013015307300868348
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3465716652689262286}
+  m_GameObject: {fileID: 3518426354426359722}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.5129085, z: -0, w: 0.85844326}
+  m_LocalPosition: {x: -3.5224228, y: 0.9446182, z: 1.895401}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5782947347219861351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3637921768241412886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1392120961802953603}
+  - component: {fileID: 5006480424215243993}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1392120961802953603
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637921768241412886}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2731333352702630122}
-  - {fileID: 3002898647208905464}
-  m_Father: {fileID: 4709173045198881892}
+  - {fileID: 1951842730904144896}
+  - {fileID: 6362528658217689439}
+  m_Father: {fileID: 2838221452852953071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5006480424215243993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637921768241412886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 268593345166624310}
+  monsterEntry: {fileID: 1951842730904144896}
+  allyPost: {fileID: 6362528658217689439}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
+--- !u!1 &3667564854131226705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 386008554871702762}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &386008554871702762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667564854131226705}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.99705446, z: -0, w: 0.0766966}
+  m_LocalPosition: {x: -3.364708, y: 13.349907, z: 21.74118}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3037761359106502730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3754651079210819345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8221847226411334613}
+  - component: {fileID: 5957002563238741590}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8221847226411334613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3754651079210819345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4553620941612583640}
+  - {fileID: 192170741786455810}
+  m_Father: {fileID: 6146990970175698685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5957002563238741590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3754651079210819345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 5877584608753462312}
+  monsterEntry: {fileID: 4553620941612583640}
+  allyPost: {fileID: 192170741786455810}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
 --- !u!1 &3829975844005289998
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +1011,8 @@ Transform:
   m_LocalPosition: {x: -140, y: 90.75188, z: -105}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7908349835092253368}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2168589338344054814
@@ -279,6 +1031,39 @@ MonoBehaviour:
   displayName: Southridge
   def: {fileID: 11400000, guid: 862577274a1d04fbf890bb911958d3b2, type: 2}
   next: {fileID: 1422776619142139522}
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &3856465500403493662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 192170741786455810}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &192170741786455810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3856465500403493662}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.57439727, z: -0, w: 0.8185767}
+  m_LocalPosition: {x: -26.330536, y: -2.9519196, z: -9.523804}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8221847226411334613}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3970339378059382581
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +1093,8 @@ Transform:
   m_LocalPosition: {x: -24, y: 56.077496, z: -242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8115339739779627335}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3449333244686290086
@@ -327,6 +1113,248 @@ MonoBehaviour:
   displayName: South Spit Portal
   def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
   next: {fileID: 268593345166624310}
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &3979241847869839297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4553620941612583640}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4553620941612583640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3979241847869839297}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.8185767, z: -0, w: 0.57439727}
+  m_LocalPosition: {x: -3.7615051, y: -0.2535553, z: -1.3605499}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8221847226411334613}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4331484993293315621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 949508183021513150}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &949508183021513150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4331484993293315621}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.8880927, z: -0, w: 0.45966446}
+  m_LocalPosition: {x: -17.961884, y: -1.4307632, z: 12.703171}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8306386574236925608}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4389898814943703417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8657652459091068720}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8657652459091068720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389898814943703417}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.93892884, z: -0, w: 0.34411132}
+  m_LocalPosition: {x: -18.093376, y: -3.137806, z: 21.368896}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8115339739779627335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4575416235632313470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7743920150800769166}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7743920150800769166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4575416235632313470}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9308044, z: -0, w: 0.36551788}
+  m_LocalPosition: {x: -14.969924, y: 5.606224, z: 16.12146}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7762804641812370681}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5202829264167264928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3212607387933944640}
+  - component: {fileID: 1840096396734661407}
+  m_Layer: 0
+  m_Name: Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3212607387933944640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202829264167264928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 148193678977255032}
+  - {fileID: 3913451126512290215}
+  m_Father: {fileID: 995875712212474956}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1840096396734661407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202829264167264928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 704820586426440966}
+  monsterEntry: {fileID: 148193678977255032}
+  allyPost: {fileID: 3913451126512290215}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
+--- !u!1 &5328595222580902931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6362528658217689439}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6362528658217689439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5328595222580902931}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.66519886, z: -0, w: 0.74666625}
+  m_LocalPosition: {x: 27.814163, y: -1.993866, z: -3.2205873}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1392120961802953603}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5588647752119232035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3913451126512290215}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3913451126512290215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588647752119232035}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.8584434, z: -0, w: 0.5129084}
+  m_LocalPosition: {x: 3.5224304, y: -0.35126495, z: -1.8953857}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3212607387933944640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5655024249199563626
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +1384,8 @@ Transform:
   m_LocalPosition: {x: -135, y: 54.45669, z: 355}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3212607387933944640}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &704820586426440966
@@ -375,6 +1404,8 @@ MonoBehaviour:
   displayName: North Beach
   def: {fileID: 11400000, guid: 59bacdbd51e504759b7c0a989d2f6cac, type: 2}
   next: {fileID: 1422776619142139522}
+  startAllyOverride: -1
+  onLand: 1
 --- !u!1 &5689817612217996669
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,12 +1442,17 @@ Transform:
   - {fileID: 4015230171839644392}
   - {fileID: 47563768405298097}
   - {fileID: 995875712212474956}
-  - {fileID: 7067918151652100085}
+  - {fileID: 2079416920295448536}
   - {fileID: 5943021757081237808}
   - {fileID: 6146990970175698685}
+  - {fileID: 4481989420023652058}
+  - {fileID: 4407511555654645683}
+  - {fileID: 8431889406195152067}
+  - {fileID: 6310500656615746236}
+  - {fileID: 1916163442634629363}
   m_Father: {fileID: 4709173045198881892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5865477083423249736
+--- !u!1 &5731109466599935915
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -424,46 +1460,83 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7067918151652100085}
-  - component: {fileID: 7576512548650839868}
+  - component: {fileID: 8115339739779627335}
+  - component: {fileID: 2108224650685322034}
   m_Layer: 0
-  m_Name: LOC_07_North-EastPortal
+  m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7067918151652100085
+--- !u!4 &8115339739779627335
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865477083423249736}
+  m_GameObject: {fileID: 5731109466599935915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 75, y: 69.08259, z: 242}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7764224897620459494}
+  m_Children:
+  - {fileID: 687709048810955324}
+  - {fileID: 8657652459091068720}
+  m_Father: {fileID: 4015230171839644392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7576512548650839868
+--- !u!114 &2108224650685322034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865477083423249736}
+  m_GameObject: {fileID: 5731109466599935915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Script: {fileID: 11500000, guid: cde25b160eead4cfc9a06915996a3424, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
-  locationId: 7
-  displayName: North-East Portal
-  def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
-  next: {fileID: 704820586426440966}
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleFront
+  location: {fileID: 3449333244686290086}
+  monsterEntry: {fileID: 687709048810955324}
+  allyPost: {fileID: 8657652459091068720}
+  monsterSpecies:
+  - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+  allySpecies:
+  - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  spawnSpread: 7
+--- !u!1 &5913819571491530630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8596886696482009219}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8596886696482009219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5913819571491530630}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.8584433, z: -0, w: 0.5129085}
+  m_LocalPosition: {x: -24.65696, y: 0.79390717, z: 13.267792}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5782947347219861351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6049786773394156178
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,7 +1563,7 @@ Transform:
   m_GameObject: {fileID: 6049786773394156178}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40, y: 9.305254, z: -35}
+  m_LocalPosition: {x: -40, y: 50, z: -35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -512,6 +1585,141 @@ MonoBehaviour:
   displayName: Sea Portal (South)
   def: {fileID: 11400000, guid: ee4f243b69bb84031826cd8e7cdead36, type: 2}
   next: {fileID: 2168589338344054814}
+  startAllyOverride: -1
+  onLand: 0
+--- !u!1 &6155568216441250337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4407511555654645683}
+  - component: {fileID: 6350712956860860806}
+  m_Layer: 0
+  m_Name: LOC_12_WatchtowerSouthTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4407511555654645683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155568216441250337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2, y: 51.47717, z: -270}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7762804641812370681}
+  m_Father: {fileID: 7764224897620459494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6350712956860860806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155568216441250337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 12
+  displayName: Watchtower South Tip
+  def: {fileID: 11400000, guid: 0fb3c570395d44583af04ef95935450d, type: 2}
+  next: {fileID: 3449333244686290086}
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &6517788684532875507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7569865728943053680}
+  m_Layer: 0
+  m_Name: AllyPost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7569865728943053680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517788684532875507}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.93922615, z: -0, w: 0.34329906}
+  m_LocalPosition: {x: -18.056381, y: -0.7317352, z: 21.400162}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7908349835092253368}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6586451018921619944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8431889406195152067}
+  - component: {fileID: 5518248814269853700}
+  m_Layer: 0
+  m_Name: LOC_13_WatchtowerEastTail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8431889406195152067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586451018921619944}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 320, y: 52.161877, z: -125}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8306386574236925608}
+  m_Father: {fileID: 7764224897620459494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5518248814269853700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586451018921619944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 13
+  displayName: Watchtower East Tail
+  def: {fileID: 11400000, guid: 0fb3c570395d44583af04ef95935450d, type: 2}
+  next: {fileID: 268593345166624310}
+  startAllyOverride: -1
+  onLand: 1
 --- !u!1 &6619055821448394186
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,8 +1751,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8012071278297686261}
   - {fileID: 7764224897620459494}
-  - {fileID: 3276528361420031044}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4022202986277247131
@@ -570,9 +1778,14 @@ MonoBehaviour:
   - {fileID: 3449333244686290086}
   - {fileID: 1394412427604580955}
   - {fileID: 704820586426440966}
-  - {fileID: 7576512548650839868}
+  - {fileID: 1044911612066520645}
   - {fileID: 3870607271108085217}
   - {fileID: 5877584608753462312}
+  - {fileID: 2423423245865760269}
+  - {fileID: 6350712956860860806}
+  - {fileID: 5518248814269853700}
+  - {fileID: 262996918575032326}
+  - {fileID: 1366116006864426854}
 --- !u!114 &2370252580564478965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,10 +1825,11 @@ Transform:
   m_GameObject: {fileID: 6864076243444419864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 170, y: 49.02751, z: 178}
+  m_LocalPosition: {x: 217, y: 56.920704, z: 195}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8221847226411334613}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5877584608753462312
@@ -634,6 +1848,101 @@ MonoBehaviour:
   displayName: The Great Breach
   def: {fileID: 11400000, guid: 6aafffe22f81c43d1b244d348cac7fe2, type: 2}
   next: {fileID: 3870607271108085217}
+  startAllyOverride: -1
+  onLand: 1
+--- !u!1 &7494413988797314235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 148193678977255032}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &148193678977255032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494413988797314235}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.5129084, z: -0, w: 0.8584434}
+  m_LocalPosition: {x: 26.418175, y: -2.571354, z: -14.215485}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3212607387933944640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7572188788982672177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 687709048810955324}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &687709048810955324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7572188788982672177}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.34411132, z: -0, w: 0.93892884}
+  m_LocalPosition: {x: -2.5847683, y: -1.1814156, z: 3.0527039}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8115339739779627335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8514692395406593214
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2656527104424653459}
+  m_Layer: 0
+  m_Name: MonsterEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2656527104424653459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8514692395406593214}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.36551788, z: -0, w: 0.9308044}
+  m_LocalPosition: {x: -2.7218044, y: 1.4784927, z: 2.9311829}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7762804641812370681}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8667492350173752436
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +1972,8 @@ Transform:
   m_LocalPosition: {x: 154, y: 54.778156, z: -7.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1392120961802953603}
   m_Father: {fileID: 7764224897620459494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &268593345166624310
@@ -682,6 +1992,8 @@ MonoBehaviour:
   displayName: Fishers' Camp
   def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
   next: {fileID: 2168589338344054814}
+  startAllyOverride: 30
+  onLand: 1
 --- !u!1 &8720287634822843180
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +2020,7 @@ Transform:
   m_GameObject: {fileID: 8720287634822843180}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -392, y: 17.46244, z: 300}
+  m_LocalPosition: {x: -392, y: 50, z: 300}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -730,3 +2042,56 @@ MonoBehaviour:
   displayName: Sea Portal (NW)
   def: {fileID: 11400000, guid: ee4f243b69bb84031826cd8e7cdead36, type: 2}
   next: {fileID: 704820586426440966}
+  startAllyOverride: -1
+  onLand: 0
+--- !u!1 &8841071960706378071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079416920295448536}
+  - component: {fileID: 1044911612066520645}
+  m_Layer: 0
+  m_Name: LOC_07_NorthEastPortal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2079416920295448536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841071960706378071}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 75, y: 69.08259, z: 242}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5782947347219861351}
+  m_Father: {fileID: 7764224897620459494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1044911612066520645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841071960706378071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097ff871c17042d4b0c4f7d96eaab51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleLocation
+  locationId: 7
+  displayName: North-East Portal
+  def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
+  next: {fileID: 704820586426440966}
+  startAllyOverride: -1
+  onLand: 1
