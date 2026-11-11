@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8508010488293412311}
   - component: {fileID: 5163426499020591519}
   - component: {fileID: 6572161300743259941}
+  - component: {fileID: -1050913384752117983}
   m_Layer: 0
   m_Name: Ally
   m_TagString: Untagged
@@ -202,3 +203,19 @@ MonoBehaviour:
   maxHealth: 100
   destroyDelay: 3
   animator: {fileID: 0}
+--- !u!114 &-1050913384752117983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4293138362365274371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb745dfc1fb52540a9e57c1f81b3872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapMarker
+  type: 1
+  color: {r: 0.1956476, g: 1, b: 0, a: 1}
+  clampToEdge: 0
+  rotateWithTarget: 0
