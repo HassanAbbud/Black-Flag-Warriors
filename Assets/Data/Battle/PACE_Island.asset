@@ -13,6 +13,58 @@ MonoBehaviour:
   m_Name: PACE_Island
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.CrowdPacingDef
   refreshSeconds: 0.5
+  frontMonsterCaps: 2d000000200000001800000014000000100000000e0000000c0000000a0000000a0000000a0000000800000008000000i
+  frontAllyCaps: 16000000100000000c0000000a0000000a00000008000000080000000600000006000000060000000600000006000000i
+  campReserve: 40
+  frontBurst: 3
+  frontMonsterScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 30
+      value: 1.4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  frontMonsterInterval:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 30
+      value: 0.6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   monsterIntervalScale:
     serializedVersion: 2
     m_Curve:
@@ -85,12 +137,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  allyInterval:
+  frontAllyScale:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 8
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -99,7 +151,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 3
+      value: 1.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -109,12 +161,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  allyMaxAlive:
+  frontAllyInterval:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 3
+      value: 1.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -123,7 +175,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 8
+      value: 0.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0

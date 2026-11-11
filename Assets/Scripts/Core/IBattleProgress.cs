@@ -1,39 +1,26 @@
-using UnityEngine;
-
 namespace Ahoy.Core
 {
-    public enum LocationKind { Village, Portal, SeaPortal, Stronghold, Outpost, FinalBreach }
+    // Keep: a small watchtower post, quick to take; once the village holds it, it sends soldiers.
+    public enum LocationKind { Village, Portal, SeaPortal, Stronghold, Outpost, FinalBreach, Keep }
 
-    // One battle location as the HUD and the spawners see it. A copy, so reading it never
-    // lets anyone change the simulation.
+    // One battle location as the HUD sees it: a copy, so reading it never changes the simulation.
     public readonly struct BattleLocationStatus
     {
-        public readonly int Id;
         public readonly string Name;
         public readonly LocationKind Kind;
         public readonly Faction Holder;
-        public readonly Vector3 Position;
-        public readonly float MonsterStrength;   // R64 units, not head-count
-        public readonly float AllyStrength;
         public readonly bool Fighting;           // both sides present: the HUD's battle-status marker
-        public readonly bool Seen;               // Zahim is here, so real units fight instead of the simulation
         public readonly bool Locked;             // the final breach before enough portals are sealed
         public readonly float NextWaveIn;        // seconds; negative when this location sends no waves
         public readonly float Meter01;           // portal meter toward its guardian, or how cleared it is
 
-        public BattleLocationStatus(int id, string name, LocationKind kind, Faction holder, Vector3 position,
-                                    float monsterStrength, float allyStrength, bool fighting, bool seen,
-                                    bool locked, float nextWaveIn, float meter01)
+        public BattleLocationStatus(string name, LocationKind kind, Faction holder, bool fighting, bool locked,
+                                    float nextWaveIn, float meter01)
         {
-            Id = id;
             Name = name;
             Kind = kind;
             Holder = holder;
-            Position = position;
-            MonsterStrength = monsterStrength;
-            AllyStrength = allyStrength;
             Fighting = fighting;
-            Seen = seen;
             Locked = locked;
             NextWaveIn = nextWaveIn;
             Meter01 = meter01;
@@ -42,7 +29,7 @@ namespace Ahoy.Core
         public bool IsPortal => Kind == LocationKind.Portal || Kind == LocationKind.SeaPortal || Kind == LocationKind.FinalBreach;
     }
 
-    // Read-only view of the whole battle (W5.2), for the HUD, minimap and spawn pacing.
+    // Read-only view of the whole battle (W5.2), for the HUD and the spawn pacing.
     public interface IBattleProgress
     {
         int LocationCount { get; }
@@ -57,6 +44,7 @@ namespace Ahoy.Core
         int KoCount { get; }
         float BattleSeconds { get; }
         int SeenLocationId { get; }        // -1 when Zahim is at none
-        bool Ended { get; }
+        int FieldMonsters { get; }         // real crowd units fighting at the fronts right now
+        int FieldAllies { get; }
     }
 }

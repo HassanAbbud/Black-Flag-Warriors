@@ -182,7 +182,7 @@ namespace Ahoy.Enemies
             EnemyCombat.Play(animator, MonsterAnimatorIds.Death, def.animationCrossFade);
             controller.enabled = false;
             Died?.Invoke(this);
-            BattleEvents.RaiseUnitKilled(this);   // KO count and the battle simulation (R64)
+            BattleEvents.RaiseUnitKilled(this, null);   // KO count and the battle simulation (R64)
             // Named units are not pooled: the body plays its death, then goes.
             Destroy(gameObject, def.corpseSeconds);
         }

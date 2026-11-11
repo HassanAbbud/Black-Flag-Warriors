@@ -173,6 +173,10 @@ namespace Ahoy.Core
         [Header("Enemies — crowd budget (R69–R73)")]
         [Tooltip("Most crowd monsters alive at once. Pools are sized from it and spawns beyond it are refused.")]
         public int crowdCapacity = 300;
+        [Tooltip("R70: crowd units within this many metres of Zahim are fully simulated every frame.")]
+        public float crowdFullSimRadius = 40f;
+        [Tooltip("R70: crowd units further away think every this many frames, with the time saved up.")]
+        public int crowdFarTickInterval = 3;
 
         [Header("Enemies — crowd ground following")]
         [Tooltip("Layers the ground probe hits: terrain and level geometry. Leave Zahim's layer out.")]
