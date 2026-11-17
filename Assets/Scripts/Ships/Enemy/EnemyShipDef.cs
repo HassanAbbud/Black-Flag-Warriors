@@ -77,5 +77,9 @@ namespace Ahoy.Ships
         public float cannonDamage = 50f;
         [Tooltip("How a hit target reacts.")]
         public HitReaction hitReaction = HitReaction.Knockback;
+
+        [Header("Destroyed")]
+        [Tooltip("Seconds it burns after its health reaches 0 before it disappears.")]
+        public float burnSeconds = 3f;
     }
 }

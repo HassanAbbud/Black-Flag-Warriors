@@ -8,12 +8,13 @@ namespace Ahoy.Ships
     // Wander: sail to a random point near its spawn. Idle: drift there a moment.
     // Engage: circle the player ship at engageDistance so its broadsides bear.
     // Bombard: the player is on land - stay put, turn a broadside on him and fire.
+    // Dead: health hit 0 - cannons fall silent, it burns, then it is switched off (never destroyed).
     // Targets are found by tag (PlayerShip / Player), so respawned ones are picked up on their own.
     [DisallowMultipleComponent]
     public sealed class EnemyShipController : ShipController, IShipDamageable
     {
         // State: one enum, one switch, every transition through SetState.
-        public enum ShipState { Wander, Idle, Engage, Bombard }
+        public enum ShipState { Wander, Idle, Engage, Bombard, Dead }
 
         private const string PlayerTag = "Player";
         private const string PlayerShipTag = "PlayerShip";
@@ -23,6 +24,8 @@ namespace Ahoy.Ships
         [SerializeField] private EnemyShipCannons cannons;
         [Tooltip("Keeps it clear of other ships. Found on this ship automatically if left empty.")]
         [SerializeField] private EnemyShipAvoidance avoidance;
+        [Tooltip("A vfx_Flames_01 instance placed as a child of this ship. Played when the ship is destroyed.")]
+        [SerializeField] private ParticleSystem deathFlames;
 
         // Observer: local news, e.g. for a battle-music or HUD listener. Announces, never commands.
         public event Action<ShipState> StateChanged;
@@ -43,6 +46,7 @@ namespace Ahoy.Ships
         private float speed;
         private float nextScanAt;
         private float lastSeenAt;
+        private int maxHealth;
 
         // Own components are resolved once here, never per frame.
         private void Awake()
@@ -51,6 +55,7 @@ namespace Ahoy.Ships
                 TryGetComponent(out cannons);
             if (avoidance == null)
                 TryGetComponent(out avoidance);
+            maxHealth = shipHealth;
         }
 
         // Pooled or respawned ships reset their own state here.
@@ -60,11 +65,22 @@ namespace Ahoy.Ships
             speed = 0f;
             nextScanAt = 0f;
             target = null;
+            shipHealth = maxHealth;
+            isAlive = true;
+            if (deathFlames != null)
+                deathFlames.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             SetState(ShipState.Wander);
         }
 
         private void Update()
         {
+            if (state == ShipState.Dead)
+            {
+                if (Time.time >= stateUntil)
+                    gameObject.SetActive(false);   // back to the pool / spawner, never Destroy
+                return;   // no scanning, steering or firing while it burns
+            }
+
             if (Time.time >= nextScanAt)
             {
                 nextScanAt = Time.time + def.scanInterval;
@@ -119,6 +135,12 @@ namespace Ahoy.Ships
                 case ShipState.Engage:
                 case ShipState.Bombard:
                     lastSeenAt = Time.time;
+                    break;
+                case ShipState.Dead:
+                    target = null;
+                    stateUntil = Time.time + def.burnSeconds;
+                    if (deathFlames != null)
+                        deathFlames.Play(true);
                     break;
             }
             if (cannons != null)
@@ -267,13 +289,12 @@ namespace Ahoy.Ships
         {
             if (isAlive)
             {
-                shipHealth -= (damage - shipDefense);
+                shipHealth -= Mathf.Max(damage - shipDefense, 1);   // a weak hit still scratches, never heals
                 Debug.Log("Enemy ship took damage: " + damage + ", remaining health: " + shipHealth);
                 if (shipHealth <= 0)
                 {
                     isAlive = false;
-                    // Handle ship destruction logic here
-                    Debug.Log("Enemy ship destroyed!");
+                    SetState(ShipState.Dead);   // also clears the cannons' target, so it stops firing
                 }
             }
         }
