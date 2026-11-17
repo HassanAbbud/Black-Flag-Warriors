@@ -9,7 +9,7 @@ namespace Ahoy.Ships
     [RequireComponent(typeof(EnemyShipController))]
     public sealed class EnemyShipAvoidance : MonoBehaviour
     {
-        [Tooltip("The ship's hull collider. Leave empty to have a box fitted around the ship's model at load.")]
+        [Tooltip("The ship's hull collider. Leave empty to use the collider on this object, or, if there is none, a box fitted around the ship's meshes at load.")]
         [SerializeField] private Collider hull;
 
         private const int MaxNeighbours = 16;   // query buffer capacity, not a tuning value
@@ -26,7 +26,9 @@ namespace Ahoy.Ships
         {
             controller = GetComponent<EnemyShipController>();
             def = controller.Def;
-            if (hull == null)
+            // Reuse the ship's own collider: fitting a second box on top of it gave every ship two
+            // overlapping hulls, so neighbours were pushed against both.
+            if (hull == null && !TryGetComponent(out hull))
                 hull = FitHull();
             Vector3 extents = hull.bounds.extents;
             reach = Mathf.Max(extents.x, extents.z);
@@ -54,8 +56,15 @@ namespace Ahoy.Ships
                     away = position - other.bounds.center;   // our pivot is inside its bounds
                     away.y = 0f;
                 }
-                float gap = away.magnitude - reach;          // roughly hull to hull
-                offset += away.normalized * Mathf.Clamp01(1f - gap / def.avoidDistance);
+                // Don't steer away from the ship it is fighting - EngageHeading keeps the distance,
+                // and steering off made it flee a chasing player. Overlaps are still pushed apart.
+                Transform target = controller.Target;
+                bool isTarget = target != null && other.transform.IsChildOf(target);
+                if (!isTarget)
+                {
+                    float gap = away.magnitude - reach;      // roughly hull to hull
+                    offset += away.normalized * Mathf.Clamp01(1f - gap / def.avoidDistance);
+                }
 
                 PushApart(other, enemy);
             }
@@ -81,14 +90,18 @@ namespace Ahoy.Ships
             direction.y = 0f;
             // Two enemy ships each move themselves half the way; the player ship doesn't move for us.
             float share = otherIsEnemy ? 0.5f : 1f;
-            transform.position += direction * (depth * share);
+            // Capped per frame: resolving a deep overlap in one frame snapped the hull metres sideways.
+            float push = Mathf.Min(depth * share, def.maxPushSpeed * Time.deltaTime);
+            transform.position += direction * push;
         }
 
-        // Load time only: a box around every renderer of the ship, in the ship's own axes.
+        // Load time only: a box around the ship's meshes, in the ship's own axes. Meshes only -
+        // particle effects (the death flames), trails and sprites have bounds that are not the hull,
+        // and including them blew the box up so it overlapped every ship nearby.
         private Collider FitHull()
         {
             BoxCollider box = gameObject.AddComponent<BoxCollider>();
-            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>(true);
             if (renderers.Length == 0)
                 return box;
 

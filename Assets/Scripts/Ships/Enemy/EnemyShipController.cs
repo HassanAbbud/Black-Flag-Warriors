@@ -18,6 +18,9 @@ namespace Ahoy.Ships
 
         private const string PlayerTag = "Player";
         private const string PlayerShipTag = "PlayerShip";
+        // Below this squared length a heading is noise, and its direction flips frame to frame.
+        // A numerical guard, not a tuning value.
+        private const float MinSteer = 0.01f;
 
         [SerializeField] private EnemyShipDef def;
         [Tooltip("Told who to shoot at while engaging. Found on this ship automatically if left empty.")]
@@ -47,6 +50,8 @@ namespace Ahoy.Ships
         private float nextScanAt;
         private float lastSeenAt;
         private int maxHealth;
+        private float orbitSign = 1f;   // +1 anticlockwise / -1 clockwise, seen from above
+        private float engageRadius;     // this ship's own circling distance for the current fight
 
         // Own components are resolved once here, never per frame.
         private void Awake()
@@ -121,6 +126,13 @@ namespace Ahoy.Ships
 
         private void SetState(ShipState next)
         {
+            if (next == ShipState.Engage && state != ShipState.Engage)
+            {
+                orbitSign = def.circleClockwise ? -1f : 1f;
+                // Floored at arriveDistance so a large spread can never make the radius 0 or negative.
+                engageRadius = Mathf.Max(def.arriveDistance,
+                    def.engageDistance + UnityEngine.Random.Range(-def.engageDistanceSpread, def.engageDistanceSpread));
+            }
             state = next;
             switch (next)
             {
@@ -225,10 +237,11 @@ namespace Ahoy.Ships
             if (distance < 0.01f)
                 return transform.forward;
             Vector3 radial = toPlayer / distance;
-            Vector3 tangent = Vector3.Cross(Vector3.up, radial);
-            if (Vector3.Dot(tangent, transform.forward) < 0f)
-                tangent = -tangent;   // keep circling the way it is already facing
-            float pull = Mathf.Clamp((distance - def.engageDistance) / def.engageDistance, -1f, 1f);
+            // Every ship circles the same way: ships going opposite ways round one ring met head-on,
+            // and avoidance plus the overlap push made them jiggle and reverse.
+            Vector3 tangent = Vector3.Cross(Vector3.up, radial) * orbitSign;
+            // Closes in hard but backs off only gently, so a player who chases it gets a broadside, not a stern.
+            float pull = Mathf.Clamp((distance - engageRadius) / engageRadius, -def.engageBackOff, 1f);
             return tangent + radial * pull;
         }
 
@@ -254,6 +267,8 @@ namespace Ahoy.Ships
                 direction += avoidance.SteerOffset;
                 direction.y = 0f;
             }
+            if (direction.sqrMagnitude < MinSteer)
+                direction = transform.forward;   // wants and avoidance cancel out: hold course rather than flip
             if (direction.sqrMagnitude > 0.0001f)
             {
                 Quaternion wanted = Quaternion.LookRotation(direction);
@@ -283,6 +298,11 @@ namespace Ahoy.Ships
             Gizmos.DrawWireSphere(transform.position, def.detectRange);
             if (Application.isPlaying && state == ShipState.Wander)
                 Gizmos.DrawLine(transform.position, wanderPoint);
+            if (Application.isPlaying && state == ShipState.Engage && target != null)
+            {
+                Gizmos.color = Color.yellow;   // the ring this ship is trying to hold round the player
+                Gizmos.DrawWireSphere(target.position, engageRadius);
+            }
         }
 
         public void TakeDamage(int damage)

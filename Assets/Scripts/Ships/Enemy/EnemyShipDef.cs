@@ -49,6 +49,12 @@ namespace Ahoy.Ships
         public float engageSpeed = 6f;
         [Tooltip("Metres it tries to keep from the player ship while it circles and fires broadsides.")]
         public float engageDistance = 30f;
+        [Tooltip("How hard it backs away when the player ship is closer than engageDistance (0 = never backs off, just circles; 1 = flees as hard as it closes in).")]
+        [Range(0f, 1f)] public float engageBackOff = 0.2f;
+        [Tooltip("Metres each ship adds to or takes from engageDistance at random when a fight starts, so they don't all crowd one ring.")]
+        public float engageDistanceSpread = 10f;
+        [Tooltip("Which way round every ship circles the player, seen from above. All ships go the same way so they follow each other instead of meeting head-on.")]
+        public bool circleClockwise = true;
 
         [Header("Keeping clear of other ships")]
         [Tooltip("Metres of clearance at which it starts steering away from another ship.")]
@@ -57,6 +63,8 @@ namespace Ahoy.Ships
         public float avoidStrength = 2f;
         [Tooltip("Layers ship colliders are on. Only enemy ships and the player ship are avoided.")]
         public LayerMask shipLayers = ~0;
+        [Tooltip("Fastest it is shoved sideways out of an overlap, metres per second. Keeps a collision a push, not a teleport.")]
+        public float maxPushSpeed = 12f;
 
         [Header("Cannons")]
         [Tooltip("Seconds between broadsides from the same side.")]
