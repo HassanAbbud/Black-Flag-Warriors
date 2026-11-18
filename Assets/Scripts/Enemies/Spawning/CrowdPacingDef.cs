@@ -29,6 +29,8 @@ namespace Ahoy.Enemies
         [Range(0.1f, 1f)] public float minCrowdScale = 0.5f;
         [Tooltip("How fast the share changes, per second.")]
         public float crowdScaleRate = 0.1f;
+        [Tooltip("Most of the crowd each graphics quality level allows (Project Settings > Quality order). Missing levels allow all.")]
+        public float[] crowdScaleByQuality = { 0.5f, 1f };
 
         [Header("Monsters, by battle minutes")]
         [Tooltip("Multiplies the monsters each front fields.")]

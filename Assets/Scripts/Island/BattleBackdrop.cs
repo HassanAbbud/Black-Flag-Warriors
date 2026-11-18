@@ -12,7 +12,8 @@ namespace Ahoy.Island
     // that slides toward whoever is losing. Two tiers, like Hyrule Warriors' LODs: the real designs
     // (mixed) out to proxyDistance, plain silhouettes beyond it. Nothing is drawn near Zahim, where the
     // real units are. Rebuilt a few times a second from the simulation's numbers; no AI, no allocation.
-    // shortcut: backdrop units are static poses with no walk cycle, until baked vertex animation is worth it.
+    // Each unit sways and bobs a little (a 16-step table, one matrix multiply per unit) so the far
+    // field looks alive. shortcut: a sway, not a walk cycle; bake vertex animation if it ever has to walk.
     public sealed class BattleBackdrop : MonoBehaviour
     {
         [Serializable]
@@ -57,6 +58,9 @@ namespace Ahoy.Island
         RenderParams[][] monsterParams;
         RenderParams[][] allyParams;
         readonly Matrix4x4[] batch = new Matrix4x4[Batch];
+        const int SwaySteps = 16;
+        const float SwayStepSeconds = 0.08f;
+        readonly Matrix4x4[] sway = new Matrix4x4[SwaySteps];
         float nextRebuildAt;
 
         void Awake()
@@ -64,6 +68,11 @@ namespace Ahoy.Island
             Debug.Assert(simulation != null && player != null && monsterLooks.Length > 0 && allyLooks.Length > 0, "BattleBackdrop is missing references", this);
             Prepare(monsterLooks, monsterProxy, out monsterBuckets, out monsterCounts, out monsterParams);
             Prepare(allyLooks, allyProxy, out allyBuckets, out allyCounts, out allyParams);
+            for (int i = 0; i < SwaySteps; i++)
+            {
+                float a = i * Mathf.PI * 2f / SwaySteps;
+                sway[i] = Matrix4x4.TRS(new Vector3(0f, Mathf.Abs(Mathf.Sin(a)) * 0.08f, 0f), Quaternion.Euler(0f, Mathf.Sin(a) * 6f, Mathf.Sin(a * 2f) * 2f), Vector3.one);
+            }
         }
 
         static void Prepare(Look[] looks, Look proxy, out Matrix4x4[][] buckets, out int[] counts, out RenderParams[][] passes)
@@ -210,10 +219,12 @@ namespace Ahoy.Island
             for (int b = 0; b < buckets.Length; b++)
             {
                 Mesh mesh = b < looks.Length ? looks[b].mesh : proxy.mesh;
+                int step = (int)(Time.time / SwayStepSeconds);
                 for (int start = 0; start < counts[b]; start += Batch)
                 {
                     int n = Mathf.Min(Batch, counts[b] - start);
-                    Array.Copy(buckets[b], start, batch, 0, n);
+                    Matrix4x4[] source = buckets[b];
+                    for (int k = 0; k < n; k++) batch[k] = source[start + k] * sway[(step + (start + k) * 7) & (SwaySteps - 1)];
                     for (int sub = 0; sub < passes[b].Length && sub < mesh.subMeshCount; sub++)
                         Graphics.RenderMeshInstanced(passes[b][sub], mesh, sub, batch, n);
                 }

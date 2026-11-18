@@ -46,7 +46,10 @@ namespace Ahoy.Enemies
             if (Time.time < nextRefreshAt) return;
             nextRefreshAt = Time.time + def.refreshSeconds;
             float fps = 1f / Mathf.Max(0.0001f, Time.smoothDeltaTime);
-            float want = fps < def.targetFps ? def.minCrowdScale : 1f;
+            // Weaker PCs run a lower quality level, which caps the crowd up front; the frame rate does the rest.
+            int quality = QualitySettings.GetQualityLevel();
+            float qualityCap = def.crowdScaleByQuality != null && quality < def.crowdScaleByQuality.Length ? def.crowdScaleByQuality[quality] : 1f;
+            float want = Mathf.Min(fps < def.targetFps ? def.minCrowdScale : 1f, qualityCap);
             crowdScale = Mathf.MoveTowards(crowdScale, want, def.crowdScaleRate * def.refreshSeconds);
             Refresh();
         }
