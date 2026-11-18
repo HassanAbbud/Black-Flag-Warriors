@@ -1,72 +1,127 @@
+using Ahoy.Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Ahoy.Ships
 {
-    public class PlayerShipCannonController : MonoBehaviour
+    // Swings the player ship's cannon toward the mouse and fires it. Sits on the cannon object
+    // (a child of the ship). The mouse is projected onto the sea at the ship's height, so the
+    // cannon points where the cursor is on the water, not where it is on the screen.
+    // Input arrives from PlayerShipController; nothing here reads a device directly.
+    [DisallowMultipleComponent]
+    public sealed class PlayerShipCannonController : MonoBehaviour
     {
-        [Header("Limits (relative to ship front)")]
-        [SerializeField] private float yawLimit = 90f;        // 180 degrees left/right
-        [SerializeField] private float maxPitchUp = 30f;      // 30 degrees up
-        [SerializeField] private float maxPitchDown = 0f;     // no look down
+        [Tooltip("The ship this cannon belongs to. Found in the parents automatically if left empty.")]
+        [SerializeField] private PlayerShipController ship;
+        [Tooltip("Where cannonballs leave the barrel. Its forward is the firing direction.")]
+        [SerializeField] private Transform muzzlePoint;
+        [Tooltip("Camera the mouse position is read through. Uses the MainCamera-tagged camera if left empty.")]
+        [SerializeField] private Camera aimCamera;
 
-        [Header("Sensitivity")]
-        [SerializeField] private float sensitivityX = 0.1f;   
-        [SerializeField] private float sensitivityY = 0.1f;
-        [SerializeField] private bool invertY = false;
+        // Flat, normalised world direction from the cannon toward the mouse. Read by PlayerShipAimArrow.
+        public Vector3 AimDirection => aimDirection;
+        // Where aiming is measured from: the cannon's pivot, which sits toward the bow, not the ship's centre.
+        public Vector3 AimOrigin => transform.position;
 
-        [Header("Cursor")]
-        [SerializeField] private bool lockCursor = true;
+        private PlayerShipDef def;
+        private Vector2 aimScreenPoint;
+        private bool hasAimInput;
+        private Vector3 aimDirection;
+        private float yaw;              // degrees off the bow, what the cannon is pointing at now
+        private float fireRequestedAt;  // when the last unconsumed fire press happened; < 0 = none
+        private float readyAt;
 
-        private float _yaw;     // relative to ship front
-        private float _pitch;   // positive = look up
-
-        private void Start()
+        private void Awake()
         {
-            Vector3 e = transform.localEulerAngles;
-            _yaw = Mathf.DeltaAngle(0f, e.y);
-            _pitch = -Mathf.DeltaAngle(0f, e.x);
-
-            if (lockCursor) SetCursorLocked(true);
+            if (ship == null)
+                ship = GetComponentInParent<PlayerShipController>();
+            if (aimCamera == null)
+                aimCamera = Camera.main;
+            def = ship.Def;
         }
 
-        private void OnDisable()
+        private void OnEnable()
         {
-            if (lockCursor) SetCursorLocked(false);
+            yaw = 0f;
+            readyAt = 0f;
+            fireRequestedAt = -1f;
+            aimDirection = ship.transform.forward;
         }
+
+        public void SetAimScreenPoint(Vector2 screenPoint)
+        {
+            aimScreenPoint = screenPoint;
+            hasAimInput = true;
+        }
+
+        // Command: remember the press; TryConsumeFire fires it once the cannon is loaded.
+        public void BufferFire() => fireRequestedAt = Time.time;
 
         private void Update()
         {
-            Mouse mouse = Mouse.current;
-            if (mouse == null) return;
-
-            // ESC to unlock cursor, left click to lock cursor
-            if (lockCursor)
+            if (!ship.IsAlive)
             {
-                if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-                    SetCursorLocked(false);
-                else if (mouse.leftButton.wasPressedThisFrame && Cursor.lockState != CursorLockMode.Locked)
-                    SetCursorLocked(true);
-
-                if (Cursor.lockState != CursorLockMode.Locked) return;
+                fireRequestedAt = -1f;
+                return;
             }
 
-            Vector2 delta = mouse.delta.ReadValue();
-
-            _yaw += delta.x * sensitivityX;
-            _pitch += delta.y * sensitivityY * (invertY ? -1f : 1f);
-
-            _yaw = Mathf.Clamp(_yaw, -yawLimit, yawLimit);
-            _pitch = Mathf.Clamp(_pitch, -maxPitchDown, maxPitchUp);
-
-            // unity uses left-handed coordinate system, so we negate pitch to look up
-            transform.localRotation = Quaternion.Euler(-_pitch, _yaw, 0f);
+            UpdateAimDirection();
+            TurnTowardAim(Time.deltaTime);
+            TryConsumeFire();
         }
 
-        private static void SetCursorLocked(bool locked)
+        private void UpdateAimDirection()
         {
-            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !locked;
+            if (!hasAimInput || aimCamera == null)
+                return;
+            Transform shipTransform = ship.transform;
+            Plane sea = new Plane(Vector3.up, shipTransform.position);
+            Ray ray = aimCamera.ScreenPointToRay(aimScreenPoint);
+            if (!sea.Raycast(ray, out float enter))
+                return;   // cursor above the horizon - keep the last aim
+
+            // From the cannon, not the ship's centre: the cannon is near the bow, and aiming from the
+            // centre left it pointing parallel to the mouse instead of at it.
+            Vector3 toMouse = ray.GetPoint(enter) - transform.position;
+            toMouse.y = 0f;
+            if (toMouse.sqrMagnitude > 0.0001f)
+                aimDirection = toMouse.normalized;
+        }
+
+        private void TurnTowardAim(float dt)
+        {
+            Transform shipTransform = ship.transform;
+            float wanted = Vector3.SignedAngle(shipTransform.forward, aimDirection, Vector3.up);
+            wanted = Mathf.Clamp(wanted, -def.cannonYawLimit, def.cannonYawLimit);
+            yaw = Mathf.MoveTowardsAngle(yaw, wanted, def.cannonTurnSpeed * dt);
+            // Unity is left-handed: a negative x rotation raises the barrel.
+            transform.localRotation = Quaternion.Euler(-def.cannonElevation, yaw, 0f);
+        }
+
+        private void TryConsumeFire()
+        {
+            if (fireRequestedAt < 0f)
+                return;
+            if (Time.time - fireRequestedAt > def.fireBuffer)
+            {
+                fireRequestedAt = -1f;   // pressed too long before the reload finished - drop it
+                return;
+            }
+            if (Time.time < readyAt)
+                return;
+
+            fireRequestedAt = -1f;
+            readyAt = Time.time + def.fireCooldown;
+            Fire();
+        }
+
+        private void Fire()
+        {
+            GameObject ball = ship.Cannonball;
+            if (ball == null || muzzlePoint == null)
+                return;
+            GameObject shot = PoolManager.Instance.GetObject(ball.name, ball, muzzlePoint.position, muzzlePoint.rotation);
+            if (shot.TryGetComponent(out ShipBullet bullet))
+                bullet.SetDamage(ship.CannonDamage);
         }
     }
 }

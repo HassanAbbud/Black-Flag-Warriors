@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04262719d3a732f48a5c8c19ff7373c9, type: 3}
+  m_Name: PlayerShip
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipDef
+  maxSpeed: 10
+  acceleration: 4
+  deceleration: 3
+  turnSpeed: 90
+  turnSlowdown: 0.75
+  inputDeadZone: 0.1
+  cannonTurnSpeed: 240
+  cannonYawLimit: 180
+  cannonElevation: 10
+  fireCooldown: 0.6
+  fireBuffer: 0.2
+  arrowDistance: 8
+  arrowHeight: 1.5
