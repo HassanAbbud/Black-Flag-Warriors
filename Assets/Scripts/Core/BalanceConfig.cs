@@ -181,6 +181,10 @@ namespace Ahoy.Core
         public float crowdShadowRadius = 25f;
         [Tooltip("R71: beyond this many metres crowd units skin with one bone per vertex.")]
         public float crowdLowSkinRadius = 60f;
+        [Tooltip("R71: beyond this many metres crowd units animate every other frame, and not at all off-screen.")]
+        public float crowdHalfAnimRadius = 30f;
+        [Tooltip("Highest a crowd unit may stand above the terrain on a collider (rocks, steps, bridges); anything higher is ignored.")]
+        public float crowdMaxGroundAboveTerrain = 1.5f;
 
         [Header("Enemies — crowd ground following")]
         [Tooltip("Layers the ground probe hits: terrain and level geometry. Leave Zahim's layer out.")]

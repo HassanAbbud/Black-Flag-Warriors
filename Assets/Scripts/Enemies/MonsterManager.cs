@@ -231,6 +231,7 @@ namespace Ahoy.Enemies
             for (int i = activeCount - 1; i >= 0; i--)
             {
                 Monster monster = active[i];
+                monster.StepAnimation(dt, frame);
                 Vector3 offset = monster.transform.position - playerPosition;
                 float flatSqr = offset.x * offset.x + offset.z * offset.z;
                 if (flatSqr > fullSimSqr && (frame + monster.TickSlot) % farInterval != 0)

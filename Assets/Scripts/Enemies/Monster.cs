@@ -34,6 +34,7 @@ namespace Ahoy.Enemies
         int locationId;
         int probeSlot;          // offsets ground probes so the crowd never probes on one frame
         float groundY;
+        float groundOffset;     // standing on a rock or bridge above the terrain
 
         // Personality, rolled at activation so a crowd never moves in lockstep.
         float ringAngle;        // where on the ring around its target it waits, degrees
@@ -58,6 +59,7 @@ namespace Ahoy.Enemies
         internal float SavedTime;               // R70: time owed while thinking every few frames
         SkinnedMeshRenderer[] skins;
         int lod;
+        float animSaved;        // R71: time owed to a hand-stepped animator
         internal IUnit LastAttacker;            // who landed the last hit; null when it was Zahim
         Vector3 lastVelocity;                   // R70: carried on the frames it does not think
         Vector3[] route;                        // a battle front's road; null when it just stands guard
@@ -90,10 +92,23 @@ namespace Ahoy.Enemies
 
         // R71, Hyrule Warriors style: shadows only up close, lighter skinning further out.
         // Changes the renderers only when the band changes.
+        // R71: half-rate animation. Called every frame; only acts while the animator is hand-stepped,
+        // and skips units nobody can see.
+        internal void StepAnimation(float dt, int frame)
+        {
+            if (animator == null || animator.enabled) return;
+            animSaved = Mathf.Min(animSaved + dt, 0.5f);
+            if (((frame + TickSlot) & 1) != 0 || skins.Length == 0 || !skins[0].isVisible) return;
+            animator.Update(animSaved);
+            animSaved = 0f;
+        }
+
         internal void SetLod(float flatSqr, BalanceConfig config)
         {
             int band = flatSqr < config.crowdShadowRadius * config.crowdShadowRadius ? 0
                      : flatSqr < config.crowdLowSkinRadius * config.crowdLowSkinRadius ? 1 : 2;
+            // R71: far units' animators are stepped by hand, every other frame (StepAnimation).
+            if (animator != null) animator.enabled = flatSqr < config.crowdHalfAnimRadius * config.crowdHalfAnimRadius;
             if (band == lod) return;
             lod = band;
             for (int i = 0; i < skins.Length; i++)
@@ -118,6 +133,8 @@ namespace Ahoy.Enemies
 
             groundY = position.y;
             ProbeGround(position);
+            lod = -1;
+            if (animator != null) animator.enabled = true;
             transform.SetPositionAndRotation(new Vector3(position.x, groundY, position.z), rotation);
             gameObject.SetActive(true);   // OnEnable resets the rest
         }
@@ -283,6 +300,7 @@ namespace Ahoy.Enemies
         {
             Vector3 position = transform.position + velocity * dt;
             if ((frame + probeSlot) % Mathf.Max(1, balance.crowdGroundProbeInterval) == 0) ProbeGround(position);
+            else groundY = CrowdGround.Floor(position) + groundOffset;   // the terrain every frame, so slopes never leave it hanging
             position.y = Mathf.MoveTowards(position.y, groundY, balance.crowdGroundFollowSpeed * dt);
             transform.position = position;
         }
@@ -497,11 +515,8 @@ namespace Ahoy.Enemies
 
         void ProbeGround(Vector3 position)
         {
-            Vector3 origin = position + Vector3.up * balance.crowdGroundProbeUp;
-            float reach = balance.crowdGroundProbeUp + balance.crowdGroundProbeDown;
-            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, reach, balance.groundMask,
-                                QueryTriggerInteraction.Ignore))
-                groundY = hit.point.y;
+            groundOffset = CrowdGround.OffsetAboveFloor(position, balance);
+            groundY = CrowdGround.Floor(position) + groundOffset;
         }
 
 #if UNITY_EDITOR

@@ -140,7 +140,11 @@ namespace Ahoy.Island
             ISpawnPacing pacing = BattleContext.Pacing;
             UpdateSeen();
 
-            for (int i = 0; i < locations.Length; i++) Reinforce(locations[i], dt, pacing);
+            for (int i = 0; i < locations.Length; i++)
+            {
+                Reinforce(locations[i], dt, pacing);
+                Supply(locations[i], dt, pacing);
+            }
             for (int i = 0; i < locations.Length; i++)
             {
                 March(locations[i], dt);
@@ -206,6 +210,13 @@ namespace Ahoy.Island
             location.allies = Mathf.Min(location.allies + d.allyRegen * pacing.AllyRegenScale * dt, d.maxAllyStrength);
         }
 
+        // Boats from the village keep landing soldiers at places like Zahim's own camp, whoever holds them.
+        void Supply(BattleLocation location, float dt, ISpawnPacing pacing)
+        {
+            if (location.AllySupply <= 0f) return;
+            location.allies = Mathf.Min(location.allies + location.AllySupply * pacing.AllyRegenScale * dt, location.Def.maxAllyStrength);
+        }
+
         // Pressure from the open portals (GDD Core Loop): what a location cannot hold moves on.
         void March(BattleLocation location, float dt)
         {
@@ -262,11 +273,15 @@ namespace Ahoy.Island
             bool campBattle = location.hasCamp && location.seen
                               && (location.campPhase == PortalPhase.Contested || location.campPhase == PortalPhase.SpawnBoss);
             location.fighting = fieldBattle || campBattle || (location.monsters > empty && location.allies > empty);
-            // On the field the real crowds do the fighting; only the unseen battle is resolved here.
-            if (location.seen || location.Materialized || location.monsters <= empty || location.allies <= empty) return;
+            // Hybrid, as musou games do it: the units on the field fight for real, and only the reserves
+            // behind them (strength not fielded) fight as numbers. Where Zahim stands it is all real.
+            if (location.seen) return;
+            float monsterReserve = location.monsters - (location.Materialized ? location.front.FieldMonsters : 0);
+            float allyReserve = location.allies - (location.Materialized ? location.front.FieldAllies : 0);
+            if (monsterReserve <= empty || allyReserve <= empty) return;
 
-            float monsterLoss = location.allies * def.killRate * dt;
-            float allyLoss = location.monsters * def.killRate * dt;
+            float monsterLoss = Mathf.Min(monsterReserve, allyReserve * def.killRate * dt);
+            float allyLoss = Mathf.Min(allyReserve, monsterReserve * def.killRate * dt);
             location.monsters = Mathf.Max(0f, location.monsters - monsterLoss);
             location.allies = Mathf.Max(0f, location.allies - allyLoss);
         }

@@ -16,7 +16,7 @@ namespace Ahoy.Enemies
         [Tooltip("Monsters each front fields, by rank. Every front on the island gets a share, so the whole map fights at once; fronts past the end of the list field none.")]
         public int[] frontMonsterCaps = { 45, 32, 24, 20, 16, 14, 12, 10, 10, 10, 8, 8 };
         [Tooltip("Allies each front fields, by rank.")]
-        public int[] frontAllyCaps = { 22, 16, 12, 10, 10, 8, 8, 6, 6, 6, 6, 6 };
+        public int[] frontAllyCaps = { 35, 25, 18, 14, 12, 10, 8, 8, 6, 6, 6, 6 };
         [Tooltip("Monster slots kept free for the portal camps and their guardians' fights.")]
         public int campReserve = 40;
         [Tooltip("Units per side that join a front in one burst.")]

@@ -126,6 +126,7 @@ namespace Ahoy.Island
             for (int i = activeCount - 1; i >= 0; i--)
             {
                 AllySoldier soldier = active[i];
+                soldier.StepAnimation(dt, frame);
                 Vector3 offset = soldier.transform.position - at;
                 float flatSqr = offset.x * offset.x + offset.z * offset.z;
                 if (flatSqr > fullSimSqr && (frame + soldier.TickSlot) % farInterval != 0)

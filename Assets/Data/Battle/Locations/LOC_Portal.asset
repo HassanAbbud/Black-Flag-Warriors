@@ -23,7 +23,7 @@ MonoBehaviour:
   marchRate: 0.5
   captureStrength: 8
   allyRegen: 0.3
-  maxAllyStrength: 40
+  maxAllyStrength: 60
   garrisonOnCapture: 25
   allyHold: 20
   allyMarchRate: 0.3

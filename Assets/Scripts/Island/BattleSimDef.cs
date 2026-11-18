@@ -23,13 +23,13 @@ namespace Ahoy.Island
         [Header("Morale (Dynasty Warriors style: Zahim's deeds carry the village's soldiers)")]
         [Range(0f, 1f)] public float startMorale = 0.4f;
         [Tooltip("Morale per monster Zahim KOs himself.")]
-        public float moralePerKo = 0.002f;
+        public float moralePerKo = 0.004f;
         [Tooltip("Morale when the village takes a location.")]
         public float moralePerCapture = 0.08f;
         [Tooltip("Morale lost when the monsters take a location.")]
         public float moralePerLoss = 0.1f;
         [Tooltip("Morale per second drifting back to startMorale, so it has to be kept up.")]
-        public float moraleDrift = 0.002f;
+        public float moraleDrift = 0.001f;
 
         [Header("Final breach")]
         [Tooltip("Portals that must be sealed before the final breach opens to Zahim.")]

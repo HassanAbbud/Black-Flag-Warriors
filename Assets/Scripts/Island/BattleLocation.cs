@@ -20,6 +20,8 @@ namespace Ahoy.Island
         [SerializeField] BattleLocation next;
         [Tooltip("Ally strength here at the start instead of the def's; below 0 uses the def. Zahim's landing party.")]
         [SerializeField] float startAllyOverride = -1f;
+        [Tooltip("Ally strength per second landed here whoever holds it (boats from the village). 0 for most places.")]
+        [SerializeField] float allySupplyRate;
         [Tooltip("False for places only reached by sea: no crowds on the field, numbers only.")]
         [SerializeField] bool onLand = true;
 
@@ -50,6 +52,7 @@ namespace Ahoy.Island
         public BattleLocationDef Def => def;
         public BattleLocation Next => next;
         public bool OnLand => onLand;
+        internal float AllySupply => allySupplyRate;
 
         internal void ResetState()
         {

@@ -88,7 +88,7 @@ MonoBehaviour:
   crowdGroundProbeUp: 2
   crowdGroundProbeDown: 4
   crowdGroundProbeInterval: 6
-  crowdGroundFollowSpeed: 20
+  crowdGroundFollowSpeed: 40
   enemyHitPadding: 0.4
   enemyGravity: -25
   enemyGroundedStickSpeed: -2

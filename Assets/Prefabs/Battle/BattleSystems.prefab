@@ -2253,6 +2253,7 @@ MonoBehaviour:
   def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
   next: {fileID: 0}
   startAllyOverride: 30
+  allySupplyRate: 0.6
   onLand: 1
 --- !u!1 &8720287634822843180
 GameObject:
