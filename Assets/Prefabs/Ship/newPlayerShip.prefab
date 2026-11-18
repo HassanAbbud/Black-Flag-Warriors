@@ -1,5 +1,97 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6862197673752377166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2419000648173895696}
+  - component: {fileID: 7855405033059578987}
+  m_Layer: 6
+  m_Name: AimArrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2419000648173895696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6862197673752377166}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8991287088083461316}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!212 &7855405033059578987
+SpriteRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6862197673752377166}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: 60af571701d38465fa061f2ded817c8c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 5.12, y: 5.12}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &8546271018012419477
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,13 +220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32a2bcec13ee0c4cb8bbabfeffffdaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipCannonController
-  yawLimit: 90
-  maxPitchUp: 30
-  maxPitchDown: 0
-  sensitivityX: 0.1
-  sensitivityY: 0.1
-  invertY: 0
-  lockCursor: 1
+  ship: {fileID: 0}
+  muzzlePoint: {fileID: 5609989919363777821}
+  aimCamera: {fileID: 0}
 --- !u!1001 &8884984734128014127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143,6 +231,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_LocalPosition.x
       value: 93.1
@@ -197,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: PlayerShip
       objectReference: {fileID: 0}
     - target: {fileID: 2109809077407142007, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       propertyPath: m_Layer
@@ -225,6 +325,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1528107277089413932}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2419000648173895696}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       insertIndex: -1
@@ -235,6 +338,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6354379814097729731}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2308217492483861157}
   m_SourcePrefab: {fileID: 100100000, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}
 --- !u!1 &8614444198222184062 stripped
 GameObject:
@@ -346,6 +452,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4f407a59-8e1f-404f-a966-e875d0e2e33e
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 697649540055346460}
+        m_TargetAssemblyTypeName: Ahoy.Ships.PlayerShipController, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a4e9f2c1-7b3d-4e6a-8f5c-2d1b0a9e8c7f
+    m_ActionName: 'Player/Aim[/Mouse/position]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -370,7 +492,10 @@ MonoBehaviour:
   shipAttack: 100
   shipDefense: 100
   shipBullet: {fileID: 1171815924502273452, guid: 4f92807484b403b459c8c5b6395bec57, type: 3}
-  muzzlePoint: {fileID: 5609989919363777821}
+  def: {fileID: 11400000, guid: 3fde54ca0874f444a84e604739c85dfe, type: 2}
+  cannon: {fileID: 0}
+  view: {fileID: 0}
+  playerAttackInherited: 100
 --- !u!136 &6354379814097729731
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -394,6 +519,20 @@ CapsuleCollider:
   m_Height: 13.099998
   m_Direction: 2
   m_Center: {x: 0, y: 3, z: -1}
+--- !u!114 &2308217492483861157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614444198222184062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aba5837ee62c974cb709b0361334518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.PlayerShipAimArrow
+  arrow: {fileID: 2419000648173895696}
+  cannon: {fileID: 6773979942546672207}
 --- !u!4 &8991287088083461316 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487fa9ca111ea05419fb5960aa97f999, type: 3}

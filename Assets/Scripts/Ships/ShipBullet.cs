@@ -28,6 +28,7 @@ namespace Ahoy.Ships
 
         void RemoveMe()
         {
+            CancelInvoke(nameof(RemoveMe));   // returned on a hit: don't let the lifetime timer return it again once reused
             rigidbody.linearVelocity = Vector3.zero;
             rigidbody.angularVelocity = Vector3.zero;
             PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
@@ -36,6 +37,7 @@ namespace Ahoy.Ships
         public void SetDamage(int damage)
         {
             shipDamage = damage;
+            totalDamage = shipDamage + shipBullet.damage;   // OnEnable ran before this was called
         }
 
         private void OnCollisionEnter(Collision collision)
