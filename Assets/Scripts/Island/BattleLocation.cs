@@ -38,6 +38,7 @@ namespace Ahoy.Island
         internal bool seen;
         internal bool locked;
         internal bool guardianDown;     // a stronghold's guardian is dead
+        internal bool captainBeaten;    // Zahim beat this keep's captain
         internal BattleFront front;     // optional: where this location's battle becomes real
         internal float playerDistance;
 
@@ -66,6 +67,7 @@ namespace Ahoy.Island
             seen = false;
             locked = false;
             guardianDown = false;
+            captainBeaten = false;
             if (front == null) front = GetComponentInChildren<BattleFront>();
         }
 

@@ -327613,9 +327613,18 @@ MonoBehaviour:
   balance: {fileID: 11400000, guid: b91341cbfcac543fc84e338de7a03244, type: 2}
   player: {fileID: 291934784}
   pools:
+  - def: {fileID: 11400000, guid: af0614197ee6049f2824ed5396796716, type: 2}
+    prefab: {fileID: 562937211067676165, guid: 99a2b77ecffb84ae7a5f67095820d049, type: 3}
+    share: 0.02
   - def: {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
     prefab: {fileID: 8731974439939595022, guid: f6a569f5d7d465447ac43c39b90bac94, type: 3}
-    share: 1
+    share: 0.34
+  - def: {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+    prefab: {fileID: 5558562210012572305, guid: 3b92c954bc5874441ad360006726f296, type: 3}
+    share: 0.34
+  - def: {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
+    prefab: {fileID: 8295319063612446069, guid: dae6f0d43049343058cd64ee35b7df2e, type: 3}
+    share: 0.34
 --- !u!4 &2057320891
 Transform:
   m_ObjectHideFlags: 0
@@ -340754,6 +340763,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 291934785}
+    - target: {fileID: 2559269085304613254, guid: 1ea034ea9db79476ea538b1cc0c2ad19, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 291934785}
+    - target: {fileID: 2559269085304613254, guid: 1ea034ea9db79476ea538b1cc0c2ad19, type: 3}
+      propertyPath: maxPerSide
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4022202986277247131, guid: 1ea034ea9db79476ea538b1cc0c2ad19, type: 3}
       propertyPath: player
       value: 

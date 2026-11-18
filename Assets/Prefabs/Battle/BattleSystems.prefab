@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 11400000, guid: af0614197ee6049f2824ed5396796716, type: 2}
   spawnSpread: 5
   obstacleMask:
     serializedVersion: 2
@@ -118,6 +119,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -311,6 +313,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 11400000, guid: af0614197ee6049f2824ed5396796716, type: 2}
   spawnSpread: 5
   obstacleMask:
     serializedVersion: 2
@@ -422,6 +425,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -489,6 +493,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 11400000, guid: af0614197ee6049f2824ed5396796716, type: 2}
   spawnSpread: 5
   obstacleMask:
     serializedVersion: 2
@@ -652,6 +657,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -830,8 +836,23 @@ MonoBehaviour:
   player: {fileID: 0}
   pools:
   - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
-    prefab: {fileID: 7060978774998981460, guid: ec8c1538c321343508c8454812b43c43, type: 3}
-    count: 140
+    prefab: {fileID: 5782011129504089267, guid: 8e8b9221469044095b86cb60b99a68f2, type: 3}
+    count: 24
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 2549197642679759598, guid: e8fb5fb673b1d4f709acb577f700b7fd, type: 3}
+    count: 24
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 8229472867545948230, guid: d9a8a8329f6bb4b54b20720187e16682, type: 3}
+    count: 24
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 5029525860487552777, guid: 0d541f077fe44444c825d1822b00776a, type: 3}
+    count: 24
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 4272013327621698689, guid: 45a749090907e4affa1de9e7cf8880f9, type: 3}
+    count: 24
+  - def: {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+    prefab: {fileID: 8435146458928584734, guid: a683e0e742cff490bb9e195e8432fe62, type: 3}
+    count: 24
 --- !u!1 &3504780880142726227
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,6 +987,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -1066,6 +1088,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -1207,7 +1230,7 @@ MonoBehaviour:
   locationId: 4
   displayName: South Spit Portal
   def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
-  next: {fileID: 268593345166624310}
+  next: {fileID: 2168589338344054814}
   startAllyOverride: -1
   onLand: 1
 --- !u!1 &3979241847869839297
@@ -1387,6 +1410,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -1614,6 +1638,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad7fc8a834994594ebc8a6cc8f00cc63, type: 2}
   allySpecies:
   - {fileID: 11400000, guid: 5198450171f8a4a63855af8a3adc8251, type: 2}
+  captainSpecies: {fileID: 0}
   spawnSpread: 7
   obstacleMask:
     serializedVersion: 2
@@ -1857,6 +1882,8 @@ GameObject:
   - component: {fileID: 4709173045198881892}
   - component: {fileID: 4022202986277247131}
   - component: {fileID: 2370252580564478965}
+  - component: {fileID: 2559269085304613254}
+  - component: {fileID: 273393760206158299}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -1925,6 +1952,113 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.CrowdDirector
   def: {fileID: 11400000, guid: 04181809b52da4e7e954595c93d1b03f, type: 2}
+--- !u!114 &2559269085304613254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6619055821448394186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9db9f75053a44285b6e7334affd3cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleBackdrop
+  simulation: {fileID: 4022202986277247131}
+  player: {fileID: 0}
+  monsterLooks:
+  - mesh: {fileID: 4300000, guid: 4e87ff2a9cb1042c0b97afcecf5d4a68, type: 2}
+    materials:
+    - {fileID: 2100000, guid: e69b02504975b408ead5c7a99f7a0aaf, type: 2}
+  - mesh: {fileID: 4300000, guid: 4e87ff2a9cb1042c0b97afcecf5d4a68, type: 2}
+    materials:
+    - {fileID: 2100000, guid: fd57c8f7abcbf4c91ac32eda5e1a61ff, type: 2}
+  - mesh: {fileID: 4300000, guid: 4e87ff2a9cb1042c0b97afcecf5d4a68, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 9302ae60dc7ce46b3a3a7ad9f5579505, type: 2}
+  allyLooks:
+  - mesh: {fileID: 4300000, guid: 834055d7418ee4c95b2b5c221023d448, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: fb65c7ac2f91e4a5cbf5f70835e9cea8, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: e106940d0cc724e8ab99599adc50156c, type: 2}
+  - mesh: {fileID: 4300000, guid: 0f43c34b86ff5471cadf4e7c2458aa47, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: fb65c7ac2f91e4a5cbf5f70835e9cea8, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: e106940d0cc724e8ab99599adc50156c, type: 2}
+  - mesh: {fileID: 4300000, guid: 158c35684b7224fb1864eb7052b6e967, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: fb65c7ac2f91e4a5cbf5f70835e9cea8, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: 897ec88ea23bd4ec28a43ad2c9296a8b, type: 2}
+  - mesh: {fileID: 4300000, guid: 7d2bb8208c1374665828c803e001eff8, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: f0e143bc55b85445a9ba3e4a294c9035, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: 897ec88ea23bd4ec28a43ad2c9296a8b, type: 2}
+  - mesh: {fileID: 4300000, guid: 4cc6a9ff061e8403dab9bbbd5af0d734, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: f0e143bc55b85445a9ba3e4a294c9035, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: e106940d0cc724e8ab99599adc50156c, type: 2}
+  - mesh: {fileID: 4300000, guid: 80994982b4ab04dd28aa097fb90c9fb7, type: 2}
+    materials:
+    - {fileID: 2100000, guid: 2384aebfd9358489990afbad0f12736d, type: 2}
+    - {fileID: 2100000, guid: f0e143bc55b85445a9ba3e4a294c9035, type: 2}
+    - {fileID: 2100000, guid: b82e3472c20924b0fb25e6bc69f5f85e, type: 2}
+    - {fileID: 2100000, guid: e30325cb94f6a412b88858725b422ad7, type: 2}
+    - {fileID: 2100000, guid: 1bfda353f81624622adf0f54c2c7fb75, type: 2}
+    - {fileID: 2100000, guid: 18a9387858e4d4ecb849aa1f3607c93b, type: 2}
+    - {fileID: 2100000, guid: e106940d0cc724e8ab99599adc50156c, type: 2}
+  monsterProxy:
+    mesh: {fileID: 10205, guid: 0000000000000000e000000000000000, type: 0}
+    materials:
+    - {fileID: 2100000, guid: c81940b6ea95049cb9613fa29bf38a76, type: 2}
+  allyProxy:
+    mesh: {fileID: 10205, guid: 0000000000000000e000000000000000, type: 0}
+    materials:
+    - {fileID: 2100000, guid: cad142e52bd334be0a03011fbcaadcb0, type: 2}
+  proxyDistance: 150
+  maxPerSide: 150
+  hideNear: 60
+  roadWidth: 9
+  campShare: 0.4
+  campRadius: 16
+--- !u!114 &273393760206158299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6619055821448394186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 029b71dfe693445d897414660beeab61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.BattleDebugOverlay
+  simulation: {fileID: 4022202986277247131}
+  visible: 0
 --- !u!1 &6864076243444419864
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,7 +2251,7 @@ MonoBehaviour:
   locationId: 1
   displayName: Fishers' Camp
   def: {fileID: 11400000, guid: 1bc714a32dffe45dc8d0d618c1830f0d, type: 2}
-  next: {fileID: 2168589338344054814}
+  next: {fileID: 0}
   startAllyOverride: 30
   onLand: 1
 --- !u!1 &8720287634822843180

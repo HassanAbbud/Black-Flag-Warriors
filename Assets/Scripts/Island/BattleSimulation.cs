@@ -16,8 +16,11 @@ namespace Ahoy.Island
     //   (BattleEvents.UnitKilled) come off the numbers, and a portal camp reports its own phase and
     //   meter. Fronts are ranked by distance to Zahim for their share of the crowd budget (W5.6,
     //   R69–R73). Places reached only by sea fight as numbers.
-    //   A watchtower keep falls to whoever clears it; a stronghold once its guardian is dead and
-    //   its ground cleared; sealing the final breach wins the battle.
+    //   Portals are Hyrule Warriors' keeps (meter, then guardian, then sealed); watchtowers are its
+    //   outposts: their captain stands there from the start and only Zahim beating it takes them. A stronghold falls once
+    //   its guardian is dead and its ground cleared; sealing the final breach wins the battle.
+    //   Morale (Dynasty Warriors) rises with Zahim's KOs and captures and falls with losses; the
+    //   soldiers fight harder with it, so the battle leans on Zahim instead of winning by itself.
     // Registers as IBattleProgress so the HUD and the spawn pacing read it through BattleContext.
     // One Update for every location (Code Patterns 2.8), stepping every tickSeconds; no allocation.
     public sealed class BattleSimulation : MonoBehaviour, IBattleProgress
@@ -35,6 +38,7 @@ namespace Ahoy.Island
         int fieldAllies;
         float stepTimer;
         float integrity;
+        float morale;
         float battleSeconds;
         int koCount;
         int portalCount;
@@ -59,9 +63,11 @@ namespace Ahoy.Island
         public int HeldCount => heldCount;
         public float Progress01 => locations.Length > 1 ? (float)heldCount / (locations.Length - 1) : 0f;
         public float VillageIntegrity01 => def != null ? integrity / def.villageIntegrity : 1f;
+        public float Morale01 => morale;
         public int KoCount => koCount;
         public float BattleSeconds => battleSeconds;
         public int SeenLocationId => seenId;
+        internal BattleLocation[] Locations => locations;
         public int FieldMonsters => fieldMonsters;
         public int FieldAllies => fieldAllies;
 
@@ -110,6 +116,7 @@ namespace Ahoy.Island
         {
             for (int i = 0; i < locations.Length; i++) locations[i].ResetState();
             integrity = def.villageIntegrity;
+            morale = def.startMorale;
             battleSeconds = 0f;
             koCount = 0;
             ended = false;
@@ -154,6 +161,7 @@ namespace Ahoy.Island
                 Debug.Assert(locations[i].monsters >= 0f && locations[i].allies >= 0f, "battle strength went negative", locations[i]);
             }
             WearVillage(dt);
+            morale = Mathf.MoveTowards(morale, def.startMorale, def.moraleDrift * dt);
             Recount();
             UpdateFronts(pacing);
         }
@@ -278,12 +286,15 @@ namespace Ahoy.Island
                 return;
             }
 
-            // Portals are only sealed by beating their guardian (PortalCamp reports it). A keep falls to
-            // whoever clears it, Zahim or the soldiers sent there. Outposts and strongholds fall back
-            // to the village once Zahim clears them in person, a stronghold only after its guardian.
+            // Portals are only sealed by beating their guardian (PortalCamp reports it). A watchtower
+            // keeps its captain out and falls the moment Zahim beats it, grunts or not. Outposts and
+            // strongholds fall to the village once Zahim clears them in person, a stronghold only after its guardian.
             bool cleared = location.monsters <= empty;
-            if (d.kind == LocationKind.Keep && cleared && (location.seen || location.allies > empty))
-                SetHolder(location, Faction.Village);
+            if (d.kind == LocationKind.Keep)
+            {
+                if (location.captainBeaten) SetHolder(location, Faction.Village);
+                else if (location.front != null) location.front.CallCaptain();
+            }
             else if (!IsPortal(d.kind) && d.kind != LocationKind.Keep && cleared && location.seen
                      && (d.kind != LocationKind.Stronghold || location.guardianDown))
                 SetHolder(location, Faction.Village);
@@ -308,6 +319,8 @@ namespace Ahoy.Island
         {
             if (location.holder == holder) return;
             location.holder = holder;
+            morale = Mathf.Clamp01(morale + (holder == Faction.Village ? def.moralePerCapture : -def.moralePerLoss));
+            location.captainBeaten = false;
             if (holder == Faction.Village)
             {
                 location.monsters = 0f;
@@ -346,12 +359,18 @@ namespace Ahoy.Island
         void OnUnitKilled(IUnit unit, IUnit killer)
         {
             if (unit == null) return;
-            if (unit.Faction == Faction.Monsters && killer == null) koCount++;   // Zahim's own KOs (GDD Scoring)
+            if (unit.Faction == Faction.Monsters && killer == null)
+            {
+                koCount++;   // Zahim's own KOs (GDD Scoring)
+                morale = Mathf.Min(1f, morale + def.moralePerKo);
+            }
 
             BattleLocation location = Find(unit.LocationId);
             if (location == null) return;
             if (unit.Faction == Faction.Monsters) location.monsters = Mathf.Max(0f, location.monsters - unit.Strength);
             if (unit.Faction == Faction.Monsters && unit.Tier >= Tier.Guardian) location.guardianDown = true;
+            // A keep captain beaten by a soldier just comes back; only Zahim takes the keep.
+            if (unit.Faction == Faction.Monsters && unit.Tier == Tier.Captain && killer == null) location.captainBeaten = true;
             else if (unit.Faction == Faction.Village) location.allies = Mathf.Max(0f, location.allies - unit.Strength);
         }
 

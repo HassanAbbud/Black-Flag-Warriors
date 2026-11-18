@@ -16,7 +16,7 @@ namespace Ahoy.Island
         {
             public AllySoldierDef def;
             public AllySoldier prefab;
-            [Tooltip("Soldiers of this kind created at load.")]
+            [Tooltip("Soldiers of this design created at load. Several entries may share a def: their designs mix.")]
             public int count;
         }
 
@@ -29,6 +29,8 @@ namespace Ahoy.Island
         AllySoldier[] active;
         int activeCount;
         int spawnCounter;
+
+        internal float Morale { get; private set; } = 0.5f;   // read once a frame for every soldier
 
         public int Capacity => active != null ? active.Length : 0;
 
@@ -52,7 +54,7 @@ namespace Ahoy.Island
             {
                 PoolEntry entry = pools[i];
                 if (entry.def == null || entry.prefab == null) continue;
-                var stack = new Stack<AllySoldier>(entry.count);
+                if (!free.TryGetValue(entry.def, out Stack<AllySoldier> stack)) free[entry.def] = stack = new Stack<AllySoldier>(entry.count);
                 for (int n = 0; n < entry.count; n++)
                 {
                     AllySoldier soldier = Instantiate(entry.prefab, transform);
@@ -60,8 +62,21 @@ namespace Ahoy.Island
                     soldier.gameObject.SetActive(false);
                     stack.Push(soldier);
                 }
-                free[entry.def] = stack;
             }
+            foreach (Stack<AllySoldier> stack in free.Values) Shuffle(stack);
+        }
+
+        // Designs were pushed one after another; shuffled once so every spawn draws a mix.
+        static void Shuffle(Stack<AllySoldier> stack)
+        {
+            AllySoldier[] items = stack.ToArray();
+            for (int i = items.Length - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                (items[i], items[j]) = (items[j], items[i]);
+            }
+            stack.Clear();
+            for (int i = 0; i < items.Length; i++) stack.Push(items[i]);
         }
 
         // ── ISpawnService ────────────────────────────────────────────────────────────
@@ -99,6 +114,7 @@ namespace Ahoy.Island
         void Update()
         {
             if (activeCount == 0) return;
+            Morale = BattleContext.Progress.Morale01;
             float dt = Time.deltaTime;
             float now = Time.time;
             int frame = Time.frameCount;
@@ -118,6 +134,7 @@ namespace Ahoy.Island
                     soldier.Glide(dt, frame);
                     continue;
                 }
+                soldier.SetLod(flatSqr, balance);
                 float step = dt + soldier.SavedTime;
                 soldier.SavedTime = 0f;
                 soldier.Tick(step, dt, now, frame);

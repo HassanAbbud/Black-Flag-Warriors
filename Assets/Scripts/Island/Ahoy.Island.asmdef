@@ -2,7 +2,8 @@
     "name": "Ahoy.Island",
     "rootNamespace": "Ahoy.Island",
     "references": [
-        "Ahoy.Core"
+        "Ahoy.Core",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

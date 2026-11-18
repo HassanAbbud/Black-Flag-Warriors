@@ -1,6 +1,6 @@
 namespace Ahoy.Core
 {
-    // Keep: a small watchtower post, quick to take; once the village holds it, it sends soldiers.
+    // Keep: a watchtower, Hyrule Warriors' outpost: quick to take by beating its captain; then it sends soldiers.
     public enum LocationKind { Village, Portal, SeaPortal, Stronghold, Outpost, FinalBreach, Keep }
 
     // One battle location as the HUD sees it: a copy, so reading it never changes the simulation.
@@ -41,6 +41,7 @@ namespace Ahoy.Core
         int HeldCount { get; }             // locations held by the village, the village itself excluded
         float Progress01 { get; }          // share of the island won back
         float VillageIntegrity01 { get; }
+        float Morale01 { get; }            // the village's fighting spirit; Zahim's deeds raise it, losses drop it
         int KoCount { get; }
         float BattleSeconds { get; }
         int SeenLocationId { get; }        // -1 when Zahim is at none

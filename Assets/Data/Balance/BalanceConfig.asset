@@ -93,7 +93,7 @@ MonoBehaviour:
   enemyGravity: -25
   enemyGroundedStickSpeed: -2
   crowdMaxAttackersOnPlayer: 3
-  crowdMaxAttackersOnAllies: 30
+  crowdMaxAttackersOnAllies: 80
   crowdAttackStartInterval: 0.5
   crowdAttackStartJitter: 0.3
   crowdTokenHoldSeconds: 2.5

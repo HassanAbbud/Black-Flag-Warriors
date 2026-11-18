@@ -22,6 +22,14 @@ namespace Ahoy.Enemies
         [Tooltip("Units per side that join a front in one burst.")]
         public int frontBurst = 3;
 
+        [Header("Frame rate (R69-R73)")]
+        [Tooltip("Below this frame rate the fronts field fewer units; above it they grow back.")]
+        public float targetFps = 50f;
+        [Tooltip("Smallest share of the front caps kept when the frame rate is low.")]
+        [Range(0.1f, 1f)] public float minCrowdScale = 0.5f;
+        [Tooltip("How fast the share changes, per second.")]
+        public float crowdScaleRate = 0.1f;
+
         [Header("Monsters, by battle minutes")]
         [Tooltip("Multiplies the monsters each front fields.")]
         public AnimationCurve frontMonsterScale = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(30f, 1.4f));

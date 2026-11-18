@@ -27,6 +27,8 @@ namespace Ahoy.Island
         [SerializeField] ScriptableObject[] monsterSpecies;
         [Tooltip("AllySoldierDef assets, one picked at random per spawn. Each needs a pool in the AllyCrowd.")]
         [SerializeField] ScriptableObject[] allySpecies;
+        [Tooltip("Watchtowers only: the captain (a MonsterDef of tier Captain) that holds it; beating it takes the tower.")]
+        [SerializeField] ScriptableObject captainSpecies;
         [Tooltip("Metres around the entry and the post that units appear in.")]
         [SerializeField] float spawnSpread = 7f;
         [Tooltip("Props a unit must not appear inside: trees, rocks, buildings.")]
@@ -41,10 +43,14 @@ namespace Ahoy.Island
         int monsterCount;
         int allyCount;
         Vector3[] roadBack;   // the road walked from the ally end
+        IUnit captain;
         float nextMonsterAt;
         float nextAllyAt;
 
         public BattleLocation Location => location;
+        internal Vector3[] Road => road;
+        internal Vector3 EntryPosition => monsterEntry.position;
+        internal Vector3 PostPosition => allyPost.position;
         public bool Active { get; private set; }
         public int FieldMonsters => monsterCount;
         public int FieldAllies => allyCount;
@@ -78,6 +84,15 @@ namespace Ahoy.Island
                 nextAllyAt = now + pacing.FrontAllyInterval;
                 Spawn(Faction.Village, allySpecies, allyPost, roadBack, allies, ref allyCount, allyWant, pacing.FrontBurst);
             }
+        }
+
+        // Hyrule Warriors outposts: the captain holds the tower, one at a time; a new one replaces a captain a soldier killed.
+        internal void CallCaptain()
+        {
+            if (captainSpecies == null || (captain != null && captain.IsAlive && !(captain is Component c && !c.gameObject.activeInHierarchy))) return;
+            if (!TryClearPoint(monsterEntry.position, out Vector3 position)) return;
+            captain = BattleContext.Spawner(Faction.Monsters).SpawnCrowd(captainSpecies, position, monsterEntry.rotation, location.LocationId);
+            if (captain != null) Debug.Log($"{location.DisplayName}: the keep captain is out", this);
         }
 
         // The breach locked again or the battle ended: everyone still standing goes back to the

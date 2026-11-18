@@ -20,5 +20,6 @@ namespace Ahoy.Core
         float FrontMonsterInterval { get; }   // seconds between two spawn bursts per front
         float FrontAllyInterval { get; }
         int FrontBurst { get; }               // units per side per burst
+        float CrowdScale { get; }             // 0..1 share of the crowd the frame rate allows right now (R69)
     }
 }

@@ -127,6 +127,7 @@ namespace Ahoy.Core
             public int HeldCount => 0;
             public float Progress01 => 0f;
             public float VillageIntegrity01 => 1f;
+            public float Morale01 => 0.5f;
             public int KoCount => 0;
             public float BattleSeconds => 0f;
             public int SeenLocationId => -1;
@@ -148,6 +149,7 @@ namespace Ahoy.Core
             public float FrontMonsterInterval => 1f;
             public float FrontAllyInterval => 1f;
             public int FrontBurst => 0;
+            public float CrowdScale => 1f;
         }
 
         // Stub: no pool for this faction in this scene.

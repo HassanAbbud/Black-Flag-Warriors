@@ -56,6 +56,8 @@ namespace Ahoy.Enemies
 
         internal int ActiveIndex = -1;
         internal float SavedTime;               // R70: time owed while thinking every few frames
+        SkinnedMeshRenderer[] skins;
+        int lod;
         internal IUnit LastAttacker;            // who landed the last hit; null when it was Zahim
         Vector3 lastVelocity;                   // R70: carried on the frames it does not think
         Vector3[] route;                        // a battle front's road; null when it just stands guard
@@ -82,6 +84,23 @@ namespace Ahoy.Enemies
             manager = owner;
             balance = config;
             playerTarget = player;
+            skins = GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            lod = -1;
+        }
+
+        // R71, Hyrule Warriors style: shadows only up close, lighter skinning further out.
+        // Changes the renderers only when the band changes.
+        internal void SetLod(float flatSqr, BalanceConfig config)
+        {
+            int band = flatSqr < config.crowdShadowRadius * config.crowdShadowRadius ? 0
+                     : flatSqr < config.crowdLowSkinRadius * config.crowdLowSkinRadius ? 1 : 2;
+            if (band == lod) return;
+            lod = band;
+            for (int i = 0; i < skins.Length; i++)
+            {
+                skins[i].shadowCastingMode = band == 0 ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                skins[i].quality = band == 0 ? SkinQuality.Auto : band == 1 ? SkinQuality.Bone2 : SkinQuality.Bone1;
+            }
         }
 
         internal void Activate(MonsterDef species, int home, Vector3 position, Quaternion rotation, int slot)
