@@ -158,8 +158,10 @@ namespace Ahoy.Enemies
         // The single place state changes; breakpoint here.
         void SetState(WeakPointState next)
         {
+            bool changed = next != State;
             State = next;
             stateTime = 0f;
+            if (changed) BattleEvents.RaiseWeakPointChanged(boss, next);   // battle-wide news, e.g. the tutorial
         }
     }
 }

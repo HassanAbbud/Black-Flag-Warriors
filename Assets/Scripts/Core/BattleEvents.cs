@@ -19,12 +19,16 @@ namespace Ahoy.Core
         public static event Action<int, float> PortalMeterChanged;
         // The battle is over: true when won, false when the village fell.
         public static event Action<bool> BattleEnded;
+        // A named unit's weak point changed state (unit, new state). Telegraphing and Vulnerable
+        // are when the red diamond shows (R20). Bosses are spawned, so nobody can wire to them.
+        public static event Action<IUnit, WeakPointState> WeakPointChanged;
 
         public static void RaiseUnitKilled(IUnit unit, IUnit killer) => UnitKilled?.Invoke(unit, killer);
         public static void RaiseLocationChanged(int locationId, Faction holder) => LocationChanged?.Invoke(locationId, holder);
         public static void RaisePortalPhaseChanged(int locationId, PortalPhase phase) => PortalPhaseChanged?.Invoke(locationId, phase);
         public static void RaisePortalMeterChanged(int locationId, float meter) => PortalMeterChanged?.Invoke(locationId, meter);
         public static void RaiseBattleEnded(bool won) => BattleEnded?.Invoke(won);
+        public static void RaiseWeakPointChanged(IUnit unit, WeakPointState state) => WeakPointChanged?.Invoke(unit, state);
 
         // The project enters Play Mode without a domain reload, so statics outlive the session.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -35,6 +39,7 @@ namespace Ahoy.Core
             PortalPhaseChanged = null;
             PortalMeterChanged = null;
             BattleEnded = null;
+            WeakPointChanged = null;
         }
     }
 }
