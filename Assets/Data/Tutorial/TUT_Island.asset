@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3c321838a61f546a4acd9a80688c65, type: 3}
+  m_Name: TUT_Island
+  m_EditorClassIdentifier: Ahoy.Presentation::Ahoy.Presentation.TutorialDef
+  pages:
+  - trigger: 0
+    title: The Tide-Born Awakens
+    body: "The sea has carried you back, Zahim, to an island torn open by the portals of the Deep. Before you raise your blade against them, remember the old ways of war.\n\n<color=#FFD27A><b>Walk the land</b></color> \u2014 W A S D or the Arrow Keys  \xB7  Left Stick\n<color=#FFD27A><b>Swift strike</b></color> \u2014 Left Mouse or J  \xB7  Gamepad X\n<color=#FFD27A><b>Mighty strike</b></color> \u2014 Right Mouse or K  \xB7  Gamepad Y\nWeave mighty strikes into a chain of swift ones, and each link of the chain births a different finishing blow.\n<color=#FFD27A><b>Dodge</b></color> \u2014 Space  \xB7  Gamepad A\nIn the first heartbeat of a roll no claw or blade can touch you. Keep Dodge held as you rise and the roll becomes a sprint.\n\n<color=#FFD27A><b>The wind at your back</b></color> \u2014 run without pause and your stride breaks into a sprint on its own. Halt, and the wind falls still."
+  - trigger: 0
+    title: The Village's Plea
+    body: 'The village yet stands, but barely. One of its people waits for you among the huts, bearing the island''s plea.
+
+
+      <color=#FFD27A><b>Walk up to the villager</b></color> to hear their call and take up the quest. Its charge will be carved upon the quest scroll at the edge of your sight.'
+  - trigger: 1
+    title: Wounds in the World
+    body: "Swirling portals scar this island. Each lies quiet until you draw near \u2014 then it wakes, and the spawn of the Deep pours forth, again and again, for as long as it stays open.\n\nYou do not stand alone. The village sends its warriors marching from the lands it holds, to clash with the horde beside you.\n\nEvery monster born of a portal that you fell <color=#FFD27A><b>fills that portal's meter</b></color>. When the meter is full, the portal's <color=#FFD27A><b>guardian</b></color> tears its way into the world."
+  - trigger: 2
+    title: The Guardian Rises
+    body: "The portal shudders, and its guardian steps through. Its kin will keep spilling out while it lives.\n\n<color=#FFD27A><b>Slay the guardian and the portal will close</b></color>, and every last creature it summoned will fade back into the dark.\n\nWatch it well: each blow it readies is foretold. It follows you as it gathers its strength, then commits \u2014 dodge late, and let the strike fall upon empty air."
+  - trigger: 3
+    title: The Crimson Sigil
+    body: "A <color=#FFD27A><b>red diamond</b></color> burns above the guardian. It shows while the beast winds up certain attacks, and while it stands open after finishing a combo.\n\n<color=#FFD27A><b>Strike it now!</b></color> Your blow breaks the attack, and the sigil opens into a gauge. For a few precious breaths the guardian reels, staggered and helpless.\n\nEvery one of your strikes drains the gauge. Empty it, and your next blow is the <color=#FFD27A><b>Weak Point Smash</b></color> \u2014 enough to fell a guardian outright, and to cleave a great share from a giant.\n\nIf the moment passes, the sigil remembers your wounds for a short while. Only your hand can drain it; your allies cannot."
+  - trigger: 4
+    title: The Portal Is Sealed
+    body: 'The guardian falls, and the portal dims to grey. <color=#FFD27A><b>This camp is yours now</b></color>, held in the name of the village.
+
+
+      But the island is not yet saved. Other portals still bleed monsters into the land, and a camp left undefended can be overrun and torn open once more.
+
+
+      Journey across the island, <color=#FFD27A><b>seal every portal</b></color>, and break the Deep''s grip on these shores for good.'
+  continuePrompt: Press any button to continue
+  minShowSeconds: 0.6
+  fadeInSeconds: 0.25
