@@ -1,0 +1,17 @@
+{
+    "name": "Ahoy.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:29d5a27d9fc3c41e097187dd1f3502a8",
+        "GUID:54a121679c2f7fe4ea867c9ea6a9e7b2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
