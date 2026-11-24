@@ -220,7 +220,8 @@ namespace Ahoy.Enemies
             float dt = Time.deltaTime;
             float now = Time.time;
             Vector3 playerPosition = playerMotor.Position;
-            bool playerAlive = !playerMotor.IsDead;
+            // An inactive player is at sea in the ship (R39): absent, not a target.
+            bool playerAlive = !playerMotor.IsDead && player.activeInHierarchy;
             int frame = Time.frameCount;
             float fullSimSqr = balance.crowdFullSimRadius * balance.crowdFullSimRadius;
             int farInterval = Mathf.Max(1, balance.crowdFarTickInterval);
