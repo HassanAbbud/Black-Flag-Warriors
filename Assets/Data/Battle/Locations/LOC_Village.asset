@@ -22,9 +22,9 @@ MonoBehaviour:
   holdStrength: 120
   marchRate: 0
   captureStrength: 1
-  allyRegen: 1
-  maxAllyStrength: 80
+  allyRegen: 1.5
+  maxAllyStrength: 140
   garrisonOnCapture: 0
-  allyHold: 40
-  allyMarchRate: 0.6
+  allyHold: 60
+  allyMarchRate: 1
   seenRadius: 90

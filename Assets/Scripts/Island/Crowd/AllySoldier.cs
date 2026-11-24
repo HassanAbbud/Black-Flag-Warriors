@@ -10,10 +10,20 @@ namespace Ahoy.Island
     //   Chase  : runs at the nearest monster
     //   Swing  : stops, swings, lands the blow at hitAt
     //   Stagger: hit; flinches or slides back
-    //   Dead   : lies there for corpseSeconds, then goes back to the pool
-    // shortcut: placeholder capsule with no animation, until a soldier model and animator are ready.
+    //   Dead   : plays its death, then goes back to the pool
     public sealed class AllySoldier : MonoBehaviour, IUnit, ITargetable, IRouteFollower
     {
+        static readonly int SpeedId = Animator.StringToHash("Speed");
+        static readonly int LocomotionId = Animator.StringToHash("Locomotion");
+        static readonly int AttackId = Animator.StringToHash("Attack");
+        static readonly int HitId = Animator.StringToHash("Hit");
+        static readonly int DeathId = Animator.StringToHash("Death");
+        const float CrossFade = 0.1f;
+        const float SpeedDamp = 0.1f;
+
+        [Tooltip("States: Locomotion (blend on Speed), Attack, Hit, Death.")]
+        [SerializeField] Animator animator;
+
         const float RouteReach = 1.5f;
         const float RouteSpread = 4f;
         enum SoldierState { Hold, Chase, Swing, Stagger, Dead }
@@ -27,6 +37,7 @@ namespace Ahoy.Island
         Vector3 postOffset;
         float speedScale;
         float groundY;
+        float groundOffset;     // standing on a rock or bridge above the terrain
 
         SoldierState state;
         float stateTime;
@@ -44,6 +55,9 @@ namespace Ahoy.Island
 
         internal int ActiveIndex = -1;
         internal float SavedTime;
+        SkinnedMeshRenderer[] skins;
+        int lod;
+        float animSaved;        // R71: time owed to a hand-stepped animator
         internal int TickSlot => slot;
         internal AllySoldierDef Def => def;
 
@@ -61,6 +75,35 @@ namespace Ahoy.Island
         {
             crowd = owner;
             balance = config;
+            skins = GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            lod = -1;
+        }
+
+        // R71, Hyrule Warriors style: shadows only up close, lighter skinning further out.
+        // R71: half-rate animation. Called every frame; only acts while the animator is hand-stepped,
+        // and skips units nobody can see.
+        internal void StepAnimation(float dt, int frame)
+        {
+            if (animator == null || animator.enabled) return;
+            animSaved = Mathf.Min(animSaved + dt, 0.5f);
+            if (((frame + TickSlot) & 1) != 0 || skins.Length == 0 || !skins[0].isVisible) return;
+            animator.Update(animSaved);
+            animSaved = 0f;
+        }
+
+        internal void SetLod(float flatSqr, BalanceConfig config)
+        {
+            int band = flatSqr < config.crowdShadowRadius * config.crowdShadowRadius ? 0
+                     : flatSqr < config.crowdLowSkinRadius * config.crowdLowSkinRadius ? 1 : 2;
+            // R71: far units' animators are stepped by hand, every other frame (StepAnimation).
+            if (animator != null) animator.enabled = flatSqr < config.crowdHalfAnimRadius * config.crowdHalfAnimRadius;
+            if (band == lod) return;
+            lod = band;
+            for (int i = 0; i < skins.Length; i++)
+            {
+                skins[i].shadowCastingMode = band == 0 ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                skins[i].quality = band == 0 ? SkinQuality.Auto : band == 1 ? SkinQuality.Bone2 : SkinQuality.Bone1;
+            }
         }
 
         internal void Activate(AllySoldierDef species, int home, Vector3 position, Quaternion rotation, int spawnSlot)
@@ -72,9 +115,11 @@ namespace Ahoy.Island
             Vector2 spread = Random.insideUnitCircle * def.postSpread;
             postOffset = new Vector3(spread.x, 0f, spread.y);
             speedScale = 1f + (Random.value * 2f - 1f) * def.speedJitter;
-            groundY = position.y;
+            ProbeGround(position);
             SavedTime = 0f;
-            transform.SetPositionAndRotation(position, rotation);
+            lod = -1;
+            if (animator != null) animator.enabled = true;
+            transform.SetPositionAndRotation(new Vector3(position.x, groundY, position.z), rotation);
             gameObject.SetActive(true);   // OnEnable resets the rest
         }
 
@@ -93,6 +138,7 @@ namespace Ahoy.Island
             nextRetargetAt = Time.time + Random.value * def.retargetInterval;
             nextSwingAt = Time.time + Random.value * def.attackCooldown;
             BattleContext.Village.Add(this);
+            Play(LocomotionId);
         }
 
         void OnDisable() => BattleContext.Village.Remove(this);
@@ -110,7 +156,7 @@ namespace Ahoy.Island
         public void TakeDamage(in DamageInfo info)
         {
             if (state == SoldierState.Dead) return;
-            health -= info.Amount;
+            health -= info.Amount / Power;
             lastAttacker = info.Source;
             if (health <= 0f)
             {
@@ -126,6 +172,7 @@ namespace Ahoy.Island
             float seconds = flinch ? def.flinchSeconds : def.knockbackSeconds;
             slideVelocity = flinch ? Vector3.zero : away * (def.knockbackDistance / Mathf.Max(0.05f, seconds));
             SetState(SoldierState.Stagger);
+            Play(HitId);
         }
 
         void Die()
@@ -133,6 +180,7 @@ namespace Ahoy.Island
             health = 0f;
             SetState(SoldierState.Dead);
             BattleContext.Village.Remove(this);   // monsters stop picking it at once
+            Play(DeathId);
             BattleEvents.RaiseUnitKilled(this, lastAttacker);   // R64: comes off its location's ally strength
         }
 
@@ -178,10 +226,12 @@ namespace Ahoy.Island
                     {
                         slideVelocity = Vector3.zero;
                         SetState(SoldierState.Chase);
+                        Play(LocomotionId);
                     }
                     break;
             }
 
+            if (animator != null) animator.SetFloat(SpeedId, new Vector3(velocity.x, 0f, velocity.z).magnitude, SpeedDamp, dt);
             lastVelocity = velocity;
             Move(velocity, moveDt, frame);
         }
@@ -197,6 +247,7 @@ namespace Ahoy.Island
         {
             Vector3 position = transform.position + velocity * dt;
             if ((frame + slot) % Mathf.Max(1, balance.crowdGroundProbeInterval) == 0) ProbeGround(position);
+            else groundY = CrowdGround.Floor(position) + groundOffset;   // the terrain every frame, so slopes never leave it hanging
             position.y = Mathf.MoveTowards(position.y, groundY, balance.crowdGroundFollowSpeed * dt);
             transform.position = position;
         }
@@ -258,6 +309,7 @@ namespace Ahoy.Island
             SetState(SoldierState.Swing);
             blowLanded = false;
             nextSwingAt = now + def.attackCooldown * (1f + (Random.value * 2f - 1f) * def.cooldownJitter);
+            Play(AttackId);
         }
 
         void Strike()
@@ -265,9 +317,11 @@ namespace Ahoy.Island
             Vector3 to = targetBody.position - transform.position;
             to.y = 0f;
             if (to.magnitude > def.attackRange + balance.enemyHitPadding + def.bodyRadius) return;
-            var info = new DamageInfo(def.damage, transform.position, def.reaction, 0, def.weakPointDrain, this);
+            var info = new DamageInfo(def.damage * Power, transform.position, def.reaction, 0, def.weakPointDrain, this);
             target.TakeDamage(in info);
         }
+
+        float Power => Mathf.Lerp(def.powerAtLowMorale, def.powerAtHighMorale, crowd.Morale);
 
         void Turn(Vector3 direction, float dt)
         {
@@ -278,16 +332,21 @@ namespace Ahoy.Island
 
         void SetState(SoldierState next)
         {
+            bool wasMoving = state == SoldierState.Hold || state == SoldierState.Chase;
             state = next;
             stateTime = 0f;
+            if ((next == SoldierState.Hold || next == SoldierState.Chase) && !wasMoving) Play(LocomotionId);
+        }
+
+        void Play(int stateHash)
+        {
+            if (animator != null && animator.gameObject.activeInHierarchy) animator.CrossFadeInFixedTime(stateHash, CrossFade);
         }
 
         void ProbeGround(Vector3 position)
         {
-            Vector3 origin = position + Vector3.up * balance.crowdGroundProbeUp;
-            float reach = balance.crowdGroundProbeUp + balance.crowdGroundProbeDown;
-            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, reach, balance.groundMask, QueryTriggerInteraction.Ignore))
-                groundY = hit.point.y;
+            groundOffset = CrowdGround.OffsetAboveFloor(position, balance);
+            groundY = CrowdGround.Floor(position) + groundOffset;
         }
     }
 }

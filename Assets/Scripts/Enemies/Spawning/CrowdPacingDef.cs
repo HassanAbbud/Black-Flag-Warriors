@@ -16,11 +16,21 @@ namespace Ahoy.Enemies
         [Tooltip("Monsters each front fields, by rank. Every front on the island gets a share, so the whole map fights at once; fronts past the end of the list field none.")]
         public int[] frontMonsterCaps = { 45, 32, 24, 20, 16, 14, 12, 10, 10, 10, 8, 8 };
         [Tooltip("Allies each front fields, by rank.")]
-        public int[] frontAllyCaps = { 22, 16, 12, 10, 10, 8, 8, 6, 6, 6, 6, 6 };
+        public int[] frontAllyCaps = { 35, 25, 18, 14, 12, 10, 8, 8, 6, 6, 6, 6 };
         [Tooltip("Monster slots kept free for the portal camps and their guardians' fights.")]
         public int campReserve = 40;
         [Tooltip("Units per side that join a front in one burst.")]
         public int frontBurst = 3;
+
+        [Header("Frame rate (R69-R73)")]
+        [Tooltip("Below this frame rate the fronts field fewer units; above it they grow back.")]
+        public float targetFps = 50f;
+        [Tooltip("Smallest share of the front caps kept when the frame rate is low.")]
+        [Range(0.1f, 1f)] public float minCrowdScale = 0.5f;
+        [Tooltip("How fast the share changes, per second.")]
+        public float crowdScaleRate = 0.1f;
+        [Tooltip("Most of the crowd each graphics quality level allows (Project Settings > Quality order). Missing levels allow all.")]
+        public float[] crowdScaleByQuality = { 0.5f, 1f };
 
         [Header("Monsters, by battle minutes")]
         [Tooltip("Multiplies the monsters each front fields.")]

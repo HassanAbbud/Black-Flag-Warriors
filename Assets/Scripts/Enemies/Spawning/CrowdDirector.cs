@@ -17,6 +17,9 @@ namespace Ahoy.Enemies
         readonly int[] monsterCaps = new int[MaxRanks];
         readonly int[] allyCaps = new int[MaxRanks];
         float nextRefreshAt;
+        float crowdScale = 1f;   // R69: the fronts shrink while the frame rate is under target
+
+        public float CrowdScale => crowdScale;
 
         public float MonsterIntervalScale { get; private set; } = 1f;
         public float MonsterCapScale { get; private set; } = 1f;
@@ -42,6 +45,12 @@ namespace Ahoy.Enemies
         {
             if (Time.time < nextRefreshAt) return;
             nextRefreshAt = Time.time + def.refreshSeconds;
+            float fps = 1f / Mathf.Max(0.0001f, Time.smoothDeltaTime);
+            // Weaker PCs run a lower quality level, which caps the crowd up front; the frame rate does the rest.
+            int quality = QualitySettings.GetQualityLevel();
+            float qualityCap = def.crowdScaleByQuality != null && quality < def.crowdScaleByQuality.Length ? def.crowdScaleByQuality[quality] : 1f;
+            float want = Mathf.Min(fps < def.targetFps ? def.minCrowdScale : 1f, qualityCap);
+            crowdScale = Mathf.MoveTowards(crowdScale, want, def.crowdScaleRate * def.refreshSeconds);
             Refresh();
         }
 
@@ -64,8 +73,8 @@ namespace Ahoy.Enemies
             FrontAllyInterval = rallying ? allyInterval * def.rallyIntervalScale : allyInterval;
             FrontBurst = def.frontBurst;
 
-            FillCaps(monsterCaps, def.frontMonsterCaps, def.frontMonsterScale.Evaluate(minutes), MonsterBudget());
-            FillCaps(allyCaps, def.frontAllyCaps, def.frontAllyScale.Evaluate(progress), AllyBudget());
+            FillCaps(monsterCaps, def.frontMonsterCaps, def.frontMonsterScale.Evaluate(minutes) * crowdScale, MonsterBudget());
+            FillCaps(allyCaps, def.frontAllyCaps, def.frontAllyScale.Evaluate(progress) * crowdScale, AllyBudget());
         }
 
         // R69: whatever the curves ask for, the fronts together never go past the pools.

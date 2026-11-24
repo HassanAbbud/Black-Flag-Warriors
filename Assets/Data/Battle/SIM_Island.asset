@@ -18,4 +18,9 @@ MonoBehaviour:
   villageIntegrity: 100
   integrityDamage: 0.03
   loseWhenVillageFalls: 1
+  startMorale: 0.4
+  moralePerKo: 0.004
+  moralePerCapture: 0.08
+  moralePerLoss: 0.1
+  moraleDrift: 0.001
   sealedForFinalBreach: 3

@@ -43,6 +43,12 @@ namespace Ahoy.Island
         public float attackCooldown = 1.4f;
         [Range(0f, 1f)] public float cooldownJitter = 0.4f;
 
+        [Header("Morale")]
+        [Tooltip("Damage dealt is multiplied, and damage taken divided, by this at zero morale...")]
+        public float powerAtLowMorale = 0.6f;
+        [Tooltip("...and by this at full morale.")]
+        public float powerAtHighMorale = 1.5f;
+
         [Header("Holding ground")]
         [Tooltip("Metres around its post it spreads out to while nothing is in reach.")]
         public float postSpread = 6f;

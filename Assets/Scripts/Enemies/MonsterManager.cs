@@ -98,8 +98,14 @@ namespace Ahoy.Enemies
             for (int i = 0; i < pools.Length; i++)
             {
                 PoolEntry entry = pools[i];
+                if (entry.def == null || entry.prefab == null)
+                {
+                    Debug.LogError($"{name}: pool entry {i} has no def or prefab; skipped", this);
+                    continue;
+                }
                 int count = Mathf.CeilToInt(balance.crowdCapacity * entry.share);
-                var stack = new Stack<Monster>(count);
+                // Several designs of one species share its stack, mixed.
+                if (!free.TryGetValue(entry.def, out Stack<Monster> stack)) free[entry.def] = stack = new Stack<Monster>(count);
                 for (int n = 0; n < count; n++)
                 {
                     Monster monster = Instantiate(entry.prefab, transform);
@@ -111,8 +117,21 @@ namespace Ahoy.Enemies
                     monster.gameObject.SetActive(false);
                     stack.Push(monster);
                 }
-                free[entry.def] = stack;
             }
+            foreach (Stack<Monster> stack in free.Values) Shuffle(stack);
+        }
+
+        // Designs were pushed one after another; shuffled once so every spawn draws a mix.
+        static void Shuffle(Stack<Monster> stack)
+        {
+            Monster[] items = stack.ToArray();
+            for (int i = items.Length - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                (items[i], items[j]) = (items[j], items[i]);
+            }
+            stack.Clear();
+            for (int i = 0; i < items.Length; i++) stack.Push(items[i]);
         }
 
         // Returns null when the crowd is at capacity or the species' pool is dry. Callers
@@ -212,6 +231,7 @@ namespace Ahoy.Enemies
             for (int i = activeCount - 1; i >= 0; i--)
             {
                 Monster monster = active[i];
+                monster.StepAnimation(dt, frame);
                 Vector3 offset = monster.transform.position - playerPosition;
                 float flatSqr = offset.x * offset.x + offset.z * offset.z;
                 if (flatSqr > fullSimSqr && (frame + monster.TickSlot) % farInterval != 0)
@@ -220,6 +240,7 @@ namespace Ahoy.Enemies
                     monster.Glide(dt, frame);
                     continue;
                 }
+                monster.SetLod(flatSqr, balance);
                 float step = dt + monster.SavedTime;
                 monster.SavedTime = 0f;
                 monster.Tick(step, dt, now, playerPosition, playerAlive, frame);

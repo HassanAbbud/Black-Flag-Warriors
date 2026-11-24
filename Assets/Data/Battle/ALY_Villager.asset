@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.AllySoldierDef
   tier: 0
   strength: 1
-  maxHealth: 80
+  maxHealth: 50
   moveSpeed: 4
   turnSpeed: 540
   speedJitter: 0.15
@@ -22,13 +22,15 @@ MonoBehaviour:
   engageRange: 35
   retargetInterval: 0.5
   attackRange: 1.6
-  damage: 14
-  reaction: 1
+  damage: 5
+  reaction: 0
   weakPointDrain: 4
   swingSeconds: 0.9
   hitAt: 0.4
-  attackCooldown: 1.4
+  attackCooldown: 2.6
   cooldownJitter: 0.4
+  powerAtLowMorale: 0.6
+  powerAtHighMorale: 1.5
   postSpread: 6
   flinchSeconds: 0.35
   knockbackSeconds: 0.6

@@ -94,7 +94,7 @@ namespace Ahoy.Presentation
 
             koLabel.SetText("KO  {0:0}", (float)battle.KoCount);
             int seconds = Mathf.FloorToInt(battle.BattleSeconds);
-            timeLabel.SetText("{0:00}:{1:00}", (float)(seconds / 60), (float)(seconds % 60));
+            timeLabel.SetText("Morale {2:0}%   {0:00}:{1:00}", (float)(seconds / 60), (float)(seconds % 60), battle.Morale01 * 100f);
             if (fieldLabel != null)
                 fieldLabel.SetText("Allies {0:0}  vs  Monsters {1:0}", (float)battle.FieldAllies, (float)battle.FieldMonsters);
 
