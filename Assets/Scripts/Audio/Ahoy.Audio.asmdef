@@ -1,0 +1,16 @@
+{
+    "name": "Ahoy.Audio",
+    "rootNamespace": "",
+    "references": [
+        "GUID:29d5a27d9fc3c41e097187dd1f3502a8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
