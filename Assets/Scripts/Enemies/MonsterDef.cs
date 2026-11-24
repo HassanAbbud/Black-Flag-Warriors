@@ -9,6 +9,10 @@ namespace Ahoy.Enemies
     [CreateAssetMenu(menuName = "Ahoy/Monster Def", fileName = "MON_")]
     public class MonsterDef : ScriptableObject
     {
+        [Header("Presence")]
+        [Tooltip("Seconds it stands and roars (animator state Roar) when it comes out; captains. 0: none.")]
+        public float roarSeconds;
+
         [Header("Identity")]
         public Tier tier = Tier.Scuttler;
         [Tooltip("R64: the unseen-battle value of one unit.")]

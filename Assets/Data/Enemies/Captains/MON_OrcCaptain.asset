@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d8810a6ced2704b866e573e830c3e1, type: 3}
   m_Name: MON_OrcCaptain
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.MonsterDef
+  roarSeconds: 1.6
   tier: 2
   strength: 5
   maxHealth: 450

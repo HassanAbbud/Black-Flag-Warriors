@@ -23,7 +23,7 @@ namespace Ahoy.Enemies
     [RequireComponent(typeof(CharacterController))]
     public sealed class BossController : MonoBehaviour, IUnit
     {
-        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Punish, Staggered, Downed, Dead }
+        public enum BossState { Idle, Chase, Telegraph, Strike, Recover, Punish, Staggered, Downed, Dead, Roar }
 
         const int MaxStruckPerAttack = 16;
 
@@ -66,6 +66,9 @@ namespace Ahoy.Enemies
         // Everyone this attack has already hit, so one swing hits each target once.
         readonly IDamageable[] struck = new IDamageable[MaxStruckPerAttack];
         int struckCount;
+        bool hasRoar, hasHit, roared;
+        int fidgets;
+        float nextFlinchAt, nextFidgetAt;
 
         public BossState State => state;
         public BossDef Def => def;
@@ -86,6 +89,9 @@ namespace Ahoy.Enemies
             patternReadyAt = new float[def.patterns != null ? def.patterns.Length : 0];
             WeakPoint = GetComponent<IWeakPoint>();   // null until the weak-point track adds one
             gauge = WeakPoint as WeakPointGauge;
+            hasRoar = HasState(MonsterAnimatorIds.Roar);
+            hasHit = HasState(MonsterAnimatorIds.Hit);
+            fidgets = (HasState(MonsterAnimatorIds.Fidget) ? 1 : 0) + (HasState(MonsterAnimatorIds.Fidget2) ? 1 : 0);
             village = BattleContext.Village;
 
             if (player != null)
@@ -149,8 +155,22 @@ namespace Ahoy.Enemies
             // R22: only Zahim's blows drain the gauge; five allies must not empty it for him.
             if (fromZahim) WeakPoint?.Drain(info.WeakPointDrain);
 
-            if (health <= 0f) Die();
+            if (health <= 0f)
+            {
+                Die();
+                return;
+            }
+
+            // A flinch to show the blow landed; it never interrupts an attack or the stagger.
+            bool free = state == BossState.Idle || state == BossState.Chase;
+            if (hasHit && free && def.hitFlinchCooldown > 0f && Time.time >= nextFlinchAt)
+            {
+                nextFlinchAt = Time.time + def.hitFlinchCooldown;
+                EnemyCombat.Play(animator, MonsterAnimatorIds.Hit, def.animationCrossFade);
+            }
         }
+
+        bool HasState(int hash) => animator != null && animator.runtimeAnimatorController != null && animator.HasState(0, hash);
 
         bool IsExposed() =>
             WeakPoint != null &&
@@ -211,7 +231,24 @@ namespace Ahoy.Enemies
             switch (state)
             {
                 case BossState.Idle:
-                    if (playerAlive && distance <= def.aggroRange) SetState(BossState.Chase);
+                    if (playerAlive && distance <= def.aggroRange)
+                    {
+                        // The first time it sees Zahim it roars, a boss-appears moment.
+                        if (!roared && hasRoar && def.roarSeconds > 0f)
+                        {
+                            roared = true;
+                            SetState(BossState.Roar);
+                            stateSeconds = def.roarSeconds;
+                            EnemyCombat.Play(animator, MonsterAnimatorIds.Roar, def.animationCrossFade);
+                        }
+                        else SetState(BossState.Chase);
+                    }
+                    else Fidget(now);
+                    break;
+
+                case BossState.Roar:
+                    EnemyCombat.Turn(transform, direction, def.turnSpeed, dt);
+                    if (stateTime >= stateSeconds) SetState(BossState.Chase);
                     break;
 
                 case BossState.Chase:
@@ -248,6 +285,17 @@ namespace Ahoy.Enemies
             }
 
             Move(velocity, dt);
+        }
+
+        // Now and then while waiting it shifts its weight or looks around.
+        void Fidget(float now)
+        {
+            if (fidgets == 0 || def.fidgetEvery.y <= 0f) return;
+            if (nextFidgetAt <= 0f) nextFidgetAt = now + UnityEngine.Random.Range(def.fidgetEvery.x, def.fidgetEvery.y);
+            if (now < nextFidgetAt) return;
+            nextFidgetAt = now + UnityEngine.Random.Range(def.fidgetEvery.x, def.fidgetEvery.y);
+            int pick = fidgets > 1 && UnityEngine.Random.value < 0.5f ? MonsterAnimatorIds.Fidget2 : MonsterAnimatorIds.Fidget;
+            EnemyCombat.Play(animator, pick, def.animationCrossFade);
         }
 
         Vector3 Chase(float dt, float now, Vector3 direction, float distance, bool playerAlive)
