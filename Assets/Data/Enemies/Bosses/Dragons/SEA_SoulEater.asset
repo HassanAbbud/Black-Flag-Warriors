@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df1c75261f984120b91bafb4800712b, type: 3}
+  m_Name: SEA_SoulEater
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Bosses.SeaDragonDef
+  maxHealth: 6000
+  altitude: 14
+  flySpeed: 9
+  turnSpeed: 90
+  detectRange: 90
+  patrolRadius: 25
+  engageRadius: 35
+  leashRange: 160
+  volleyCooldown: 3.5
+  windUpSeconds: 0.8
+  fanCount: 7
+  fanSpread: 50
+  ringCount: 18
+  fireballSpeed: 22
+  fireballDamage: 60
+  fireballReaction: 2
+  deathSeconds: 4

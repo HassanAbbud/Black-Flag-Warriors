@@ -28,7 +28,7 @@ MonoBehaviour:
   spawnMaxHeightDifference: 5
   spawnAttempts: 6
   spawnDuringBoss: 1
-  bossPrefab: {fileID: 2916672435126449777, guid: 10f18ce214d5a4a1099afb17fcd471e3, type: 3}
+  bossPrefab: {fileID: 3672315200760301477, guid: 656ac92a963f149a9a6eedb774fe8c8b, type: 3}
   bossThreshold: 0.6
   sealedColorA: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   sealedColorB: {r: 0.2, g: 0.2, b: 0.2, a: 1}

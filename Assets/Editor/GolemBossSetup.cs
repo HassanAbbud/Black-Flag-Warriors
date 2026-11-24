@@ -47,7 +47,7 @@ namespace Ahoy.Tools
         const float WindowHeight = 6f;
 
         [MenuItem("Tools/Ahoy/Set Up Golem Boss")]
-        static void Setup()
+        internal static void Setup()
         {
             AnimationClip stunned = AssetDatabase.LoadAssetAtPath<AnimationClip>(StunnedClip);
             var slam = AssetDatabase.LoadAssetAtPath<MonsterAttackDef>(SlamAttack);
@@ -67,6 +67,9 @@ namespace Ahoy.Tools
 
             var serializedDef = new SerializedObject(def);
             serializedDef.FindProperty("staggerClip").objectReferenceValue = stunned;
+            serializedDef.FindProperty("roarSeconds").floatValue = Clip("Victory") != null ? Clip("Victory").length : 0f;
+            serializedDef.FindProperty("hitFlinchCooldown").floatValue = 2f;
+            serializedDef.FindProperty("fidgetEvery").vector2Value = new Vector2(5f, 10f);
             serializedDef.ApplyModifiedPropertiesWithoutUndo();
 
             if (!WirePrefab(controller)) return;
@@ -108,9 +111,23 @@ namespace Ahoy.Tools
             stagger.speedParameterActive = true;
 
             machine.AddState("Death").motion = die;
+            // W7.1 presence: the Victory pose as its entrance roar, GetHit as its flinch.
+            DragonBossSetup.AddPresence(controller, Clip("Victory"), Clip("GetHit"), LookAround(idle), null);
 
             EditorUtility.SetDirty(controller);
             return controller;
+        }
+
+        // The pack has one idle: a 4 s look around, the head and shoulders turning left then right.
+        static AnimationClip LookAround(AnimationClip idle)
+        {
+            const float seconds = 4f;
+            // The Golem is a humanoid rig whose avatar maps only its spine: the whole upper body
+            // twists to look left, then right, carrying the head with it.
+            System.Func<float, float> sway = t => Mathf.Sin(t / seconds * Mathf.PI * 2f) * BossClipBaker.Swell(t, seconds);
+            return BossClipBaker.BakeMuscles(idle, "Assets/Animations/Monsters/Golem_LookAround.anim", seconds,
+                new BossClipBaker.Muscle { name = "Spine Twist Left-Right", add = t => 0.9f * sway(t) },
+                new BossClipBaker.Muscle { name = "Spine Left-Right", add = t => 0.15f * sway(t) });
         }
 
         static AnimatorControllerParameter FloatOne(string name) => new AnimatorControllerParameter
@@ -196,7 +213,7 @@ namespace Ahoy.Tools
 
         // Canvas > Root > (Diamond, Gauge > (Back, Fill, Window)). The view sits on the canvas and
         // hides Root, so it keeps updating while the weak point is hidden.
-        static void BuildHud(Transform boss, float height, Object balance)
+        internal static void BuildHud(Transform boss, float height, Object balance)
         {
             Transform old = boss.Find(HudName);
             if (old != null) Object.DestroyImmediate(old.gameObject, true);

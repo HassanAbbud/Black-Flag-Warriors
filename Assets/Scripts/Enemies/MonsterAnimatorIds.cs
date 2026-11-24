@@ -16,5 +16,10 @@ namespace Ahoy.Enemies
         public static readonly int HitKnockback = Animator.StringToHash("HitKnockback");
         public static readonly int Stagger = Animator.StringToHash("Stagger");
         public static readonly int Death = Animator.StringToHash("Death");
+        // Bosses only, all optional: an entrance roar, a quick hit flinch, and idle fidgets.
+        public static readonly int Roar = Animator.StringToHash("Roar");
+        public static readonly int Hit = Animator.StringToHash("Hit");
+        public static readonly int Fidget = Animator.StringToHash("Fidget");
+        public static readonly int Fidget2 = Animator.StringToHash("Fidget2");
     }
 }

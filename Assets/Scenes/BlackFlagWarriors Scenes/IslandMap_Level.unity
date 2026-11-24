@@ -13774,6 +13774,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8075895503936385206, guid: d85b0b99ba2541fc8d1d67b661fcae64, type: 3}
   m_PrefabInstance: {fileID: 85682784}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &85993119
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 630441728}
+    m_Modifications:
+    - target: {fileID: 110821827333862769, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_Name
+      value: Warship_SeaPortal_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -392
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+--- !u!114 &85993120 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1149657598382771007, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+  m_PrefabInstance: {fileID: 85993119}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cb734ab50848b3ae3d1c9426c94aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.EnemyShipController
+--- !u!4 &85993121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+  m_PrefabInstance: {fileID: 85993119}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &86467339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85560,6 +85633,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3019166380638683884, guid: c4e94b00b5fc406b9a10eda663aa7809, type: 3}
   m_PrefabInstance: {fileID: 540702152}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &540979736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 540979737}
+  - component: {fileID: 540979738}
+  m_Layer: 0
+  m_Name: Guardian_8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &540979737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540979736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 630441728}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &540979738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540979736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc3624dcff9b40c68a8d458ecd3881d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.SeaPortalGuardian
+  locationId: 8
+  guardian: {fileID: 744784288}
 --- !u!1001 &541155599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102885,6 +103004,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7042679658888533827, guid: b34fed6350bd42809df177886ae6e979, type: 3}
   m_PrefabInstance: {fileID: 630060561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &630441727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 630441728}
+  m_Layer: 0
+  m_Name: SeaGuardians
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &630441728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630441727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1151971260}
+  - {fileID: 751728804}
+  - {fileID: 85993121}
+  - {fileID: 685680634}
+  - {fileID: 744784289}
+  - {fileID: 540979737}
+  m_Father: {fileID: 1643670951}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &630797654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109929,6 +110085,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4331456016709210926, guid: 02ef8db388f544d6ac807b67758063ee, type: 3}
   m_PrefabInstance: {fileID: 685670053}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &685680633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 685680634}
+  - component: {fileID: 685680635}
+  m_Layer: 0
+  m_Name: Guardian_5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &685680634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685680633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 630441728}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &685680635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685680633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc3624dcff9b40c68a8d458ecd3881d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.SeaPortalGuardian
+  locationId: 5
+  guardian: {fileID: 85993120}
 --- !u!1001 &686100839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -119601,6 +119803,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8075895503936385206, guid: d85b0b99ba2541fc8d1d67b661fcae64, type: 3}
   m_PrefabInstance: {fileID: 744465886}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &744784287
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 630441728}
+    m_Modifications:
+    - target: {fileID: 6812582155689570496, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_Name
+      value: SeaDragon_SeaPortal_8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 242
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+--- !u!114 &744784288 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1017417731096993819, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+  m_PrefabInstance: {fileID: 744784287}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0e0f3d6ca9042c9b3598a081b6d30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Bosses.SeaDragonBoss
+--- !u!4 &744784289 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8762991200430416802, guid: e68eb482e12d2495ab458f5297a1d39c, type: 3}
+  m_PrefabInstance: {fileID: 744784287}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &745153310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120728,6 +121003,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7042679658888533827, guid: b34fed6350bd42809df177886ae6e979, type: 3}
   m_PrefabInstance: {fileID: 751555578}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &751728803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751728804}
+  - component: {fileID: 751728805}
+  m_Layer: 0
+  m_Name: Guardian_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &751728804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751728803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 630441728}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &751728805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751728803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc3624dcff9b40c68a8d458ecd3881d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Ahoy.Island::Ahoy.Island.SeaPortalGuardian
+  locationId: 2
+  guardian: {fileID: 1151971259}
 --- !u!1001 &751993552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184467,6 +184788,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 917ff4d24e124413b9e6e05c83ddfc57, type: 3}
+--- !u!1001 &1151971258
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 630441728}
+    m_Modifications:
+    - target: {fileID: 110821827333862769, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_Name
+      value: Warship_SeaPortal_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+--- !u!114 &1151971259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1149657598382771007, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+  m_PrefabInstance: {fileID: 1151971258}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cb734ab50848b3ae3d1c9426c94aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ahoy.Ships.EnemyShipController
+--- !u!4 &1151971260 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 775295825070288843, guid: da32eecb52c0841a9928f54b179b6903, type: 3}
+  m_PrefabInstance: {fileID: 1151971258}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1152727156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -262636,6 +263030,7 @@ Transform:
   - {fileID: 381378213}
   - {fileID: 150343831}
   - {fileID: 1311619711}
+  - {fileID: 630441728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1644703991

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f081833279c7a54791c1d94adfb9ad5, type: 3}
   m_Name: MON_Golem
   m_EditorClassIdentifier: Ahoy.Enemies::Ahoy.Enemies.BossDef
+  roarSeconds: 2.6666667
   tier: 3
   strength: 1
   maxHealth: 2000
@@ -39,3 +40,6 @@ MonoBehaviour:
   counterTool: 0
   downedSeconds: 2.5
   staggerClip: {fileID: 7400000, guid: 8ffbbbd3726b4bcd9f261f1943b30134, type: 2}
+  roarSeconds: 2.6666667
+  hitFlinchCooldown: 2
+  fidgetEvery: {x: 5, y: 10}

@@ -27,5 +27,13 @@ namespace Ahoy.Enemies
         [Tooltip("The clip on the animator's Stagger state (Golem_Stunned). Set, it is played once, slowed " +
                  "to last the whole stun, through the StunSpeed parameter. Empty, Stagger plays at its own speed.")]
         public AnimationClip staggerClip;
+
+        [Header("Presence (each needs its animator state; 0 turns it off)")]
+        [Tooltip("Seconds of the entrance roar (state Roar) the first time it sees Zahim.")]
+        public float roarSeconds;
+        [Tooltip("Least seconds between two hit flinches (state Hit) while it is not attacking.")]
+        public float hitFlinchCooldown;
+        [Tooltip("Seconds between idle fidgets (states Fidget, Fidget2) while it waits.")]
+        public Vector2 fidgetEvery;
     }
 }

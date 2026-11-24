@@ -57,6 +57,7 @@ namespace Ahoy.Enemies
 
         internal int ActiveIndex = -1;
         internal float SavedTime;               // R70: time owed while thinking every few frames
+        float roarUntil;                        // a captain roars as it comes out
         SkinnedMeshRenderer[] skins;
         int lod;
         float animSaved;        // R71: time owed to a hand-stepped animator
@@ -157,6 +158,12 @@ namespace Ahoy.Enemies
             nextAttackTime = now + Random.value * balance.crowdFirstAttackDelay;
             nextRetargetTime = now + Random.value * balance.crowdRetargetInterval;
             slide.Clear();
+            roarUntil = 0f;
+            if (def.roarSeconds > 0f && animator != null && animator.HasState(0, MonsterAnimatorIds.Roar))
+            {
+                roarUntil = now + def.roarSeconds;
+                EnemyCombat.Play(animator, MonsterAnimatorIds.Roar, def.animationCrossFade);
+            }
             route = null;
         }
 
@@ -178,6 +185,7 @@ namespace Ahoy.Enemies
 
             health -= info.Amount;
             LastAttacker = info.Source;
+            roarUntil = 0f;   // a blow cuts a roar short
             if (health <= 0f)
             {
                 Die();
@@ -227,6 +235,13 @@ namespace Ahoy.Enemies
             if (state == MonsterState.Dead)
             {
                 if (stateTime >= def.corpseSeconds) manager.Release(this);
+                return;
+            }
+
+            // Standing its ground while it roars: no moving, no attacking.
+            if (now < roarUntil)
+            {
+                lastVelocity = Vector3.zero;
                 return;
             }
 
