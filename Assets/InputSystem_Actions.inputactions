@@ -30,7 +30,7 @@
                     "name": "LightAttack",
                     "type": "Button",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false,
@@ -100,7 +100,7 @@
                     "name": "Guard",
                     "type": "Value",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true,
@@ -110,6 +110,16 @@
                     "name": "LockOn",
                     "type": "Button",
                     "id": "dfbc945f-1397-4fb6-882a-6677fd15e703",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "PlaceBomb",
+                    "type": "Button",
+                    "id": "6f7b9bcc-0bbd-4fa1-9266-a2ec2875cf80",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -566,6 +576,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "LockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "914010b7-c663-4f0c-89ef-3da3a5e2529d",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "PlaceBomb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "22c8161d-b768-42f8-a590-e2e75f218c67",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "PlaceBomb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
