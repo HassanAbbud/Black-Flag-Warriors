@@ -12,17 +12,15 @@ namespace Ahoy.UI
 
         [SerializeField]
         private Transform canvasTrans;
-        //private GameObject battleHUD;
-        //private GameObject battleSystems;
+        [SerializeField]
+        private GameObject battleHUD;
+        //[SerializeField]
         //private GameObject miniMap;
 
 
         private UImanager() 
         { 
 
-            //battleHUD = GameObject.Find("BattleHUD");
-            //battleSystems = GameObject.Find("BattleSystems");
-            //miniMap = GameObject.Find("MiniMap");
         }
 
         private void Awake()
@@ -52,7 +50,10 @@ namespace Ahoy.UI
                     {
                         panelDictionary.Add(panelName, panelComponent);
                         panelComponent.Show();
-                        //ToggleHUD();
+                        if(battleHUD != null)
+                        {
+                            ToggleHUD();
+                        }
                         return panelComponent;
                     }
                     else
@@ -82,6 +83,10 @@ namespace Ahoy.UI
                     GameObject.Destroy(panel.gameObject);
                     panelDictionary.Remove(panelName);
                     //ToggleHUD();
+                    if (battleHUD != null)
+                    {
+                        ToggleHUD();
+                    }
                 });
             }
             else
@@ -104,21 +109,19 @@ namespace Ahoy.UI
             }
         }
 
-        //public void ToggleHUD()
-        //{
-        //    if(panelDictionary.Count > 0)
-        //    {
-        //        battleHUD.SetActive(false);
-        //        battleSystems.SetActive(false);
-        //        miniMap.SetActive(false);
-        //    }
-        //    else
-        //    {
-        //        battleHUD.SetActive(true);
-        //        battleSystems.SetActive(true);
-        //        miniMap.SetActive(true);
-        //    }
-        //}
+        public void ToggleHUD()
+        {
+            if (panelDictionary.Count > 0)
+            {
+                battleHUD.SetActive(false);
+                //miniMap.SetActive(false);
+            }
+            else
+            {
+                battleHUD.SetActive(true);
+                //miniMap.SetActive(true);
+            }
+        }
     }
 }
 

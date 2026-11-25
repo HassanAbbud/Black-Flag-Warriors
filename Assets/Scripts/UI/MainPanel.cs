@@ -15,12 +15,15 @@ public class MainPanel : BasePanel
     {
         btnStart.onClick.AddListener(() => { 
             UImanager.Instance.HidePanel<MainPanel>();
-            SceneManager.LoadSceneAsync(1);
+            SceneManager.LoadScene(1);
         });
+
         btnLoad.onClick.AddListener(() => { });
+
         btnSettings.onClick.AddListener(() => { 
             UImanager.Instance.ShowPanel<SettingsPanel>();
         });
+
         btnExit.onClick.AddListener(() => {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
