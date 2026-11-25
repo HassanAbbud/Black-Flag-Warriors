@@ -44,6 +44,7 @@ namespace Ahoy.Enemies
         public event Action TelegraphEnded;
 
         IPlayerMotor motor;
+        GameObject playerObject;   // inactive while Zahim is at sea in the ship (R39)
         IDamageable target;
         IVillageTargets village;
         WeakPointGauge gauge;   // the real gauge when present; a test stub never reaches Smashing
@@ -119,6 +120,7 @@ namespace Ahoy.Enemies
         public void Initialize(IPlayerMotor playerMotor, IDamageable playerTarget, int home)
         {
             motor = playerMotor;
+            playerObject = playerMotor is Component c ? c.gameObject : null;
             target = playerTarget;
             locationId = home;
         }
@@ -220,7 +222,7 @@ namespace Ahoy.Enemies
             toPlayer.y = 0f;
             float distance = toPlayer.magnitude;
             Vector3 direction = distance > 0.0001f ? toPlayer / distance : transform.forward;
-            bool playerAlive = !motor.IsDead;
+            bool playerAlive = !motor.IsDead && (playerObject == null || playerObject.activeInHierarchy);
 
             // The weak point overrides everything but death: exposed means stand and take it.
             bool exposed = IsExposed();

@@ -245,17 +245,25 @@ namespace Ahoy.Core
         public float bossFacingDegrees = 30f;
         [Tooltip("Multiplies all enemy damage. The difficulty dial; 1 is Normal.")]
         public float enemyDamageScale = 1f;
-        
+
         [Header("Lock-on")]
-        public float lockOnRange = 15f;           
-        public float lockOnBreakRange = 20f;      
-        public float lockOnMaxAngle = 50f;        
-        public float lockOnDistanceWeight = 1f;  
-        public float lockOnSmoothing = 10f;       
-        public float lockOnPitch = 15f;         
+        public float lockOnRange = 15f;
+        public float lockOnBreakRange = 20f;
+        public float lockOnMaxAngle = 50f;
+        public float lockOnDistanceWeight = 1f;
+        public float lockOnSmoothing = 10f;
+        public float lockOnPitch = 15f;
         public float lockOnTargetHeight = 1f;
 
         [Header("Healing Potion")]
         public float potionHealAmount = 50f;
+
+        [Header("Ports — switching control (R39)")]
+        [Tooltip("Zahim must be within this many metres of a port's landing to board.")]
+        public float portZahimRange = 3f;
+        [Tooltip("The ship must be within this many metres of a port's berth for Zahim to step off.")]
+        public float portShipRange = 15f;
+        [Tooltip("Seconds after a switch before the next one is accepted.")]
+        public float portSwitchCooldown = 1f;
     }
 }
