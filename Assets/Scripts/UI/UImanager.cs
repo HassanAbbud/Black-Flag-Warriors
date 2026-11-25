@@ -4,27 +4,13 @@ using UnityEngine;
 
 namespace Ahoy.UI
 {
-    public class UImanager 
+    public class UImanager:MonoBehaviour
     {
         private static UImanager instance;
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics()
-        {
-            instance = null;
-        }
-        public static UImanager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new UImanager();
-                }
-                return instance;
-            }
-        }
+        public static UImanager Instance => instance;
 
 
+        [SerializeField]
         private Transform canvasTrans;
         //private GameObject battleHUD;
         //private GameObject battleSystems;
@@ -33,15 +19,15 @@ namespace Ahoy.UI
 
         private UImanager() 
         { 
-            GameObject canvas = GameObject.Instantiate(Resources.Load<GameObject>("UI/Canvas"));
-            canvasTrans = canvas.transform;
-
-            GameObject.DontDestroyOnLoad(canvas);
-
 
             //battleHUD = GameObject.Find("BattleHUD");
             //battleSystems = GameObject.Find("BattleSystems");
             //miniMap = GameObject.Find("MiniMap");
+        }
+
+        private void Awake()
+        {
+            instance = this;
         }
 
 
